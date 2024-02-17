@@ -104,4 +104,9 @@ public class DataBaseStubImpl implements DataBase {
 	public List<Table> getAllTables() {
 		return StubDataBaseRecords.tables;
 	}
+	
+	@Override
+	public List<Server> getAllServers() {
+		return StubDataBaseRecords.servers;
+	}
 }

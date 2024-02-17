@@ -19,6 +19,12 @@ public class StubDataBaseRecords {
 		tables = new ArrayList<Table>(Arrays.asList(new Table("1", 4, "1"), new Table("2", 2, "1"),
 				new Table("3", 2, "2"), new Table("4", 6, "2"), new Table("5", 8, "3"), new Table("6", 4, "3")));
 
+		servers = new ArrayList<Server>(Arrays.asList(
+
+				new Server("1", "robert", "downey"), new Server("2", "peter", "parker"),
+				new Server("3", "chris", "evans")
+
+		));
 	}
 
 	public static List<Customer> customers = new ArrayList<Customer>(
@@ -33,4 +39,9 @@ public class StubDataBaseRecords {
 			Arrays.asList(new Table("1", 4, "1"), new Table("2", 2, "1"), new Table("3", 2, "2"),
 					new Table("4", 6, "2"), new Table("5", 8, "3"), new Table("6", 4, "3")));
 
+	public static List<Server> servers = new ArrayList<Server>(Arrays.asList(
+
+			new Server("1", "robert", "downey"), new Server("2", "peter", "parker"), new Server("3", "chris", "evans")
+
+	));
 }

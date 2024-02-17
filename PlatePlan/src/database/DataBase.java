@@ -22,5 +22,8 @@ public interface DataBase {
 	public List<Table> getAllTables();
 	
 	public boolean deleteTable(String id);
+	
+	public List<Server> getAllServers();
+
 
 }

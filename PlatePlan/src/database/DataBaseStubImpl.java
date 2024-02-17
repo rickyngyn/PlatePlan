@@ -109,4 +109,20 @@ public class DataBaseStubImpl implements DataBase {
 	public List<Server> getAllServers() {
 		return StubDataBaseRecords.servers;
 	}
+	
+
+	@Override
+	public List<Reservation> getAllReservations() {
+		return StubDataBaseRecords.reservations != null ? StubDataBaseRecords.reservations
+				: new ArrayList<Reservation>();
+	}
+	
+	@Override
+	public List<Reservation> getReservationsForDate(LocalDate date) {
+
+		System.out.println(date + " All Reservations: " + StubDataBaseRecords.reservations);
+		return StubDataBaseRecords.reservations.stream().filter(reservation -> reservation.getDate().equals(date))
+				.collect(Collectors.toList());
+
+	}
 }

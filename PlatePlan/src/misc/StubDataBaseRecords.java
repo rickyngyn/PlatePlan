@@ -44,4 +44,6 @@ public class StubDataBaseRecords {
 			new Server("1", "robert", "downey"), new Server("2", "peter", "parker"), new Server("3", "chris", "evans")
 
 	));
+	public static List<Reservation> reservations = new ArrayList<Reservation>();
+
 }

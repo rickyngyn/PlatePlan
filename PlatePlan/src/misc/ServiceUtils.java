@@ -69,5 +69,50 @@ public class ServiceUtils {
 		return db.deleteTable(id);
 
 	}
+	
+	public Map<String, String> getAllServers() {
+
+		Map<String, String> map = new HashMap<>();
+		for (Server server : db.getAllServers()) {
+
+			map.put(server.getId(), server.getFirstName() + " " + server.getLastName());
+		}
+
+		return map;
+	}
+	public List<TimeSlot> getAvailableTables(LocalDate givenDate, int capRequested) {
+		List<TimeSlot> allSlots = db.getBusinessAccount().getAllTimeSlots();
+
+		List<Table> tables = this.getTablesMatchingResReq(capRequested);
+
+		List<Reservation> reservations = db.getReservationsForDate(givenDate);
+
+		Set<TimeSlot> availableList = new HashSet<>(allSlots);
+
+		for (TimeSlot timeSlot : allSlots) {
+			int tablesAvailable = tables.size();
+			for (Reservation reservation : reservations) {
+				for (Table table : tables) {
+					if ((reservation.getTableId().equals(table.getId()) && reservation.getTime().equals(timeSlot))) {
+						System.out.println("Removing Time Slot " + timeSlot + " from available slots");
+						tablesAvailable--;
+					}
+				}
+			}
+
+			if (tablesAvailable == 0) {
+				availableList.remove(timeSlot);
+			}
+		}
+
+		System.out.println("Tables Available Are: " + tables.toString());
+		System.out.println("Reservations In System Are: " + reservations.toString());
+		System.out.println("Available Time Slots Are: " + availableList + "\n\n");
+
+		return new ArrayList<>(availableList);
+
+	}
+	
+
 
 }

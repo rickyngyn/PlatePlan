@@ -125,4 +125,42 @@ public class DataBaseStubImpl implements DataBase {
 				.collect(Collectors.toList());
 
 	}
+	
+	@Override
+	public List<Reservation> getCustomerReservations(String email) throws AccountNotFoundException {
+		Customer customer = this.getCustomerAccount(email);
+
+		if (customer != null) {
+
+			List<Reservation> reservations = new ArrayList<Reservation>();
+			for (String resId : customer.getReservations()) {
+				reservations.add(getReservationWithId(resId));
+			}
+			reservations.removeAll(Collections.singleton(null));
+			return reservations;
+		}
+		throw new AccountNotFoundException("No customer with the given email " + email);
+	}
+	
+	@Override
+	public boolean deleteReservation(String id) {
+		List<Reservation> reservations = this.getAllReservations();
+		for (int i = 0; i < reservations.size(); i++) {
+			if (reservations.get(i).getId().equals(id)) {
+				reservations.remove(i);
+				return true;
+			}
+		}
+
+		return false;
+	}
+	
+	@Override
+	public Reservation getReservationWithId(String id) {
+		return StubDataBaseRecords.reservations.stream().filter(reservation -> reservation.getId().equals(id))
+				.findFirst().orElse(null);
+
+	}
+	
+	
 }

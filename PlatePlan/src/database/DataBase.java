@@ -29,4 +29,10 @@ public interface DataBase {
 
 	public List<Reservation> getAllReservations();
 
+	public boolean deleteReservation(String id);
+
+	public List<Reservation> getCustomerReservations(String email) throws AccountNotFoundException;
+
+	public Reservation getReservationWithId(String id);
+
 }

@@ -87,5 +87,21 @@ public class DataBaseStubImpl implements DataBase {
 		return StubDataBaseRecords.business;
 	}
 
+	@Override
+	public boolean deleteTable(String id) {
+
+		for (Table table : StubDataBaseRecords.tables) {
+			if (table.getId().equals(id)) {
+				StubDataBaseRecords.tables.remove(table);
+				return true;
+			}
+		}
+
+		return false;
+	}
 	
+	@Override
+	public List<Table> getAllTables() {
+		return StubDataBaseRecords.tables;
+	}
 }

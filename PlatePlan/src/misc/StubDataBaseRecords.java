@@ -16,7 +16,9 @@ public class StubDataBaseRecords {
 				new Customer("janedoe@email.com", "jane", "doe", "password"),
 				new Customer("max@email.com", "max", "payne", "password")));
 		business = new Business("alfredo", "password");
-		
+		tables = new ArrayList<Table>(Arrays.asList(new Table("1", 4, "1"), new Table("2", 2, "1"),
+				new Table("3", 2, "2"), new Table("4", 6, "2"), new Table("5", 8, "3"), new Table("6", 4, "3")));
+
 	}
 
 	public static List<Customer> customers = new ArrayList<Customer>(
@@ -27,4 +29,8 @@ public class StubDataBaseRecords {
 	public static Business business = new Business("alfredo", "password");
 
 	
+	public static List<Table> tables = new ArrayList<Table>(
+			Arrays.asList(new Table("1", 4, "1"), new Table("2", 2, "1"), new Table("3", 2, "2"),
+					new Table("4", 6, "2"), new Table("5", 8, "3"), new Table("6", 4, "3")));
+
 }

@@ -19,6 +19,8 @@ public interface DataBase {
 
 	public Customer getCustomerAccount(String email) throws AccountNotFoundException;
 
-
+	public List<Table> getAllTables();
+	
+	public boolean deleteTable(String id);
 
 }

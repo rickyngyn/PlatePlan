@@ -69,7 +69,7 @@ public class ServiceUtils {
 		return db.deleteTable(id);
 
 	}
-	
+
 	public Map<String, String> getAllServers() {
 
 		Map<String, String> map = new HashMap<>();
@@ -80,6 +80,7 @@ public class ServiceUtils {
 
 		return map;
 	}
+
 	public List<TimeSlot> getAvailableTables(LocalDate givenDate, int capRequested) {
 		List<TimeSlot> allSlots = db.getBusinessAccount().getAllTimeSlots();
 
@@ -112,7 +113,5 @@ public class ServiceUtils {
 		return new ArrayList<>(availableList);
 
 	}
-	
-
 
 }

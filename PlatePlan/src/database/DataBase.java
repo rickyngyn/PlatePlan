@@ -20,11 +20,11 @@ public interface DataBase {
 	public Customer getCustomerAccount(String email) throws AccountNotFoundException;
 
 	public List<Table> getAllTables();
-	
+
 	public boolean deleteTable(String id);
-	
+
 	public List<Server> getAllServers();
-	
+
 	public List<Reservation> getReservationsForDate(LocalDate date);
 
 	public List<Reservation> getAllReservations();

@@ -91,8 +91,6 @@ class ReservationServiceTest {
 		assertTrue(results.isEmpty());
 	}
 
-
-
 	@Test
 	void createCustomerReservation_NonOverlappingTimeSlotsSameDay() {
 		dataBase = DataBaseStubImpl.getInstance();

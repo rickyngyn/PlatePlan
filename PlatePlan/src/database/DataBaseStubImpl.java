@@ -81,7 +81,6 @@ public class DataBaseStubImpl implements DataBase {
 		}
 	}
 
-	
 	@Override
 	public Business getBusinessAccount() {
 		return StubDataBaseRecords.business;
@@ -99,24 +98,23 @@ public class DataBaseStubImpl implements DataBase {
 
 		return false;
 	}
-	
+
 	@Override
 	public List<Table> getAllTables() {
 		return StubDataBaseRecords.tables;
 	}
-	
+
 	@Override
 	public List<Server> getAllServers() {
 		return StubDataBaseRecords.servers;
 	}
-	
 
 	@Override
 	public List<Reservation> getAllReservations() {
 		return StubDataBaseRecords.reservations != null ? StubDataBaseRecords.reservations
 				: new ArrayList<Reservation>();
 	}
-	
+
 	@Override
 	public List<Reservation> getReservationsForDate(LocalDate date) {
 
@@ -125,7 +123,7 @@ public class DataBaseStubImpl implements DataBase {
 				.collect(Collectors.toList());
 
 	}
-	
+
 	@Override
 	public List<Reservation> getCustomerReservations(String email) throws AccountNotFoundException {
 		Customer customer = this.getCustomerAccount(email);
@@ -141,7 +139,7 @@ public class DataBaseStubImpl implements DataBase {
 		}
 		throw new AccountNotFoundException("No customer with the given email " + email);
 	}
-	
+
 	@Override
 	public boolean deleteReservation(String id) {
 		List<Reservation> reservations = this.getAllReservations();
@@ -154,13 +152,12 @@ public class DataBaseStubImpl implements DataBase {
 
 		return false;
 	}
-	
+
 	@Override
 	public Reservation getReservationWithId(String id) {
 		return StubDataBaseRecords.reservations.stream().filter(reservation -> reservation.getId().equals(id))
 				.findFirst().orElse(null);
 
 	}
-	
-	
+
 }

@@ -77,9 +77,6 @@ public class ReservationServiceImpl implements ReservationService {
 	public boolean cancelReservation(String reservationId) {
 		return db.deleteReservation(reservationId);
 	}
-	
-
-
 
 	// Other service methods would go here
 }

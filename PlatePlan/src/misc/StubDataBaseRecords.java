@@ -34,7 +34,6 @@ public class StubDataBaseRecords {
 
 	public static Business business = new Business("alfredo", "password");
 
-	
 	public static List<Table> tables = new ArrayList<Table>(
 			Arrays.asList(new Table("1", 4, "1"), new Table("2", 2, "1"), new Table("3", 2, "2"),
 					new Table("4", 6, "2"), new Table("5", 8, "3"), new Table("6", 4, "3")));

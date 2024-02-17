@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="javax.swing.JPanel"/>
+    <fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
+    <fullyQualifiedTypeName name="views.HomeView"/>
+    <fullyQualifiedTypeName name="plateplan.Main"/>
+    <fullyQualifiedTypeName name="views.SignIn"/>
+    <fullyQualifiedTypeName name="panels.Constants"/>
+    <fullyQualifiedTypeName name="java.lang.String"/>
+    <fullyQualifiedTypeName name="lombok.AllArgsConstructor"/>
+    <fullyQualifiedTypeName name="lombok.NoArgsConstructor"/>
+    <fullyQualifiedTypeName name="lombok.RequiredArgsConstructor"/>
+    <fullyQualifiedTypeName name="main.PlatePlanMain"/>
+    <fullyQualifiedTypeName name="panels.CustomerSignUp"/>
+    <fullyQualifiedTypeName name="lombok.ToString"/>
+</qualifiedTypeNameHistroy>

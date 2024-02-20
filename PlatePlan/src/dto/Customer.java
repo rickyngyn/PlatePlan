@@ -5,6 +5,10 @@ import java.util.Objects;
 
 public class Customer {
 
+	public Customer () {
+		
+	}
+	
 	public Customer(String email, String firstName, String lastName, String password, List<String> reservations) {
 		super();
 		this.email = email;
@@ -32,18 +36,7 @@ public class Customer {
 
 	private List<String> reservations;
 
-	public String genSQLValue() {
-		// Use PreparedStatement to avoid SQL injection vulnerabilities
-		return "(" + "'" + getEmail() + "'," + "'" + getFirstName() + "'," + "'" + getLastName() + "'," + "'"
-				+ getPassword() + "'" + ")";
-	}
-
-	@Override
-	public String toString() {
-		return "Customer [email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + ", password="
-				+ password + ", reservations=" + reservations + "]";
-	}
-
+	
 	/**
 	 * @return the email
 	 */
@@ -131,4 +124,17 @@ public class Customer {
 		return Objects.equals(email, other.email) && Objects.equals(firstName, other.firstName)
 				&& Objects.equals(lastName, other.lastName) && Objects.equals(password, other.password);
 	}
+	
+	public String genSQLValue() {
+		// Use PreparedStatement to avoid SQL injection vulnerabilities
+		return "(" + "'" + getEmail() + "'," + "'" + getFirstName() + "'," + "'" + getLastName() + "'," + "'"
+				+ getPassword() + "'" + ")";
+	}
+
+	@Override
+	public String toString() {
+		return "Customer [email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + ", password="
+				+ password + ", reservations=" + reservations + "]";
+	}
+
 }

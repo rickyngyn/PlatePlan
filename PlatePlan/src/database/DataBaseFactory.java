@@ -9,8 +9,9 @@ public class DataBaseFactory {
 
 		if (ENVIRONMENT.equals("development")) {
 			dataBase = DataBaseStubImpl.getInstance();
+		}else if (ENVIRONMENT.equals("production")) {
+			dataBase = DataBaseImpl.getInstance();
 		}
-
 		return dataBase;
 
 	}

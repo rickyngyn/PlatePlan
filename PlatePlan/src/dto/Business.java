@@ -32,7 +32,6 @@ public class Business {
 			time = time.plusMinutes(reservationSlots);
 		}
 
-		System.out.println(allSlots);
 		return allSlots;
 	}
 

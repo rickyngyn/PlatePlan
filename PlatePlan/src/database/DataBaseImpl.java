@@ -157,8 +157,29 @@ public class DataBaseImpl implements DataBase {
 
 	@Override
 	public List<Table> getAllTables() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Table> tables = new ArrayList<>();
+		String sql = String.format("SELECT * FROM %s",
+				SQLTables.TABLES_TABLE);
+		System.out.println("Executing Query: " + sql);
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			try (ResultSet rs = pstmt.executeQuery()) {
+				while (rs.next()) {
+
+					Table table = new Table();
+					table.setCapacity(rs.getInt("capacity"));
+					table.setId(rs.getString("id"));
+					table.setServer(rs.getString("server"));
+					tables.add(table);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			// Depending on how you want to handle SQL exceptions,
+			// you might want to throw a different exception or handle it differently
+		}
+
+		return tables;
 	}
 
 	@Override
@@ -175,8 +196,36 @@ public class DataBaseImpl implements DataBase {
 
 	@Override
 	public List<Reservation> getReservationsForDate(LocalDate date) {
-		// TODO Auto-generated method stub
-		return null;
+		List<Reservation> reservations = new ArrayList<>();
+		String sql = String.format("SELECT * FROM %s WHERE 'date' = '%s'",
+				SQLTables.RESERVATION_TABLE, date.toString());
+		System.out.println("Executing Query: " + sql);
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			try (ResultSet rs = pstmt.executeQuery()) {
+				while (rs.next()) {
+
+					Reservation reservation = new Reservation();
+					reservation.setId(rs.getString("id"));
+					reservation.setCustomerId(rs.getString("customerId"));
+					reservation.setDate(rs.getDate("date").toLocalDate());
+					reservation.setTime(new TimeSlot(rs.getTime("time").toLocalTime(),
+							rs.getTime("time").toLocalTime().plusMinutes(90)));
+					reservation.setSpecialNotes(rs.getString("specialNotes"));
+					reservation.setTableId(rs.getString("tableId"));
+					reservation.setPartySize(rs.getInt("partySize"));
+					reservation.setServerId(rs.getString("serverId"));
+					
+					reservations.add(reservation);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			// Depending on how you want to handle SQL exceptions,
+			// you might want to throw a different exception or handle it differently
+		}
+
+		return reservations;
 	}
 
 	@Override

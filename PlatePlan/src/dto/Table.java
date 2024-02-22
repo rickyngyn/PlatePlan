@@ -4,6 +4,9 @@ import java.util.Objects;
 
 public class Table {
 
+	public Table () {
+		
+	}
 	public Table(String id, int capacity, String server) {
 		super();
 		this.id = id;

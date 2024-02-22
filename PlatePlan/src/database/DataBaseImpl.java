@@ -1,6 +1,7 @@
 package database;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,12 +39,6 @@ public class DataBaseImpl implements DataBase {
 
 			// Get a connection to the database
 			connection = DriverManager.getConnection(url, user, password);
-			try {
-				getCustomerAccount("john");
-			} catch (AccountNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		} catch (SQLException e) {
 			// Handle any SQL exceptions here (e.g., log them)
 			e.printStackTrace();
@@ -66,9 +61,50 @@ public class DataBaseImpl implements DataBase {
 
 	@Override
 	public boolean insertRecord(String tableName, Object object) {
-		// TODO Auto-generated method stub
-		return false;
+		String sql = "INSERT INTO %s (%s) VALUES %s;";
+		if (tableName.equals(SQLTables.RESERVATION_TABLE))
+		{
+			Reservation reservation = (Reservation)object;
+			sql = String.format(sql, SQLTables.RESERVATION_TABLE, getColumnNames(tableName), 
+					reservation.getSQLString());
+		}
+		
+		System.out.println("Executing Command: " + sql);
+		try {
+			runInsertCommand(sql);
+			return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
 	}
+	
+	private void runInsertCommand (String sql) throws SQLException
+	{
+		PreparedStatement pstmt = connection.prepareStatement(sql);
+		 // Execute the INSERT command
+        int affectedRows = pstmt.executeUpdate();
+	}
+	private String getColumnNames(String tableName) {
+        List<String> columnNames = new ArrayList<>();
+        
+        try {
+            DatabaseMetaData metaData = connection.getMetaData();
+            
+            // Retrieves a ResultSet where each row is a column description
+            try (ResultSet columns = metaData.getColumns(null, null, tableName, null)) {
+                while (columns.next()) {
+                    String columnName = columns.getString("COLUMN_NAME");
+                    columnNames.add(columnName);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Database error: " + e.getMessage());
+        }
+        
+        return "(" + String.join(",", columnNames) + ")";
+    }
 
 	@Override
 	public Customer getCustomerAccount(String email) throws AccountNotFoundException {
@@ -156,8 +192,8 @@ public class DataBaseImpl implements DataBase {
 					reservation.setTableId(rs.getString("tableId"));
 					reservation.setPartySize(rs.getInt("partySize"));
 					reservation.setServerId(rs.getString("serverId"));
+					
 					reservations.add(reservation);
-					// Set other fields of the customer object as needed
 				}
 			}
 		} catch (SQLException e) {

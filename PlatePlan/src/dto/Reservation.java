@@ -4,6 +4,8 @@
 package dto;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.List;
 
 public class Reservation {
 
@@ -165,6 +167,16 @@ public class Reservation {
 
 	public void setServerId(String serverId) {
 		this.serverId = serverId;
+	}
+	
+	public String getSQLString ()
+	{
+        List<String> strings = Arrays.asList(id, customerId, date.toString(), time.toString(), specialNotes, tableId, partySize+"", serverId);
+		StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("(");
+		stringBuilder.append(String.join(", ", strings));
+		stringBuilder.append(")");
+		return stringBuilder.toString();
 	}
 
 }

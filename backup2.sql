@@ -96,59 +96,49 @@ ALTER TABLE public.tables OWNER TO postgres;
 -- Data for Name: business; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.business (email, password, "openFrom", "openUntil", "reservationSlots") FROM stdin;
-alfredo	password	12:00:00	23:59:00	90
-\.
+INSERT INTO public.business VALUES ('alfredo', 'password', '12:00:00', '23:59:00', 90);
 
 
 --
 -- Data for Name: customers; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.customers (email, firstname, lastname, password) FROM stdin;
-john	john	doe	password
-janedoe@email.com	jane	doe	password
-max@email.com	max	payne	password
-\.
+INSERT INTO public.customers VALUES ('john', 'john', 'doe', 'password');
+INSERT INTO public.customers VALUES ('janedoe@email.com', 'jane', 'doe', 'password');
+INSERT INTO public.customers VALUES ('max@email.com', 'max', 'payne', 'password');
 
 
 --
 -- Data for Name: reservations; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.reservations (id, "customerId", date, "time", "specialNotes", "tableId", "partySize") FROM stdin;
-\.
 
 
 --
 -- Data for Name: servers; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.servers (id, firstname, lastname) FROM stdin;
-1	Peter	Parker
-2	Alex	Johnson
-3	Maria	Gonzalez
-4	James	Smith
-5	Linda	Brown
-\.
+INSERT INTO public.servers VALUES ('1', 'Peter', 'Parker');
+INSERT INTO public.servers VALUES ('2', 'Alex', 'Johnson');
+INSERT INTO public.servers VALUES ('3', 'Maria', 'Gonzalez');
+INSERT INTO public.servers VALUES ('4', 'James', 'Smith');
+INSERT INTO public.servers VALUES ('5', 'Linda', 'Brown');
 
 
 --
 -- Data for Name: tables; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.tables (id, capacity, server) FROM stdin;
-table1	2	1
-table2	4	2
-table3	6	3
-table4	8	4
-table5	10	5
-table6	2	1
-table7	4	2
-table8	6	3
-table9	8	4
-table10	10	5
-\.
+INSERT INTO public.tables VALUES ('table1', 2, '1');
+INSERT INTO public.tables VALUES ('table2', 4, '2');
+INSERT INTO public.tables VALUES ('table3', 6, '3');
+INSERT INTO public.tables VALUES ('table4', 8, '4');
+INSERT INTO public.tables VALUES ('table5', 10, '5');
+INSERT INTO public.tables VALUES ('table6', 2, '1');
+INSERT INTO public.tables VALUES ('table7', 4, '2');
+INSERT INTO public.tables VALUES ('table8', 6, '3');
+INSERT INTO public.tables VALUES ('table9', 8, '4');
+INSERT INTO public.tables VALUES ('table10', 10, '5');
 
 
 --

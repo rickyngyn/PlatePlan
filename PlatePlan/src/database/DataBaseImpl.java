@@ -55,8 +55,28 @@ public class DataBaseImpl implements DataBase {
 
 	@Override
 	public Business getBusinessAccount() {
-		// TODO Auto-generated method stub
-		return null;
+		Business business = null;
+		String sql = String.format("SELECT * FROM %s", SQLTables.BUSINESS_TABLE);
+		System.out.println("Executing Query: " + sql);
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			try (ResultSet rs = pstmt.executeQuery()) {
+				if (rs.next()) {
+					business = new Business(null, null);
+					business.setEmail(rs.getString("email"));
+					business.setPassword(rs.getString("password"));
+					
+					
+					// Set other fields of the customer object as needed
+				} 
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			// Depending on how you want to handle SQL exceptions,
+			// you might want to throw a different exception or handle it differently
+		}
+
+		return business;
 	}
 
 	@Override

@@ -7,16 +7,19 @@ import java.time.LocalDate;
 
 public class Reservation {
 
-	public Reservation(String id, String customerId, LocalDate date, TimeSlot time, String specialNotes,
-			String serverId, String tableId, int partySize) {
+	public Reservation () {
+		
+	}
+	public Reservation(String id, String customerId, LocalDate date, TimeSlot time, String specialNotes, String server, String tableId,
+			int partySize) {
 		super();
 		this.id = id;
 		this.customerId = customerId;
 		this.date = date;
 		this.time = time;
 		this.specialNotes = specialNotes;
-		this.serverId = serverId;
 		this.tableId = tableId;
+		this.serverId = server;
 		this.partySize = partySize;
 	}
 
@@ -42,9 +45,9 @@ public class Reservation {
 
 	private String specialNotes;
 
-	private String serverId;
-
 	private String tableId;
+	
+	private String serverId;
 
 	private int partySize;
 
@@ -118,19 +121,6 @@ public class Reservation {
 		this.specialNotes = specialNotes;
 	}
 
-	/**
-	 * @return the serverId
-	 */
-	public String getServerId() {
-		return serverId;
-	}
-
-	/**
-	 * @param serverId the serverId to set
-	 */
-	public void setServerId(String serverId) {
-		this.serverId = serverId;
-	}
 
 	/**
 	 * @return the tableId
@@ -163,8 +153,18 @@ public class Reservation {
 	@Override
 	public String toString() {
 		return "Reservation [id=" + id + ", customerId=" + customerId + ", date=" + date + ", time=" + time
-				+ ", specialNotes=" + specialNotes + ", serverId=" + serverId + ", tableId=" + tableId + ", partySize="
+				+ ", specialNotes=" + specialNotes + ", tableId=" + tableId + ", partySize="
 				+ partySize + "]";
+	}
+
+
+	public String getServerId() {
+		return serverId;
+	}
+
+
+	public void setServerId(String serverId) {
+		this.serverId = serverId;
 	}
 
 }

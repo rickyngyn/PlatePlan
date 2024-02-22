@@ -31,8 +31,13 @@ public class ReservationServiceImpl implements ReservationService {
 	@Override
 	public List<Reservation> getCustomerReservation(String email) {
 
-		return db.getAllReservations().stream().filter(reservation -> reservation.getCustomerId().equals(email))
-				.collect(Collectors.toList());
+		try {
+			return db.getCustomerReservations(email);
+		} catch (AccountNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new ArrayList<>();
 	}
 
 	@Override

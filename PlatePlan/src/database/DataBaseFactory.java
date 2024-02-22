@@ -1,7 +1,7 @@
 package database;
 
 public class DataBaseFactory {
-	private static String ENVIRONMENT = "development";
+	private static String ENVIRONMENT = "production";
 
 	public static DataBase getDatabase() {
 

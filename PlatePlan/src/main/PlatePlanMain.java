@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 
 import customerPanels.Constants;
 import customerPanels.InitialView;
+import database.DataBaseFactory;
 
 public class PlatePlanMain {
 
@@ -16,6 +17,7 @@ public class PlatePlanMain {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		DataBaseFactory.getDatabase();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {

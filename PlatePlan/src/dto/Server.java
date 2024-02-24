@@ -4,6 +4,9 @@ import java.util.Objects;
 
 public class Server {
 
+	public Server() {
+	}
+
 	public Server(String id, String firstName, String lastName) {
 		super();
 		this.id = id;

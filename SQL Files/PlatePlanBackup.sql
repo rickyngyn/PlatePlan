@@ -27,9 +27,9 @@ SET default_table_access_method = heap;
 CREATE TABLE public.business (
     email character varying(50) NOT NULL,
     password character varying(50),
-    "openFrom" time(6) without time zone,
-    "openUntil" time(6) without time zone,
-    "reservationSlots" integer
+    "open_from" time(6) without time zone,
+    "open_until" time(6) without time zone,
+    "reservation_slots" integer
 );
 
 
@@ -54,13 +54,13 @@ ALTER TABLE public.customers OWNER TO postgres;
 --
 
 CREATE TABLE public.reservations (
-    id character varying(50)[] NOT NULL,
-    "customerId" character varying(50)[],
+    id character varying(50) NOT NULL,
+    "customer_id" character varying(50),
     date date,
     "time" time(6) without time zone,
-    "specialNotes" character varying(200),
-    "tableId" character varying(50)[],
-    "partySize" integer
+    "special_notes" character varying(200),
+    "table_id" character varying(50),
+    "party_size" integer
 );
 
 

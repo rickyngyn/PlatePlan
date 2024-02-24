@@ -65,10 +65,7 @@ public class DataBaseImpl implements DataBase {
 					business = new Business(null, null);
 					business.setEmail(rs.getString("email"));
 					business.setPassword(rs.getString("password"));
-					
-					
-					// Set other fields of the customer object as needed
-				} 
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -81,50 +78,46 @@ public class DataBaseImpl implements DataBase {
 
 	@Override
 	public boolean insertRecord(String tableName, Object object) {
-		String sql = "INSERT INTO %s (%s) VALUES %s;";
-		if (tableName.equals(SQLTables.RESERVATION_TABLE))
-		{
-			Reservation reservation = (Reservation)object;
-			sql = String.format(sql, SQLTables.RESERVATION_TABLE, getColumnNames(tableName), 
-					reservation.getSQLString());
+		String sql = "INSERT INTO %s %s VALUES ";
+		PreparedStatement pstmt = null;
+		if (tableName.equals(SQLTables.RESERVATION_TABLE)) {
+			Reservation reservation = (Reservation) object;
+			sql = String.format(sql, SQLTables.RESERVATION_TABLE, getColumnNames(tableName));
+			pstmt = reservation.getSQLString(connection, sql);
 		}
-		
-		System.out.println("Executing Command: " + sql);
+
+		System.out.println("Executing Command: " + pstmt.toString());
 		try {
-			runInsertCommand(sql);
-			return true;
+			if (pstmt != null && pstmt.executeUpdate() > 0)
+			{
+				return true;
+			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return false;
 		}
+		return false;
 	}
-	
-	private void runInsertCommand (String sql) throws SQLException
-	{
-		PreparedStatement pstmt = connection.prepareStatement(sql);
-		 // Execute the INSERT command
-        int affectedRows = pstmt.executeUpdate();
-	}
+
+
 	private String getColumnNames(String tableName) {
-        List<String> columnNames = new ArrayList<>();
-        
-        try {
-            DatabaseMetaData metaData = connection.getMetaData();
-            
-            // Retrieves a ResultSet where each row is a column description
-            try (ResultSet columns = metaData.getColumns(null, null, tableName, null)) {
-                while (columns.next()) {
-                    String columnName = columns.getString("COLUMN_NAME");
-                    columnNames.add(columnName);
-                }
-            }
-        } catch (SQLException e) {
-            System.out.println("Database error: " + e.getMessage());
-        }
-        
-        return "(" + String.join(",", columnNames) + ")";
-    }
+		List<String> columnNames = new ArrayList<>();
+
+		try {
+			DatabaseMetaData metaData = connection.getMetaData();
+
+			// Retrieves a ResultSet where each row is a column description
+			try (ResultSet columns = metaData.getColumns(null, null, tableName, null)) {
+				while (columns.next()) {
+					String columnName = columns.getString("COLUMN_NAME");
+					columnNames.add(columnName);
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("Database error: " + e.getMessage());
+		}
+
+		return "(" + String.join(",", columnNames) + ")";
+	}
 
 	@Override
 	public Customer getCustomerAccount(String email) throws AccountNotFoundException {
@@ -135,21 +128,13 @@ public class DataBaseImpl implements DataBase {
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			try (ResultSet rs = pstmt.executeQuery()) {
 				if (rs.next()) {
-					customer = new Customer();
-					customer.setEmail(rs.getString("email"));
-					customer.setFirstName(rs.getString("firstName"));
-					customer.setLastName(rs.getString("lastName"));
-					customer.setPassword(rs.getString("password"));
-
-					// Set other fields of the customer object as needed
+					customer = DataBaseConverters.convertCustomer(rs);
 				} else {
 					throw new AccountNotFoundException("No account found with email: " + email);
 				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			// Depending on how you want to handle SQL exceptions,
-			// you might want to throw a different exception or handle it differently
 		}
 
 		return customer;
@@ -158,27 +143,16 @@ public class DataBaseImpl implements DataBase {
 	@Override
 	public List<Table> getAllTables() {
 		List<Table> tables = new ArrayList<>();
-		String sql = String.format("SELECT * FROM %s",
-				SQLTables.TABLES_TABLE);
+		String sql = String.format("SELECT * FROM %s", SQLTables.TABLES_TABLE);
 		System.out.println("Executing Query: " + sql);
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			try (ResultSet rs = pstmt.executeQuery()) {
-				while (rs.next()) {
-
-					Table table = new Table();
-					table.setCapacity(rs.getInt("capacity"));
-					table.setId(rs.getString("id"));
-					table.setServer(rs.getString("server"));
-					tables.add(table);
-				}
+				tables = DataBaseConverters.convertTableList(rs);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			// Depending on how you want to handle SQL exceptions,
-			// you might want to throw a different exception or handle it differently
 		}
-
 		return tables;
 	}
 
@@ -190,39 +164,36 @@ public class DataBaseImpl implements DataBase {
 
 	@Override
 	public List<Server> getAllServers() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Server> servers = new ArrayList<>();
+		String sql = String.format("SELECT * FROM %s", SQLTables.SERVERS_TABLE);
+		System.out.println("Executing Query: " + sql);
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			ResultSet rs = pstmt.executeQuery();
+
+			servers = DataBaseConverters.convertServerList(rs);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return servers;
 	}
 
 	@Override
 	public List<Reservation> getReservationsForDate(LocalDate date) {
 		List<Reservation> reservations = new ArrayList<>();
-		String sql = String.format("SELECT * FROM %s WHERE 'date' = '%s'",
-				SQLTables.RESERVATION_TABLE, date.toString());
+		String sql = String.format("SELECT * FROM %s WHERE 'date' = '%s'", SQLTables.RESERVATION_TABLE,
+				date.toString());
 		System.out.println("Executing Query: " + sql);
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-			try (ResultSet rs = pstmt.executeQuery()) {
-				while (rs.next()) {
+			ResultSet rs = pstmt.executeQuery();
 
-					Reservation reservation = new Reservation();
-					reservation.setId(rs.getString("id"));
-					reservation.setCustomerId(rs.getString("customerId"));
-					reservation.setDate(rs.getDate("date").toLocalDate());
-					reservation.setTime(new TimeSlot(rs.getTime("time").toLocalTime(),
-							rs.getTime("time").toLocalTime().plusMinutes(90)));
-					reservation.setSpecialNotes(rs.getString("specialNotes"));
-					reservation.setTableId(rs.getString("tableId"));
-					reservation.setPartySize(rs.getInt("partySize"));
-					reservation.setServerId(rs.getString("serverId"));
-					
-					reservations.add(reservation);
-				}
-			}
+			reservations = DataBaseConverters.convertReservationList(rs);
+
 		} catch (SQLException e) {
 			e.printStackTrace();
-			// Depending on how you want to handle SQL exceptions,
-			// you might want to throw a different exception or handle it differently
 		}
 
 		return reservations;
@@ -243,32 +214,17 @@ public class DataBaseImpl implements DataBase {
 	@Override
 	public List<Reservation> getCustomerReservations(String email) throws AccountNotFoundException {
 		List<Reservation> reservations = new ArrayList<>();
-		String sql = String.format("SELECT * FROM %s WHERE 'reservations.customerId' = '%s'",
+		String sql = String.format("SELECT * FROM %s WHERE customer_id = '%s'",
 				SQLTables.RESERVATION_TABLE, email);
 		System.out.println("Executing Query: " + sql);
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-			try (ResultSet rs = pstmt.executeQuery()) {
-				while (rs.next()) {
+			ResultSet rs = pstmt.executeQuery();
 
-					Reservation reservation = new Reservation();
-					reservation.setId(rs.getString("id"));
-					reservation.setCustomerId(rs.getString("customerId"));
-					reservation.setDate(rs.getDate("date").toLocalDate());
-					reservation.setTime(new TimeSlot(rs.getTime("time").toLocalTime(),
-							rs.getTime("time").toLocalTime().plusMinutes(90)));
-					reservation.setSpecialNotes(rs.getString("specialNotes"));
-					reservation.setTableId(rs.getString("tableId"));
-					reservation.setPartySize(rs.getInt("partySize"));
-					reservation.setServerId(rs.getString("serverId"));
-					
-					reservations.add(reservation);
-				}
-			}
+			reservations = DataBaseConverters.convertReservationList(rs);
+
 		} catch (SQLException e) {
 			e.printStackTrace();
-			// Depending on how you want to handle SQL exceptions,
-			// you might want to throw a different exception or handle it differently
 		}
 
 		return reservations;

@@ -3,17 +3,23 @@
  */
 package dto;
 
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
 public class Reservation {
 
-	public Reservation () {
-		
+	public Reservation() {
+
 	}
-	public Reservation(String id, String customerId, LocalDate date, TimeSlot time, String specialNotes, String server, String tableId,
-			int partySize) {
+
+	public Reservation(String id, String customerId, LocalDate date, TimeSlot time, String specialNotes, String server,
+			String tableId, int partySize) {
 		super();
 		this.id = id;
 		this.customerId = customerId;
@@ -48,7 +54,7 @@ public class Reservation {
 	private String specialNotes;
 
 	private String tableId;
-	
+
 	private String serverId;
 
 	private int partySize;
@@ -123,7 +129,6 @@ public class Reservation {
 		this.specialNotes = specialNotes;
 	}
 
-
 	/**
 	 * @return the tableId
 	 */
@@ -155,28 +160,37 @@ public class Reservation {
 	@Override
 	public String toString() {
 		return "Reservation [id=" + id + ", customerId=" + customerId + ", date=" + date + ", time=" + time
-				+ ", specialNotes=" + specialNotes + ", tableId=" + tableId + ", partySize="
-				+ partySize + "]";
+				+ ", specialNotes=" + specialNotes + ", tableId=" + tableId + ", partySize=" + partySize + "]";
 	}
-
 
 	public String getServerId() {
 		return serverId;
 	}
 
-
 	public void setServerId(String serverId) {
 		this.serverId = serverId;
 	}
-	
-	public String getSQLString ()
-	{
-        List<String> strings = Arrays.asList(id, customerId, date.toString(), time.toString(), specialNotes, tableId, partySize+"", serverId);
-		StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("(");
-		stringBuilder.append(String.join(", ", strings));
-		stringBuilder.append(")");
-		return stringBuilder.toString();
+
+	public PreparedStatement getSQLString(Connection connection, String sql) {
+		try {
+			sql = sql + "(?,?,?,?,?,?,?,?);";
+			PreparedStatement pstmt = connection.prepareStatement(sql);
+		    pstmt.setString(1, this.getId());
+		    pstmt.setString(2, this.getCustomerId());
+		    pstmt.setDate(3, Date.valueOf(this.date.toString()));		    
+		    pstmt.setTime(4, Time.valueOf(this.getTime().getFrom())); // Assuming TimeSlot can be converted to String directly or has a toString method
+		    pstmt.setString(5, this.getSpecialNotes());
+		    pstmt.setString(6, this.getTableId());
+		    pstmt.setInt(7, this.getPartySize());
+		    pstmt.setString(8, this.getServerId());
+
+			
+		    return pstmt;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 
 }

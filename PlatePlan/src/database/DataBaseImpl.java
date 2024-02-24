@@ -158,8 +158,23 @@ public class DataBaseImpl implements DataBase {
 
 	@Override
 	public boolean deleteTable(String id) {
-		// TODO Auto-generated method stub
-		return false;
+		int affectedRows = 0;
+		// SQL command to delete rows with the specific ID
+        String sql = "DELETE FROM " + SQLTables.TABLES_TABLE + " WHERE id = ?;";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            // Set the ID in the prepared statement to avoid SQL injection
+            pstmt.setString(1, id);
+
+            // Execute the delete command
+             affectedRows = pstmt.executeUpdate();
+            System.out.println("Deleted " + affectedRows + " rows.");
+            
+            
+        } catch (SQLException e) {
+            System.out.println("Error occurred during delete operation: " + e.getMessage());
+        }
+        return affectedRows <= 0? false : true;
 	}
 
 	@Override
@@ -201,14 +216,41 @@ public class DataBaseImpl implements DataBase {
 
 	@Override
 	public List<Reservation> getAllReservations() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Reservation> reservations = new ArrayList<>();
+		String sql = String.format("SELECT * FROM %s", SQLTables.RESERVATION_TABLE);
+		System.out.println("Executing Query: " + sql);
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			ResultSet rs = pstmt.executeQuery();
+
+			reservations = DataBaseConverters.convertReservationList(rs);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return reservations;
 	}
 
 	@Override
 	public boolean deleteReservation(String id) {
-		// TODO Auto-generated method stub
-		return false;
+		int affectedRows = 0;
+		// SQL command to delete rows with the specific ID
+        String sql = "DELETE FROM " + SQLTables.RESERVATION_TABLE + " WHERE id = ?;";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            // Set the ID in the prepared statement to avoid SQL injection
+            pstmt.setString(1, id);
+
+            // Execute the delete command
+             affectedRows = pstmt.executeUpdate();
+            System.out.println("Deleted " + affectedRows + " rows.");
+            
+            
+        } catch (SQLException e) {
+            System.out.println("Error occurred during delete operation: " + e.getMessage());
+        }
+        return affectedRows <= 0? false : true;
 	}
 
 	@Override
@@ -232,8 +274,21 @@ public class DataBaseImpl implements DataBase {
 
 	@Override
 	public Reservation getReservationWithId(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		Reservation reservation = null;
+		String sql = String.format("SELECT * FROM %s WHERE id = '%s'",
+				SQLTables.RESERVATION_TABLE, id);
+		System.out.println("Executing Query: " + sql);
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			ResultSet rs = pstmt.executeQuery();
+
+			reservation = DataBaseConverters.convertReservation(rs);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return reservation;
 	}
 
 }

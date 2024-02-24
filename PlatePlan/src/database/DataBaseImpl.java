@@ -79,7 +79,7 @@ public class DataBaseImpl implements DataBase {
 	@Override
 	public boolean insertRecord(String tableName, Object object) {
 		String sql = "INSERT INTO %s %s VALUES ";
-		sql = String.format(sql, SQLTables.TABLES_TABLE, getColumnNames(tableName));
+		sql = String.format(sql, tableName, getColumnNames(tableName));
 
 		PreparedStatement pstmt = null;
 
@@ -94,6 +94,10 @@ public class DataBaseImpl implements DataBase {
 		else if (tableName.equals(SQLTables.ACCOUNTS_TABLE)) {
 			Customer customer = (Customer) object;
 			pstmt = customer.getSQLString(connection, sql);
+		}
+		else if (tableName.equals(SQLTables.SERVERS_TABLE)) {
+			Server server = (Server) object;
+			pstmt = server.getSQLString(connection, sql);
 		}
 
 		System.out.println("Executing Command: " + pstmt.toString());

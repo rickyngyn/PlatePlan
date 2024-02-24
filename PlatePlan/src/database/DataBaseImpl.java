@@ -79,11 +79,17 @@ public class DataBaseImpl implements DataBase {
 	@Override
 	public boolean insertRecord(String tableName, Object object) {
 		String sql = "INSERT INTO %s %s VALUES ";
+		sql = String.format(sql, SQLTables.TABLES_TABLE, getColumnNames(tableName));
+
 		PreparedStatement pstmt = null;
+
 		if (tableName.equals(SQLTables.RESERVATION_TABLE)) {
 			Reservation reservation = (Reservation) object;
-			sql = String.format(sql, SQLTables.RESERVATION_TABLE, getColumnNames(tableName));
 			pstmt = reservation.getSQLString(connection, sql);
+			
+		}else if (tableName.equals(SQLTables.TABLES_TABLE)) {
+			Table table = (Table) object;
+			pstmt = table.getSQLString(connection, sql);
 		}
 
 		System.out.println("Executing Command: " + pstmt.toString());

@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 16.1
--- Dumped by pg_dump version 16.2 (Homebrew)
+-- Dumped from database version 16.2
+-- Dumped by pg_dump version 16.2
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -27,9 +27,9 @@ SET default_table_access_method = heap;
 CREATE TABLE public.business (
     email character varying(50) NOT NULL,
     password character varying(50),
-    "open_from" time(6) without time zone,
-    "open_until" time(6) without time zone,
-    "reservation_slots" integer
+    open_from time(6) without time zone,
+    open_until time(6) without time zone,
+    reservation_slots integer
 );
 
 
@@ -55,12 +55,13 @@ ALTER TABLE public.customers OWNER TO postgres;
 
 CREATE TABLE public.reservations (
     id character varying(50) NOT NULL,
-    "customer_id" character varying(50),
+    customer_id character varying(50),
     date date,
     "time" time(6) without time zone,
-    "special_notes" character varying(200),
-    "table_id" character varying(50),
-    "party_size" integer
+    special_notes character varying(200),
+    table_id character varying(50),
+    party_size integer,
+    server character varying(50)
 );
 
 
@@ -112,6 +113,7 @@ INSERT INTO public.customers VALUES ('max@email.com', 'max', 'payne', 'password'
 -- Data for Name: reservations; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO public.reservations VALUES ('9c0869bc-e7b7-497d-a425-dff575333452', 'john', '2024-02-27', '15:00:00', '', 'table1', 1, 'Peter Parker');
 
 
 --

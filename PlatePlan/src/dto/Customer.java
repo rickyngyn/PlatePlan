@@ -1,5 +1,10 @@
 package dto;
 
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Time;
 import java.util.List;
 import java.util.Objects;
 
@@ -125,10 +130,20 @@ public class Customer {
 				&& Objects.equals(lastName, other.lastName) && Objects.equals(password, other.password);
 	}
 	
-	public String genSQLValue() {
-		// Use PreparedStatement to avoid SQL injection vulnerabilities
-		return "(" + "'" + getEmail() + "'," + "'" + getFirstName() + "'," + "'" + getLastName() + "'," + "'"
-				+ getPassword() + "'" + ")";
+	public PreparedStatement getSQLString(Connection connection, String sql) {
+		try {
+			sql = sql + "(?,?,?,?);";
+			PreparedStatement pstmt = connection.prepareStatement(sql);
+		    pstmt.setString(1, this.getEmail());
+		    pstmt.setString(2, this.getFirstName());
+		    pstmt.setString(3, this.getLastName());
+		    pstmt.setString(4, this.getPassword());			
+		    return pstmt;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 
 	@Override

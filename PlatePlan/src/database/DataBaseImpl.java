@@ -91,6 +91,10 @@ public class DataBaseImpl implements DataBase {
 			Table table = (Table) object;
 			pstmt = table.getSQLString(connection, sql);
 		}
+		else if (tableName.equals(SQLTables.ACCOUNTS_TABLE)) {
+			Customer customer = (Customer) object;
+			pstmt = customer.getSQLString(connection, sql);
+		}
 
 		System.out.println("Executing Command: " + pstmt.toString());
 		try {

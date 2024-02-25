@@ -15,8 +15,8 @@ import dto.Customer;
 import dto.Reservation;
 import dto.Table;
 import dto.TimeSlot;
-import misc.ServiceUtils;
 import service_interfaces.ReservationService;
+import service_interfaces.ServiceUtils;
 
 public class ReservationServiceImpl implements ReservationService {
 
@@ -25,7 +25,7 @@ public class ReservationServiceImpl implements ReservationService {
 
 	public ReservationServiceImpl() {
 		this.db = DataBaseFactory.getDatabase();
-		serviceUtils = ServiceUtils.getInstance();
+		serviceUtils = ServiceUtilsImpl.getInstance();
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class ReservationServiceImpl implements ReservationService {
 		}
 
 		Reservation reservation = new Reservation(UUID.randomUUID().toString(), customer.getEmail(), date, slot,
-				specialNotes, serviceUtils.getAllServers().get(tablesAvailable.get(0).getServer()),
+				specialNotes, serviceUtils.getAllServersMap().get(tablesAvailable.get(0).getServer()),
 				tablesAvailable.get(0).getId(), cap);
 
 		if (customer.getReservations() != null) {

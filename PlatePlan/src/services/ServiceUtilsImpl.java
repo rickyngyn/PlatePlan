@@ -1,4 +1,4 @@
-package misc;
+package services;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import database.DataBase;
@@ -17,9 +18,9 @@ import dto.Server;
 import dto.Table;
 import dto.TimeSlot;
 import service_interfaces.AccountService;
-import services.AccountsServiceImpl;
+import service_interfaces.ServiceUtils;
 
-public class ServiceUtils {
+public class ServiceUtilsImpl implements ServiceUtils {
 
 	// Private static instance of the class
 	private static ServiceUtils instance;
@@ -27,7 +28,7 @@ public class ServiceUtils {
 	private AccountService accountService;
 
 	// Private constructor to prevent instantiation from outside the class
-	private ServiceUtils() {
+	private ServiceUtilsImpl() {
 		db = DataBaseFactory.getDatabase();
 		accountService = new AccountsServiceImpl();
 	}
@@ -36,13 +37,14 @@ public class ServiceUtils {
 	public static ServiceUtils getInstance() {
 		// Create the instance if it does not exist
 		if (instance == null) {
-			instance = new ServiceUtils();
+			instance = new ServiceUtilsImpl();
 		}
 		// Return the existing instance
 		return instance;
 
 	}
 
+	@Override
 	public List<Table> getTablesMatchingResReq(int capRequested) {
 		List<Table> tables = db.getAllTables().stream().filter(table -> table.getCapacity() >= capRequested)
 				.collect(Collectors.toList());
@@ -50,6 +52,7 @@ public class ServiceUtils {
 		return tables;
 	}
 
+	@Override
 	public boolean registerTable(String id, int cap, String server) {
 		Table table = new Table(id, cap, server);
 
@@ -64,13 +67,15 @@ public class ServiceUtils {
 		return true;
 	}
 
+	@Override
 	public boolean deleteTable(String id) {
 
 		return db.deleteTable(id);
 
 	}
 
-	public Map<String, String> getAllServers() {
+	@Override
+	public Map<String, String> getAllServersMap() {
 
 		Map<String, String> map = new HashMap<>();
 		for (Server server : db.getAllServers()) {
@@ -81,6 +86,7 @@ public class ServiceUtils {
 		return map;
 	}
 
+	@Override
 	public List<TimeSlot> getAvailableTables(LocalDate givenDate, int capRequested) {
 		List<TimeSlot> allSlots = db.getBusinessAccount().getAllTimeSlots();
 
@@ -113,5 +119,31 @@ public class ServiceUtils {
 		return new ArrayList<>(availableList);
 
 	}
+	
+	@Override
+	public Server registerServer (String firstName, String lastName) {
+		Server server = new Server(UUID.randomUUID().toString(), firstName, lastName);
+		
+		if (db.insertRecord(SQLTables.SERVERS_TABLE, server))
+		{
+			return server;
+		}else {
+			return null;
+		}
+		
+	}
+
+	@Override
+	public List<Server> getAllServers() {
+		return db.getAllServers();
+		
+	}
+
+	@Override
+	public boolean deleteServer(String id) {
+		return db.deleteServer(id);
+	}
+	
+
 
 }

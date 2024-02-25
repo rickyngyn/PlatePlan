@@ -160,4 +160,10 @@ public class DataBaseStubImpl implements DataBase {
 
 	}
 
+	@Override
+	public boolean deleteServer(String id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

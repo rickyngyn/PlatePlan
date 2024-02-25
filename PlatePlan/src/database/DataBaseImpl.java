@@ -305,4 +305,26 @@ public class DataBaseImpl implements DataBase {
 		return reservation;
 	}
 
+	@Override
+	public boolean deleteServer(String id) {
+		int affectedRows = 0;
+		// SQL command to delete rows with the specific ID
+        String sql = "DELETE FROM " + SQLTables.SERVERS_TABLE + " WHERE id = ?;";
+
+        try  {
+            // Set the ID in the prepared statement to avoid SQL injection
+        	PreparedStatement pstmt = connection.prepareStatement(sql);
+            pstmt.setString(1, id);
+            System.out.println("Delete Query Executed: " + pstmt.toString());
+            // Execute the delete command
+             affectedRows = pstmt.executeUpdate();
+            System.out.println("Deleted " + affectedRows + " rows.");
+            
+            
+        } catch (SQLException e) {
+            System.out.println("Error occurred during delete operation: " + e.getMessage());
+        }
+        return affectedRows <= 0? false : true;
+	}
+
 }

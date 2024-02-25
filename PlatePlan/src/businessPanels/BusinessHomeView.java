@@ -21,6 +21,9 @@ public class BusinessHomeView extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JLabel lblNewLabel;
 	private Business business;
+	private JButton btnNewButton;
+	private JButton btnManageTables;
+	private JButton btnManageServers;
 
 	/**
 	 * Create the panel.
@@ -44,7 +47,7 @@ public class BusinessHomeView extends JPanel {
 		add(lblNewLabel);
 
 		// Button to open another panel(reservationHomeView)
-		JButton btnNewButton = new JButton("View & Manage Reservations");
+		btnNewButton = new JButton("View & Manage Reservations");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PlatePlanMain.switchPanels(new BusinessReservations(business));
@@ -62,7 +65,7 @@ public class BusinessHomeView extends JPanel {
 		btnLogOut.setBounds(6, 6, 117, 29);
 		add(btnLogOut);
 
-		JButton btnManageTables = new JButton("View & Manage Tables");
+		btnManageTables = new JButton("View & Manage Tables");
 		btnManageTables.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PlatePlanMain.switchPanels(new BusinessTableManageView(bussiness));
@@ -70,5 +73,15 @@ public class BusinessHomeView extends JPanel {
 		});
 		btnManageTables.setBounds(429, 184, 231, 23);
 		add(btnManageTables);
+		
+		btnManageServers = new JButton("View & Manage Servers");
+		btnManageServers.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PlatePlanMain.switchPanels(new BusinessServerManage(bussiness));
+				
+			}
+		});
+		btnManageServers.setBounds(429, 223, 231, 23);
+		add(btnManageServers);
 	}
 }

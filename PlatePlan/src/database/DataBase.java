@@ -34,5 +34,7 @@ public interface DataBase {
 	public List<Reservation> getCustomerReservations(String email) throws AccountNotFoundException;
 
 	public Reservation getReservationWithId(String id);
+	
+	public boolean deleteServer(String id);
 
 }

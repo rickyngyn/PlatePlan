@@ -40,8 +40,9 @@ import dto.Customer;
 import dto.Reservation;
 import dto.TimeSlot;
 import main.PlatePlanMain;
-import misc.ServiceUtils;
+import service_interfaces.ServiceUtils;
 import services.ReservationServiceImpl;
+import services.ServiceUtilsImpl;
 
 public class CustomerReservations extends JPanel {
 	private JTextField txtSeats;
@@ -71,7 +72,7 @@ public class CustomerReservations extends JPanel {
 		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		// ===========================================================================
 
-		this.serviceUtils = ServiceUtils.getInstance();
+		this.serviceUtils = ServiceUtilsImpl.getInstance();
 		timeList = new ArrayList<>();
 		this.customer = customer;
 		this.reservationService = new ReservationServiceImpl();

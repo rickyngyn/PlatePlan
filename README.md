@@ -16,10 +16,24 @@ Welcome to our project repository, where we compile all submissions related to o
 
 - **ITR 2 (Iteration 2):** The focus of Iteration 2 is on the ongoing development of features promised for this phase. It's important to note that some features in this branch may be incomplete. For evaluation purposes, the main branch should be referenced for a complete and functional iteration.
 
-## Contribution and Feedback
+# Postgres Database Integration Setup
 
-Contributors and reviewers are encouraged to check the commit history for updates and deadlines compliance. Despite the recent commit timestamps, the commit history in each specific branch will provide transparency regarding the timeliness of each iteration's completion.
+Follow these steps to set up the Postgres database integration for your project.
 
-For the latest updates on the project status and to review the specific details of each iteration, please refer to the appropriate branches. We welcome feedback and contributions through issues and pull requests to improve the project continuously.
+## Step 1: Download Postgres
 
-Thank you for visiting our repository and exploring our project's development journey.
+Download Postgres 16 for your operating system:
+
+- [Download for Mac](https://www.postgresql.org/download/macosx/)
+- [Download for Windows](https://www.postgresql.org/download/windows/)
+
+## Step 2: Create Database
+
+Create a database named `PlatePlan` with `postgres` as the user.
+
+## Step 3: Import Database Backup
+
+1. Go into the query executor and select **Import from file**.
+2. The database backup can be found under the directory `\PlatePlan\SQL Files` with a file named `PlatePlanBackup.sql`.
+
+This backup will set up all the tables, including sample data for business and customer logins.

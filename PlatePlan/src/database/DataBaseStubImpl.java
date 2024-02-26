@@ -132,8 +132,8 @@ public class DataBaseStubImpl implements DataBase {
 		if (customer != null) {
 
 			List<Reservation> reservations = new ArrayList<Reservation>();
-			for (String resId : customer.getReservations()) {
-				reservations.add(getReservationWithId(resId));
+			for (Reservation resId : StubDataBaseRecords.reservations) {
+				reservations.add(getReservationWithId(resId.getId()));
 			}
 			reservations.removeAll(Collections.singleton(null));
 			return reservations;

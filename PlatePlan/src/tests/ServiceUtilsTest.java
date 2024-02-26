@@ -35,6 +35,7 @@ class ServiceUtilsTest {
 
 	@BeforeEach
 	void setUp() {
+		DataBaseFactory.ENVIRONMENT = "development";
 		db = DataBaseFactory.getDatabase();
 		serviceUtils = ServiceUtilsImpl.getInstance();
 		reservationService = new ReservationServiceImpl();

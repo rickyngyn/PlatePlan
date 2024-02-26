@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import database.DataBase;
 import database.DataBaseFactory;
 import database.SQLTables;
+import dto.MenuItem;
 import dto.Reservation;
 import dto.Server;
 import dto.Table;
@@ -142,6 +143,11 @@ public class ServiceUtilsImpl implements ServiceUtils {
 	@Override
 	public boolean deleteServer(String id) {
 		return db.deleteServer(id);
+	}
+
+	@Override
+	public List<MenuItem> getAllMenuItems() {
+		return db.getAllMenuItems();
 	}
 	
 

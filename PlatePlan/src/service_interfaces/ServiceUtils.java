@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+import dto.MenuItem;
 import dto.Server;
 import dto.Table;
 import dto.TimeSlot;
@@ -25,5 +26,7 @@ public interface ServiceUtils {
 	Server registerServer(String firstName, String lastName);
 	
 	boolean deleteServer (String id);
+
+	List<MenuItem> getAllMenuItems();
 
 }

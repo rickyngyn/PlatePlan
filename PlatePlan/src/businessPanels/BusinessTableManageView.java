@@ -73,7 +73,7 @@ public class BusinessTableManageView extends JPanel {
 		add(lblid);
 
 		JLabel lblCapacity = new JLabel("Capacity: ");
-		lblCapacity.setBounds(709, 264, 54, 14);
+		lblCapacity.setBounds(690, 264, 70, 14);
 		add(lblCapacity);
 
 		JLabel lblServer = new JLabel("Server: ");

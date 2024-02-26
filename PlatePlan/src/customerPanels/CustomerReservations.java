@@ -187,11 +187,12 @@ public class CustomerReservations extends JPanel {
 			int capacity = (Integer) spinner.getValue();
 			TimeSlot timeSlotChosen = timeSlotMap.get(listOfAvailableTimes.getSelectedItem());
 			String specialNotes = txtSpecialNotesPane.getText();
-			if (timeSlotChosen == null) {
-				throw new NullPointerException();
-			}
 			LocalDate date = ((Date) datePicker.getModel().getValue()).toInstant().atZone(ZoneId.systemDefault())
 					.toLocalDate();
+			if (timeSlotChosen == null || date.isBefore(LocalDate.now())) {
+				throw new NullPointerException();
+			}
+			
 			Reservation reservation = reservationService.createCustomerReservation(customer, date, timeSlotChosen,
 					capacity, specialNotes);
 
@@ -203,7 +204,7 @@ public class CustomerReservations extends JPanel {
 					JOptionPane.INFORMATION_MESSAGE);
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(this, "Error submitting reservation", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Error submitting reservation, please check chosen slot or date", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 

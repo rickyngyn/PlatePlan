@@ -1,10 +1,8 @@
 package dto;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.util.Objects;
 
 public class Server {

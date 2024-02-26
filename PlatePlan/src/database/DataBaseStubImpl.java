@@ -10,7 +10,6 @@ import javax.security.auth.login.AccountNotFoundException;
 
 import dto.Business;
 import dto.Customer;
-import dto.MenuItem;
 import dto.Reservation;
 import dto.Server;
 import dto.Table;
@@ -167,10 +166,6 @@ public class DataBaseStubImpl implements DataBase {
 		return false;
 	}
 
-	@Override
-	public List<MenuItem> getAllMenuItems() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 }

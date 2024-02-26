@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,11 +14,9 @@ import javax.security.auth.login.AccountNotFoundException;
 
 import dto.Business;
 import dto.Customer;
-import dto.MenuItem;
 import dto.Reservation;
 import dto.Server;
 import dto.Table;
-import dto.TimeSlot;
 
 public class DataBaseImpl implements DataBase {
 
@@ -271,8 +268,8 @@ public class DataBaseImpl implements DataBase {
 	@Override
 	public List<Reservation> getCustomerReservations(String email) throws AccountNotFoundException {
 		List<Reservation> reservations = new ArrayList<>();
-		String sql = String.format("SELECT * FROM %s WHERE customer_id = '%s'",
-				SQLTables.RESERVATION_TABLE, email);
+		String sql = String.format("SELECT * FROM %s WHERE customer_id = '%s' and date >= '%s'",
+				SQLTables.RESERVATION_TABLE, email, LocalDate.now());
 		System.out.println("Executing Query: " + sql);
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -328,23 +325,6 @@ public class DataBaseImpl implements DataBase {
         return affectedRows <= 0? false : true;
 	}
 
-	@Override
-	public List<MenuItem> getAllMenuItems() {
-		List<MenuItem> menuItems = new ArrayList<>();
-		String sql = String.format("SELECT * FROM %s ;",
-				SQLTables.MENU_TABLE);
-		System.out.println("Executing Query: " + sql);
 
-		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-			ResultSet rs = pstmt.executeQuery();
-
-			menuItems = DataBaseConverters.convertMenuItemList(rs);
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return menuItems;
-	}
 
 }

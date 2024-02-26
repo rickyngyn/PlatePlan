@@ -1,5 +1,6 @@
 package services;
 
+import java.awt.MenuItem;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,7 +14,6 @@ import java.util.stream.Collectors;
 import database.DataBase;
 import database.DataBaseFactory;
 import database.SQLTables;
-import dto.MenuItem;
 import dto.Reservation;
 import dto.Server;
 import dto.Table;
@@ -145,11 +145,6 @@ public class ServiceUtilsImpl implements ServiceUtils {
 		return db.deleteServer(id);
 	}
 
-	@Override
-	public List<MenuItem> getAllMenuItems() {
-		return db.getAllMenuItems();
-	}
-	
 
 
 }

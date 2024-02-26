@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dto.Customer;
-import dto.MenuItem;
 import dto.Reservation;
 import dto.Server;
 import dto.Table;
@@ -127,34 +126,6 @@ public class DataBaseConverters {
 		return servers;
 	}
 	
-	public static MenuItem convertMenuItem(ResultSet rs) {
-		try {
-			MenuItem menuItem = new MenuItem();
-			menuItem.setName(rs.getString("title"));
-			menuItem.setPrice(rs.getFloat("price"));
-			menuItem.setDescription(rs.getString("description"));
-			return menuItem;
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
-	public static List<MenuItem> convertMenuItemList(ResultSet rs) {
-		List<MenuItem> menuItems = new ArrayList<>();
-		try {
-			while (rs.next()) {
-				MenuItem menuItem = convertMenuItem(rs);
-				if (menuItem != null) {
-					menuItems.add(menuItem);
-				}
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return menuItems;
-	}
 
 }

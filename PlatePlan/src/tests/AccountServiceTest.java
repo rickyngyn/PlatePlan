@@ -24,6 +24,7 @@ class AccountServiceTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
+		DataBaseFactory.ENVIRONMENT = "development";
 		accountService = new AccountsServiceImpl();
 		reservationService = new ReservationServiceImpl();
 		db = DataBaseFactory.getDatabase();

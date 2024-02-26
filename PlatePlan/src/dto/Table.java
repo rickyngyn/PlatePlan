@@ -1,9 +1,15 @@
 package dto;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Objects;
 
 public class Table {
 
+	public Table () {
+		
+	}
 	public Table(String id, int capacity, String server) {
 		super();
 		this.id = id;
@@ -79,6 +85,22 @@ public class Table {
 	@Override
 	public String toString() {
 		return "Table [id=" + id + ", capacity=" + capacity + ", server=" + server + "]";
+	}
+	
+	public PreparedStatement getSQLString(Connection connection, String sql) {
+		try {
+			sql = sql + "(?,?,?);";
+			PreparedStatement pstmt = connection.prepareStatement(sql);
+		    pstmt.setString(1, this.getId());
+		    pstmt.setInt(2, this.getCapacity());
+		    pstmt.setString(3, this.getServer());
+			
+		    return pstmt;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 
 }

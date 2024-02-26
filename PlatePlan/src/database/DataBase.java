@@ -35,4 +35,6 @@ public interface DataBase {
 
 	public Reservation getReservationWithId(String id);
 
+	public boolean deleteServer(String id);
+
 }

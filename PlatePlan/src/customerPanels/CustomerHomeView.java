@@ -23,9 +23,10 @@ import javax.swing.SwingConstants;
 import dto.Customer;
 import dto.Reservation;
 import main.PlatePlanMain;
-import misc.ServiceUtils;
 import service_interfaces.ReservationService;
+import service_interfaces.ServiceUtils;
 import services.ReservationServiceImpl;
+import services.ServiceUtilsImpl;
 
 public class CustomerHomeView extends JPanel {
 
@@ -56,7 +57,7 @@ public class CustomerHomeView extends JPanel {
 		// ===========================================================================
 		Map<String, String> resToIdMap = new HashMap<>();
 		this.reservationService = new ReservationServiceImpl();
-		this.serviceUtils = ServiceUtils.getInstance();
+		this.serviceUtils = ServiceUtilsImpl.getInstance();
 		btnMakeReservation = new JButton("Reserve Table");
 		btnMakeReservation.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		btnMakeReservation.addActionListener(new ActionListener() {

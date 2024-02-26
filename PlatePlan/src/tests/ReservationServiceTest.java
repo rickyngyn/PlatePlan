@@ -14,6 +14,7 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import database.DataBaseFactory;
 import database.DataBaseStubImpl;
 import dto.Customer;
 import dto.Reservation;
@@ -30,6 +31,7 @@ class ReservationServiceTest {
 
 	@BeforeEach
 	void setUp() {
+		DataBaseFactory.ENVIRONMENT = "development";
 		dataBase = DataBaseStubImpl.getInstance();
 		reservationService = new ReservationServiceImpl();
 		accountService = new AccountsServiceImpl();
@@ -70,7 +72,7 @@ class ReservationServiceTest {
 		StubDataBaseRecords.reservations.clear(); // clearing any previous reservations
 
 		// setting up a fake reservation
-		String customerEmail = "existingemail@example.com";
+		String customerEmail = "max@email.com";
 		Reservation fakeReservation = new Reservation("fakeReservationId", customerEmail, LocalDate.now(),
 				new TimeSlot(LocalTime.of(18, 0), LocalTime.of(20, 0)), "Test reservation", "table1", 4);
 		StubDataBaseRecords.reservations.add(fakeReservation);

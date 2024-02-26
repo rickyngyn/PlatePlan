@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -75,11 +76,14 @@ public class BusinessReservations extends JPanel {
 		table.setModel(tableModel);
 
 		for (Reservation r : db.getAllReservations()) {
-			tableModel.addRow(
-					new Object[] { r.getDate(), String.format("%s - %s", r.getTime().getFrom(), r.getTime().getTo()),
-							r.getCustomerId(), r.getPartySize(), r.getSpecialNotes(),
-							r.getServerId() == null || r.getServerId().isEmpty() ? "Unassigned" : r.getServerId(),
-							r.getTableId() });
+			if (r.getDate().isAfter(LocalDate.now()) || r.getDate().isEqual(LocalDate.now())) {
+				tableModel.addRow(new Object[] { r.getDate(),
+						String.format("%s - %s", r.getTime().getFrom(), r.getTime().getTo()), r.getCustomerId(),
+						r.getPartySize(), r.getSpecialNotes(),
+						r.getServerId() == null || r.getServerId().isEmpty() ? "Unassigned" : r.getServerId(),
+						r.getTableId() });
+			}
+
 		}
 		PlatePlanMain.refreshPage();
 

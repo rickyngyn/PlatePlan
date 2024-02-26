@@ -29,7 +29,8 @@ import customerPanels.Constants;
 import dto.Business;
 import dto.Table;
 import main.PlatePlanMain;
-import misc.ServiceUtils;
+import service_interfaces.ServiceUtils;
+import services.ServiceUtilsImpl;
 
 public class BusinessTableManageView extends JPanel {
 	private JTextField textID;
@@ -59,7 +60,7 @@ public class BusinessTableManageView extends JPanel {
 		// ===========================================================================
 
 		this.business = business;
-		serviceUtils = ServiceUtils.getInstance();
+		serviceUtils = ServiceUtilsImpl.getInstance();
 
 		JLabel welcomeLabel = new JLabel("Table Manager");
 		welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -93,7 +94,7 @@ public class BusinessTableManageView extends JPanel {
 
 		serverBox = new JComboBox();
 		serverBox.setFont(new Font("Arial", Font.PLAIN, 12));
-		serverBox.setModel(new DefaultComboBoxModel(serviceUtils.getAllServers().values().toArray()));
+		serverBox.setModel(new DefaultComboBoxModel(serviceUtils.getAllServersMap().values().toArray()));
 		serverBox.setBounds(765, 288, 168, 22);
 		add(serverBox);
 
@@ -182,7 +183,7 @@ public class BusinessTableManageView extends JPanel {
 
 		for (Table table : serviceUtils.getTablesMatchingResReq(0)) {
 			model.addRow(new Object[] { table.getId(), table.getCapacity(),
-					serviceUtils.getAllServers().get(table.getServer()) });
+					serviceUtils.getAllServersMap().get(table.getServer()) });
 		}
 
 		textSearch = new JTextField();
@@ -221,7 +222,7 @@ public class BusinessTableManageView extends JPanel {
 		int cap = Integer.valueOf(textCapacity.getText());
 		String serverId = (String) serverBox.getSelectedItem();
 
-		Map<String, String> serverMap = serviceUtils.getAllServers();
+		Map<String, String> serverMap = serviceUtils.getAllServersMap();
 		for (String id : serverMap.keySet()) {
 			if (serverMap.get(id).equals(serverId)) {
 				serverId = id;

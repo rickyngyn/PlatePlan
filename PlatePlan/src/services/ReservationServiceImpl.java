@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import javax.security.auth.login.AccountNotFoundException;
 
@@ -15,8 +14,8 @@ import dto.Customer;
 import dto.Reservation;
 import dto.Table;
 import dto.TimeSlot;
-import misc.ServiceUtils;
 import service_interfaces.ReservationService;
+import service_interfaces.ServiceUtils;
 
 public class ReservationServiceImpl implements ReservationService {
 
@@ -25,14 +24,19 @@ public class ReservationServiceImpl implements ReservationService {
 
 	public ReservationServiceImpl() {
 		this.db = DataBaseFactory.getDatabase();
-		serviceUtils = ServiceUtils.getInstance();
+		serviceUtils = ServiceUtilsImpl.getInstance();
 	}
 
 	@Override
 	public List<Reservation> getCustomerReservation(String email) {
 
-		return db.getAllReservations().stream().filter(reservation -> reservation.getCustomerId().equals(email))
-				.collect(Collectors.toList());
+		try {
+			return db.getCustomerReservations(email);
+		} catch (AccountNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new ArrayList<>();
 	}
 
 	@Override
@@ -46,7 +50,7 @@ public class ReservationServiceImpl implements ReservationService {
 		}
 
 		Reservation reservation = new Reservation(UUID.randomUUID().toString(), customer.getEmail(), date, slot,
-				specialNotes, serviceUtils.getAllServers().get(tablesAvailable.get(0).getServer()),
+				specialNotes, serviceUtils.getAllServersMap().get(tablesAvailable.get(0).getServer()),
 				tablesAvailable.get(0).getId(), cap);
 
 		if (customer.getReservations() != null) {

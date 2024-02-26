@@ -1,8 +1,14 @@
 package dto;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Objects;
 
 public class Server {
+
+	public Server() {
+	}
 
 	public Server(String id, String firstName, String lastName) {
 		super();
@@ -80,6 +86,23 @@ public class Server {
 	@Override
 	public String toString() {
 		return "Server [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + "]";
+	}
+	
+	public PreparedStatement getSQLString(Connection connection, String sql) {
+		try {
+			sql = sql + "(?,?,?);";
+			PreparedStatement pstmt = connection.prepareStatement(sql);
+		    pstmt.setString(1, this.getId());
+		    pstmt.setString(2, this.getFirstName());
+		    pstmt.setString(3, this.getLastName());
+
+			
+		    return pstmt;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 
 }

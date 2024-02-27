@@ -7,6 +7,7 @@ import javax.security.auth.login.AccountNotFoundException;
 
 import dto.Business;
 import dto.Customer;
+import dto.MenuItem;
 import dto.Reservation;
 import dto.Server;
 import dto.Table;
@@ -36,5 +37,7 @@ public interface DataBase {
 	public Reservation getReservationWithId(String id);
 
 	public boolean deleteServer(String id);
+
+	public List<MenuItem> getAllMenuItems();
 
 }

@@ -14,6 +14,7 @@ import javax.security.auth.login.AccountNotFoundException;
 
 import dto.Business;
 import dto.Customer;
+import dto.MenuItem;
 import dto.Reservation;
 import dto.Server;
 import dto.Table;
@@ -325,6 +326,24 @@ public class DataBaseImpl implements DataBase {
         return affectedRows <= 0? false : true;
 	}
 
+	@Override
+	public List<MenuItem> getAllMenuItems() {
+		List<MenuItem> menuItems = new ArrayList<>();
+		String sql = String.format("SELECT * FROM %s ;",
+				SQLTables.MENU_TABLE);
+		System.out.println("Executing Query: " + sql);
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			ResultSet rs = pstmt.executeQuery();
+
+			menuItems = DataBaseConverters.convertMenuItemList(rs);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return menuItems;
+	}
 
 
 }

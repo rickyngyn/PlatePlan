@@ -23,31 +23,36 @@ import dto.Customer;
 import dto.Server;
 import dto.Table;
 import dto.TimeSlot;
+import main.ServiceFactory;
 import misc.StubDataBaseRecords;
-import service_interfaces.ServiceUtils;
+import service_interfaces.ReservationService;
+import service_interfaces.ServerService;
+import service_interfaces.TablesService;
+import services.AccountsServiceImpl;
 import services.ReservationServiceImpl;
-import services.ServiceUtilsImpl;
+import services.ServerServiceImpl;
 
 class ServiceUtilsTest {
-	private ReservationServiceImpl reservationService;
-	private ServiceUtils serviceUtils;
+	private ReservationService reservationService;
+	private ServerService serviceUtils;
+	private TablesService tablesService;
 	private DataBase db;
 
 	@BeforeEach
 	void setUp() {
+		ServiceFactory.setUpServices();
 		DataBaseFactory.ENVIRONMENT = "development";
+		reservationService = ReservationServiceImpl.getInstance();
 		db = DataBaseFactory.getDatabase();
-		serviceUtils = ServiceUtilsImpl.getInstance();
-		reservationService = new ReservationServiceImpl();
 		StubDataBaseRecords.reset();
 	}
 
 	@Test
 	void deleteTableTest() {
-		serviceUtils.deleteTable("1");
+		tablesService.deleteTable("1");
 		assertEquals(5, StubDataBaseRecords.tables.size());
 		// Delete table with ID 1. Was 6 tables now should be 5
-		boolean result = serviceUtils.deleteTable("0");
+		boolean result = tablesService.deleteTable("0");
 		assertFalse(result);
 		// No existing table with ID 0. Therefore should return false
 	}
@@ -61,7 +66,7 @@ class ServiceUtilsTest {
 		String specialNotes = "Near Window";
 		reservationService.createCustomerReservation(customer, date, slot, capacity, specialNotes);
 
-		List<TimeSlot> tables = serviceUtils.getAvailableTables(date, capacity);
+		List<TimeSlot> tables = tablesService.getAvailableTables(date, capacity);
 		List<TimeSlot> actual = new ArrayList<>(db.getBusinessAccount().getAllTimeSlots());
 		assertNotEquals(actual, tables);
 		// Time Slot 12-13:30 should be removed therefore not equals to ALL TIME SLOTS
@@ -70,7 +75,7 @@ class ServiceUtilsTest {
 	@Test
 	void getTablesMatchingResReq() {
 		int capacity = 4;
-		List<Table> results1 = serviceUtils.getTablesMatchingResReq(capacity);
+		List<Table> results1 = tablesService.getTablesMatchingResReq(capacity);
 		List<Table> actual1 = new ArrayList<Table>(Arrays.asList(new Table("1", 4, "1"), new Table("4", 6, "2"),
 				new Table("5", 8, "3"), new Table("6", 4, "3")));
 
@@ -96,7 +101,7 @@ class ServiceUtilsTest {
 	@Test
 	void testRegisterTableSuccess() {
 
-		boolean result = serviceUtils.registerTable("newid", 10, "1");
+		boolean result = tablesService.registerTable("newid", 10, "1");
 
 		assertTrue(result);
 	}
@@ -104,7 +109,7 @@ class ServiceUtilsTest {
 	@Test
 	void testRegisterTableFail() {
 
-		boolean result = serviceUtils.registerTable("1", 10, "1");
+		boolean result = tablesService.registerTable("1", 10, "1");
 
 		assertFalse(result);
 	}

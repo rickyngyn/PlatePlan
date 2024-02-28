@@ -74,17 +74,17 @@ public class BusinessHomeView extends JPanel {
 		});
 		btnManageTables.setBounds(429, 184, 231, 23);
 		add(btnManageTables);
-		
+
 		btnManageServers = new JButton("View & Manage Servers");
 		btnManageServers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PlatePlanMain.switchPanels(new BusinessServerManage(bussiness));
-				
+
 			}
 		});
 		btnManageServers.setBounds(429, 223, 231, 23);
 		add(btnManageServers);
-		
+
 		btnViewManage = new JButton("View & Manage Menu");
 		btnViewManage.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

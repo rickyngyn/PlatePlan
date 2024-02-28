@@ -13,4 +13,7 @@ public interface AccountService {
 
 	public Customer getCustomerAccountDetails(String email);
 
+	void initializeDependency(ReservationService reservationService, TablesService tablesService,
+			ServerService serviceUtils);
+
 }

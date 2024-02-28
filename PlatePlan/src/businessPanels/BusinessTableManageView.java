@@ -29,16 +29,18 @@ import customerPanels.Constants;
 import dto.Business;
 import dto.Table;
 import main.PlatePlanMain;
-import service_interfaces.ServiceUtils;
-import services.ServiceUtilsImpl;
+import service_interfaces.ServerService;
+import service_interfaces.TablesService;
+import services.ServerServiceImpl;
 
 public class BusinessTableManageView extends JPanel {
 	private JTextField textID;
 	private JTextField textCapacity;
 	private JTable table;
 	private JTextField textSearch;
-	private ServiceUtils serviceUtils;
+	private ServerService serviceUtils;
 	private Business business;
+	private TablesService tablesService;
 	private DefaultTableModel model;
 	private JButton btnAddTable;
 	private JButton btnRemove;
@@ -60,7 +62,7 @@ public class BusinessTableManageView extends JPanel {
 		// ===========================================================================
 
 		this.business = business;
-		serviceUtils = ServiceUtilsImpl.getInstance();
+		serviceUtils = ServerServiceImpl.getInstance();
 
 		JLabel welcomeLabel = new JLabel("Table Manager");
 		welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -181,7 +183,7 @@ public class BusinessTableManageView extends JPanel {
 		table.setBackground(new Color(255, 255, 255));
 		scrollPane.setViewportView(table);
 
-		for (Table table : serviceUtils.getTablesMatchingResReq(0)) {
+		for (Table table : tablesService.getTablesMatchingResReq(0)) {
 			model.addRow(new Object[] { table.getId(), table.getCapacity(),
 					serviceUtils.getAllServersMap().get(table.getServer()) });
 		}
@@ -230,7 +232,7 @@ public class BusinessTableManageView extends JPanel {
 			}
 		}
 
-		serviceUtils.registerTable(tableId, cap, serverId);
+		tablesService.registerTable(tableId, cap, serverId);
 		PlatePlanMain.switchPanels(new BusinessTableManageView(business));
 	}
 
@@ -238,7 +240,7 @@ public class BusinessTableManageView extends JPanel {
 
 		String tableId = (String) model.getValueAt(table.getSelectedRow(), 0);
 
-		serviceUtils.deleteTable(tableId);
+		tablesService.deleteTable(tableId);
 		PlatePlanMain.switchPanels(new BusinessTableManageView(business));
 	}
 }

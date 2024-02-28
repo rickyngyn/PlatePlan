@@ -105,7 +105,7 @@ public class CustomerSignIn extends JPanel {
 	}
 
 	private void signInCustomer() {
-		AccountService accountService = new AccountsServiceImpl();
+		AccountService accountService = AccountsServiceImpl.getInstance();
 
 		String pass = String.valueOf(passwordField.getPassword());
 		String email = username.getText(); // Use email instead of the whole customer object

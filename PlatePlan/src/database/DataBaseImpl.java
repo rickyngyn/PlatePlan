@@ -85,24 +85,21 @@ public class DataBaseImpl implements DataBase {
 		if (tableName.equals(SQLTables.RESERVATION_TABLE)) {
 			Reservation reservation = (Reservation) object;
 			pstmt = reservation.getSQLString(connection, sql);
-			
-		}else if (tableName.equals(SQLTables.TABLES_TABLE)) {
+
+		} else if (tableName.equals(SQLTables.TABLES_TABLE)) {
 			Table table = (Table) object;
 			pstmt = table.getSQLString(connection, sql);
-		}
-		else if (tableName.equals(SQLTables.ACCOUNTS_TABLE)) {
+		} else if (tableName.equals(SQLTables.ACCOUNTS_TABLE)) {
 			Customer customer = (Customer) object;
 			pstmt = customer.getSQLString(connection, sql);
-		}
-		else if (tableName.equals(SQLTables.SERVERS_TABLE)) {
+		} else if (tableName.equals(SQLTables.SERVERS_TABLE)) {
 			Server server = (Server) object;
 			pstmt = server.getSQLString(connection, sql);
 		}
 
 		System.out.println("Executing Command: " + pstmt.toString());
 		try {
-			if (pstmt != null && pstmt.executeUpdate() > 0)
-			{
+			if (pstmt != null && pstmt.executeUpdate() > 0) {
 				return true;
 			}
 		} catch (SQLException e) {
@@ -110,7 +107,6 @@ public class DataBaseImpl implements DataBase {
 		}
 		return false;
 	}
-
 
 	private String getColumnNames(String tableName) {
 		List<String> columnNames = new ArrayList<>();
@@ -173,21 +169,20 @@ public class DataBaseImpl implements DataBase {
 	public boolean deleteTable(String id) {
 		int affectedRows = 0;
 		// SQL command to delete rows with the specific ID
-        String sql = "DELETE FROM " + SQLTables.TABLES_TABLE + " WHERE id = ?;";
+		String sql = "DELETE FROM " + SQLTables.TABLES_TABLE + " WHERE id = ?;";
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            // Set the ID in the prepared statement to avoid SQL injection
-            pstmt.setString(1, id);
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			// Set the ID in the prepared statement to avoid SQL injection
+			pstmt.setString(1, id);
 
-            // Execute the delete command
-             affectedRows = pstmt.executeUpdate();
-            System.out.println("Deleted " + affectedRows + " rows.");
-            
-            
-        } catch (SQLException e) {
-            System.out.println("Error occurred during delete operation: " + e.getMessage());
-        }
-        return affectedRows <= 0? false : true;
+			// Execute the delete command
+			affectedRows = pstmt.executeUpdate();
+			System.out.println("Deleted " + affectedRows + " rows.");
+
+		} catch (SQLException e) {
+			System.out.println("Error occurred during delete operation: " + e.getMessage());
+		}
+		return affectedRows <= 0 ? false : true;
 	}
 
 	@Override
@@ -249,21 +244,20 @@ public class DataBaseImpl implements DataBase {
 	public boolean deleteReservation(String id) {
 		int affectedRows = 0;
 		// SQL command to delete rows with the specific ID
-        String sql = "DELETE FROM " + SQLTables.RESERVATION_TABLE + " WHERE id = ?;";
+		String sql = "DELETE FROM " + SQLTables.RESERVATION_TABLE + " WHERE id = ?;";
 
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            // Set the ID in the prepared statement to avoid SQL injection
-            pstmt.setString(1, id);
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			// Set the ID in the prepared statement to avoid SQL injection
+			pstmt.setString(1, id);
 
-            // Execute the delete command
-             affectedRows = pstmt.executeUpdate();
-            System.out.println("Deleted " + affectedRows + " rows.");
-            
-            
-        } catch (SQLException e) {
-            System.out.println("Error occurred during delete operation: " + e.getMessage());
-        }
-        return affectedRows <= 0? false : true;
+			// Execute the delete command
+			affectedRows = pstmt.executeUpdate();
+			System.out.println("Deleted " + affectedRows + " rows.");
+
+		} catch (SQLException e) {
+			System.out.println("Error occurred during delete operation: " + e.getMessage());
+		}
+		return affectedRows <= 0 ? false : true;
 	}
 
 	@Override
@@ -288,8 +282,7 @@ public class DataBaseImpl implements DataBase {
 	@Override
 	public Reservation getReservationWithId(String id) {
 		Reservation reservation = null;
-		String sql = String.format("SELECT * FROM %s WHERE id = '%s'",
-				SQLTables.RESERVATION_TABLE, id);
+		String sql = String.format("SELECT * FROM %s WHERE id = '%s'", SQLTables.RESERVATION_TABLE, id);
 		System.out.println("Executing Query: " + sql);
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -308,29 +301,27 @@ public class DataBaseImpl implements DataBase {
 	public boolean deleteServer(String id) {
 		int affectedRows = 0;
 		// SQL command to delete rows with the specific ID
-        String sql = "DELETE FROM " + SQLTables.SERVERS_TABLE + " WHERE id = ?;";
+		String sql = "DELETE FROM " + SQLTables.SERVERS_TABLE + " WHERE id = ?;";
 
-        try  {
-            // Set the ID in the prepared statement to avoid SQL injection
-        	PreparedStatement pstmt = connection.prepareStatement(sql);
-            pstmt.setString(1, id);
-            System.out.println("Delete Query Executed: " + pstmt.toString());
-            // Execute the delete command
-             affectedRows = pstmt.executeUpdate();
-            System.out.println("Deleted " + affectedRows + " rows.");
-            
-            
-        } catch (SQLException e) {
-            System.out.println("Error occurred during delete operation: " + e.getMessage());
-        }
-        return affectedRows <= 0? false : true;
+		try {
+			// Set the ID in the prepared statement to avoid SQL injection
+			PreparedStatement pstmt = connection.prepareStatement(sql);
+			pstmt.setString(1, id);
+			System.out.println("Delete Query Executed: " + pstmt.toString());
+			// Execute the delete command
+			affectedRows = pstmt.executeUpdate();
+			System.out.println("Deleted " + affectedRows + " rows.");
+
+		} catch (SQLException e) {
+			System.out.println("Error occurred during delete operation: " + e.getMessage());
+		}
+		return affectedRows <= 0 ? false : true;
 	}
 
 	@Override
 	public List<MenuItem> getAllMenuItems() {
 		List<MenuItem> menuItems = new ArrayList<>();
-		String sql = String.format("SELECT * FROM %s ;",
-				SQLTables.MENU_TABLE);
+		String sql = String.format("SELECT * FROM %s ;", SQLTables.MENU_TABLE);
 		System.out.println("Executing Query: " + sql);
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -344,6 +335,5 @@ public class DataBaseImpl implements DataBase {
 
 		return menuItems;
 	}
-
 
 }

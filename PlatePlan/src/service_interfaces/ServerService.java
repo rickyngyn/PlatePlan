@@ -9,15 +9,7 @@ import dto.Server;
 import dto.Table;
 import dto.TimeSlot;
 
-public interface ServiceUtils {
-
-	boolean registerTable(String id, int cap, String server);
-
-	boolean deleteTable(String id);
-
-	List<Table> getTablesMatchingResReq(int capRequested);
-	
-	List<TimeSlot> getAvailableTables(LocalDate givenDate, int capRequested);
+public interface ServerService {
 
 	Map<String, String> getAllServersMap();
 
@@ -27,6 +19,7 @@ public interface ServiceUtils {
 
 	boolean deleteServer(String id);
 
-	List<MenuItem> getAllMenuItems();
+	void initializeDependency(AccountService accountService, ReservationService reservationService,
+			TablesService tablesService);
 
 }

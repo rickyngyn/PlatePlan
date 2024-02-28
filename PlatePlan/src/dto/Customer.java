@@ -8,10 +8,10 @@ import java.util.Objects;
 
 public class Customer {
 
-	public Customer () {
-		
+	public Customer() {
+
 	}
-	
+
 	public Customer(String email, String firstName, String lastName, String password, List<String> reservations) {
 		super();
 		this.email = email;
@@ -39,7 +39,6 @@ public class Customer {
 
 	private List<String> reservations;
 
-	
 	/**
 	 * @return the email
 	 */
@@ -127,20 +126,20 @@ public class Customer {
 		return Objects.equals(email, other.email) && Objects.equals(firstName, other.firstName)
 				&& Objects.equals(lastName, other.lastName) && Objects.equals(password, other.password);
 	}
-	
+
 	public PreparedStatement getSQLString(Connection connection, String sql) {
 		try {
 			sql = sql + "(?,?,?,?);";
 			PreparedStatement pstmt = connection.prepareStatement(sql);
-		    pstmt.setString(1, this.getEmail());
-		    pstmt.setString(2, this.getFirstName());
-		    pstmt.setString(3, this.getLastName());
-		    pstmt.setString(4, this.getPassword());			
-		    return pstmt;
+			pstmt.setString(1, this.getEmail());
+			pstmt.setString(2, this.getFirstName());
+			pstmt.setString(3, this.getLastName());
+			pstmt.setString(4, this.getPassword());
+			return pstmt;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
 

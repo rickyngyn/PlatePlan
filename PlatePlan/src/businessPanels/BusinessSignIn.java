@@ -93,7 +93,7 @@ public class BusinessSignIn extends JPanel {
 
 	private void businessSignIn() {
 		remove(signInErrorLbl);
-		AccountService accountService = new AccountsServiceImpl();
+		AccountService accountService = AccountsServiceImpl.getInstance();
 
 		String pass = String.valueOf(passwordField.getPassword());
 		Business business = accountService.businessLogin(username.getText(), pass);

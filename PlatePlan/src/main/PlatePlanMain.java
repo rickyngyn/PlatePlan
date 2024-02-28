@@ -18,6 +18,7 @@ public class PlatePlanMain {
 	 */
 	public static void main(String[] args) {
 		DataBaseFactory.getDatabase();
+		ServiceFactory.setUpServices();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {

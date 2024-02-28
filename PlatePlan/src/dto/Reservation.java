@@ -173,21 +173,21 @@ public class Reservation {
 		try {
 			sql = sql + "(?,?,?,?,?,?,?,?);";
 			PreparedStatement pstmt = connection.prepareStatement(sql);
-		    pstmt.setString(1, this.getId());
-		    pstmt.setString(2, this.getCustomerId());
-		    pstmt.setDate(3, Date.valueOf(this.date.toString()));		    
-		    pstmt.setTime(4, Time.valueOf(this.getTime().getFrom())); // Assuming TimeSlot can be converted to String directly or has a toString method
-		    pstmt.setString(5, this.getSpecialNotes());
-		    pstmt.setString(6, this.getTableId());
-		    pstmt.setInt(7, this.getPartySize());
-		    pstmt.setString(8, this.getServerId());
+			pstmt.setString(1, this.getId());
+			pstmt.setString(2, this.getCustomerId());
+			pstmt.setDate(3, Date.valueOf(this.date.toString()));
+			pstmt.setTime(4, Time.valueOf(this.getTime().getFrom())); // Assuming TimeSlot can be converted to String
+																		// directly or has a toString method
+			pstmt.setString(5, this.getSpecialNotes());
+			pstmt.setString(6, this.getTableId());
+			pstmt.setInt(7, this.getPartySize());
+			pstmt.setString(8, this.getServerId());
 
-			
-		    return pstmt;
+			return pstmt;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
 

@@ -23,17 +23,20 @@ import customerPanels.Constants;
 import dto.Business;
 import dto.MenuItem;
 import main.PlatePlanMain;
-import service_interfaces.ServiceUtils;
-import services.ServiceUtilsImpl;
+import service_interfaces.MenuService;
+import service_interfaces.ServerService;
+import services.MenuServiceImpl;
+import services.ServerServiceImpl;
 
 public class BusinessMenuMangement extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private Business business;
-	private ServiceUtils serviceUtils;
-    private JList<MenuItem> menuList;
-    private DefaultListModel<MenuItem> menuListModel;
-    private List<MenuItem> menuItemsLoaded;
+	private MenuService menuService;
+	private JList<MenuItem> menuList;
+	private DefaultListModel<MenuItem> menuListModel;
+	private List<MenuItem> menuItemsLoaded;
+
 	/**
 	 * Create the panel.
 	 */
@@ -49,83 +52,82 @@ public class BusinessMenuMangement extends JPanel {
 		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		// ===========================================================================
 		this.business = bussiness;
-		this.serviceUtils = ServiceUtilsImpl.getInstance();
-		this.menuItemsLoaded = serviceUtils.getAllMenuItems();
+		this.menuService = MenuServiceImpl.getInstance();
+		this.menuItemsLoaded = menuService.getAllMenuItems();
 
 //		menuListModel = new DefaultListModel<>();
 
 		JPanel containerPanel = new JPanel();
 		containerPanel.setBackground(new Color(255, 255, 255));
-        containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.Y_AXIS));
+		containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.Y_AXIS));
+		containerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
-        // Adding your components (e.g., menu items) to the container panel
-        for (MenuItem menuItem : menuItemsLoaded) {
-            containerPanel.add(new BusinessMenuComponent(menuItem));
-            containerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-        }
+		// Adding your components (e.g., menu items) to the container panel
+		for (MenuItem menuItem : menuItemsLoaded) {
+			containerPanel.add(new BusinessMenuComponent(menuItem));
+			containerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+		}
 
-        // Create a JScrollPane that wraps the container panel
-        JScrollPane scrollPane = new JScrollPane(containerPanel);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setBounds(200, 62, 700, 500);
+		// Create a JScrollPane that wraps the container panel
+		JScrollPane scrollPane = new JScrollPane(containerPanel);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrollPane.setBounds(200, 62, 700, 500);
 
-        // Add the JScrollPane to the frame instead of the container panel directly
-        add(scrollPane);
+		// Add the JScrollPane to the frame instead of the container panel directly
+		add(scrollPane);
 
+		JButton btnBack = new JButton("Back");
+		btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PlatePlanMain.switchPanels(new BusinessHomeView(bussiness));
+			}
+		});
+		btnBack.setBounds(977, 10, 89, 23);
+		add(btnBack);
 
-        
-        JButton btnBack = new JButton("Back");
-        btnBack.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		PlatePlanMain.switchPanels(new BusinessHomeView(bussiness));
-        	}
-        });
-        btnBack.setBounds(977, 10, 89, 23);
-        add(btnBack);
-        
-        JButton btnSaveChanges = new JButton("Save");
-        btnSaveChanges.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        	}
-        });
-        btnSaveChanges.setFont(new Font("Arial", Font.BOLD, 16));
-        btnSaveChanges.setBounds(200, 586, 150, 40);
-        add(btnSaveChanges);
-        
-        JButton btnCancelChanges = new JButton("Cancel Changes");
-        btnCancelChanges.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) {
-        		PlatePlanMain.switchPanels(new BusinessMenuMangement(bussiness));
-        	}
-        });
-        btnCancelChanges.setFont(new Font("Arial", Font.BOLD, 14));
-        btnCancelChanges.setBounds(750, 586, 150, 40);
-        add(btnCancelChanges);
+		JButton btnSaveChanges = new JButton("Save");
+		btnSaveChanges.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+			}
+		});
+		btnSaveChanges.setFont(new Font("Arial", Font.BOLD, 16));
+		btnSaveChanges.setBounds(200, 586, 150, 40);
+		add(btnSaveChanges);
+
+		JButton btnCancelChanges = new JButton("Cancel Changes");
+		btnCancelChanges.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PlatePlanMain.switchPanels(new BusinessMenuMangement(bussiness));
+			}
+		});
+		btnCancelChanges.setFont(new Font("Arial", Font.BOLD, 14));
+		btnCancelChanges.setBounds(750, 586, 150, 40);
+		add(btnCancelChanges);
 	}
-	
+
 	class MenuComponentCellRenderer extends JPanel implements ListCellRenderer<MenuItem> {
-	    private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 1L;
 
-	    @Override
-	    public Component getListCellRendererComponent(JList<? extends MenuItem> list, MenuItem value, int index, boolean isSelected, boolean cellHasFocus) {
-	        BusinessMenuComponent component = new BusinessMenuComponent(value);
-	        
-	       
-	        
-	        
-	        if (isSelected) {
-	            component.setBackground(list.getSelectionBackground());
-	            component.setForeground(list.getSelectionForeground());
-	        } else {
-	            component.setBackground(list.getBackground()); // Make sure to set background for non-selected items too
-	            component.setForeground(list.getForeground());
-	        }
-	        
-	        // Ensure the component is opaque to allow background coloring
-	        component.setOpaque(true);
-	        
-	        return component;
-	    }
+		@Override
+		public Component getListCellRendererComponent(JList<? extends MenuItem> list, MenuItem value, int index,
+				boolean isSelected, boolean cellHasFocus) {
+			BusinessMenuComponent component = new BusinessMenuComponent(value);
+
+			if (isSelected) {
+				component.setBackground(list.getSelectionBackground());
+				component.setForeground(list.getSelectionForeground());
+			} else {
+				component.setBackground(list.getBackground()); // Make sure to set background for non-selected items too
+				component.setForeground(list.getForeground());
+			}
+
+			// Ensure the component is opaque to allow background coloring
+			component.setOpaque(true);
+
+			return component;
+		}
 	}
+
 }

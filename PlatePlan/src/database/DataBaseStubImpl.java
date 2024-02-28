@@ -167,12 +167,10 @@ public class DataBaseStubImpl implements DataBase {
 		return false;
 	}
 
-		@Override
+	@Override
 	public List<MenuItem> getAllMenuItems() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
 
 }

@@ -14,27 +14,31 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import database.DataBase;
 import database.DataBaseFactory;
 import database.DataBaseStubImpl;
 import dto.Customer;
 import dto.Reservation;
 import dto.TimeSlot;
+import main.ServiceFactory;
 import misc.StubDataBaseRecords;
 import service_interfaces.AccountService;
+import service_interfaces.ReservationService;
 import services.AccountsServiceImpl;
 import services.ReservationServiceImpl;
 
 class ReservationServiceTest {
-	private ReservationServiceImpl reservationService;
-	private DataBaseStubImpl dataBase;
+	private ReservationService reservationService;
+	private DataBase dataBase;
 	private AccountService accountService;
 
 	@BeforeEach
 	void setUp() {
+		ServiceFactory.setUpServices();
 		DataBaseFactory.ENVIRONMENT = "development";
-		dataBase = DataBaseStubImpl.getInstance();
-		reservationService = new ReservationServiceImpl();
-		accountService = new AccountsServiceImpl();
+		accountService = AccountsServiceImpl.getInstance();
+		reservationService = ReservationServiceImpl.getInstance();
+		dataBase = DataBaseFactory.getDatabase();
 		StubDataBaseRecords.reset();
 	}
 
@@ -68,7 +72,6 @@ class ReservationServiceTest {
 	@Test
 	void getCustomerReservation_ExistingReservations() {
 		dataBase = DataBaseStubImpl.getInstance();
-		reservationService = new ReservationServiceImpl();
 		StubDataBaseRecords.reservations.clear(); // clearing any previous reservations
 
 		// setting up a fake reservation
@@ -96,11 +99,9 @@ class ReservationServiceTest {
 	@Test
 	void createCustomerReservation_NonOverlappingTimeSlotsSameDay() {
 		dataBase = DataBaseStubImpl.getInstance();
-		reservationService = new ReservationServiceImpl();
 		StubDataBaseRecords.reservations.clear();
 
 		dataBase = DataBaseStubImpl.getInstance();
-		reservationService = new ReservationServiceImpl();
 		StubDataBaseRecords.reservations.clear();
 		String customerEmail = "johndoe@example.com";
 		Customer customer = new Customer("johndoe@example.com", "john", "doe", "password");
@@ -125,7 +126,6 @@ class ReservationServiceTest {
 	@Test
 	void createCustomerReservation_AccountNotFoundException() {
 		dataBase = DataBaseStubImpl.getInstance();
-		reservationService = new ReservationServiceImpl();
 		StubDataBaseRecords.reservations.clear();
 
 		String customerEmail = "johndoe@example.com";

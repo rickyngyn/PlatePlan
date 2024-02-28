@@ -24,9 +24,9 @@ import dto.Customer;
 import dto.Reservation;
 import main.PlatePlanMain;
 import service_interfaces.ReservationService;
-import service_interfaces.ServiceUtils;
+import service_interfaces.ServerService;
 import services.ReservationServiceImpl;
-import services.ServiceUtilsImpl;
+import services.ServerServiceImpl;
 
 public class CustomerHomeView extends JPanel {
 
@@ -39,7 +39,7 @@ public class CustomerHomeView extends JPanel {
 	private List reservationList;
 	private JButton btnMakeReservation;
 	private ReservationService reservationService;
-	private ServiceUtils serviceUtils;
+	private ServerService serviceUtils;
 	private JLabel lblSpecialInstVal;
 
 	/**
@@ -56,8 +56,8 @@ public class CustomerHomeView extends JPanel {
 		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		// ===========================================================================
 		Map<String, String> resToIdMap = new HashMap<>();
-		this.reservationService = new ReservationServiceImpl();
-		this.serviceUtils = ServiceUtilsImpl.getInstance();
+		this.reservationService = ReservationServiceImpl.getInstance();
+		this.serviceUtils = ServerServiceImpl.getInstance();
 		btnMakeReservation = new JButton("Reserve Table");
 		btnMakeReservation.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
 		btnMakeReservation.addActionListener(new ActionListener() {

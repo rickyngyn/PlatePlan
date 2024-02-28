@@ -40,9 +40,11 @@ import dto.Customer;
 import dto.Reservation;
 import dto.TimeSlot;
 import main.PlatePlanMain;
-import service_interfaces.ServiceUtils;
+import service_interfaces.ReservationService;
+import service_interfaces.ServerService;
+import service_interfaces.TablesService;
 import services.ReservationServiceImpl;
-import services.ServiceUtilsImpl;
+import services.ServerServiceImpl;
 
 public class CustomerReservations extends JPanel {
 	private JTextField txtSeats;
@@ -52,9 +54,10 @@ public class CustomerReservations extends JPanel {
 	private JLabel lblSeats;
 	private JLabel lblDate;
 	private Customer customer; // Now using email instead of customerId
-	private ReservationServiceImpl reservationService;
+	private ReservationService reservationService;
 	private SpringLayout springLayout;
-	private ServiceUtils serviceUtils;
+	private ServerService serviceUtils;
+	private TablesService tablesService;
 	ArrayList<TimeSlot> timeList;
 	private List listOfAvailableTimes;
 	private JSpinner spinner;
@@ -72,10 +75,10 @@ public class CustomerReservations extends JPanel {
 		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		// ===========================================================================
 
-		this.serviceUtils = ServiceUtilsImpl.getInstance();
+		this.serviceUtils = ServerServiceImpl.getInstance();
 		timeList = new ArrayList<>();
 		this.customer = customer;
-		this.reservationService = new ReservationServiceImpl();
+		this.reservationService = ReservationServiceImpl.getInstance();
 		timeSlotMap = new HashMap<>();
 		// Initialize components
 		lblSeats = new JLabel("Number of Seats:");
@@ -169,7 +172,7 @@ public class CustomerReservations extends JPanel {
 			int capacity = (Integer) spinner.getValue();
 
 			System.out.println("Searching for Time Slot: " + localDate + " For " + capacity);
-			timeList = (ArrayList<TimeSlot>) serviceUtils.getAvailableTables(localDate, capacity);
+			timeList = (ArrayList<TimeSlot>) tablesService.getAvailableTables(localDate, capacity);
 			listOfAvailableTimes.removeAll();
 			timeSlotMap.clear();
 			for (TimeSlot timeSlot : timeList) {
@@ -192,7 +195,7 @@ public class CustomerReservations extends JPanel {
 			if (timeSlotChosen == null || date.isBefore(LocalDate.now())) {
 				throw new NullPointerException();
 			}
-			
+
 			Reservation reservation = reservationService.createCustomerReservation(customer, date, timeSlotChosen,
 					capacity, specialNotes);
 
@@ -204,7 +207,8 @@ public class CustomerReservations extends JPanel {
 					JOptionPane.INFORMATION_MESSAGE);
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			JOptionPane.showMessageDialog(this, "Error submitting reservation, please check chosen slot or date", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Error submitting reservation, please check chosen slot or date",
+					"Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 

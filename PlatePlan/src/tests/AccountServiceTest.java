@@ -11,6 +11,7 @@ import database.DataBase;
 import database.DataBaseFactory;
 import dto.Business;
 import dto.Customer;
+import main.ServiceFactory;
 import misc.StubDataBaseRecords;
 import service_interfaces.AccountService;
 import service_interfaces.ReservationService;
@@ -24,9 +25,10 @@ class AccountServiceTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
+		ServiceFactory.setUpServices();
 		DataBaseFactory.ENVIRONMENT = "development";
-		accountService = new AccountsServiceImpl();
-		reservationService = new ReservationServiceImpl();
+		accountService = AccountsServiceImpl.getInstance();
+		reservationService = ReservationServiceImpl.getInstance();
 		db = DataBaseFactory.getDatabase();
 		StubDataBaseRecords.reset();
 

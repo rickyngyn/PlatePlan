@@ -54,8 +54,7 @@ public class MenuServiceImpl implements MenuService {
 	
 	@Override
 	public boolean updateMenuItem(MenuItem menuItem) {
-		// TODO Auto-generated method stub
-		return false;
+		return db.updateMenuItem(menuItem);
 	}
 
 	@Override

@@ -78,7 +78,7 @@ public class DataBaseImpl implements DataBase {
 	@Override
 	public boolean insertRecord(String tableName, Object object) {
 		String sql = "INSERT INTO %s %s VALUES ";
-		sql = String.format(sql, tableName, getColumnNames(tableName));
+		sql = String.format(sql, tableName, getColumnNamesString(tableName));
 
 		PreparedStatement pstmt = null;
 
@@ -108,7 +108,12 @@ public class DataBaseImpl implements DataBase {
 		return false;
 	}
 
-	private String getColumnNames(String tableName) {
+	private String getColumnNamesString(String tableName) {
+
+		return "(" + String.join(",", getColumnNamesList(tableName)) + ")";
+	}
+
+	private List<String> getColumnNamesList(String tableName) {
 		List<String> columnNames = new ArrayList<>();
 
 		try {
@@ -125,7 +130,7 @@ public class DataBaseImpl implements DataBase {
 			System.out.println("Database error: " + e.getMessage());
 		}
 
-		return "(" + String.join(",", columnNames) + ")";
+		return columnNames;
 	}
 
 	@Override
@@ -334,6 +339,19 @@ public class DataBaseImpl implements DataBase {
 		}
 
 		return menuItems;
+	}
+
+	@Override
+	public boolean updateMenuItem(MenuItem menuItem) {
+
+		try {
+			PreparedStatement preparedStatement = menuItem.generateUpdateCommand(connection,
+					getColumnNamesList(SQLTables.MENU_TABLE), SQLTables.MENU_TABLE);
+			return preparedStatement.executeUpdate() > 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 }

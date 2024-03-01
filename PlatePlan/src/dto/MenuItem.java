@@ -1,22 +1,47 @@
 package dto;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 public class MenuItem {
-	public MenuItem(String name, String description, float price) {
+	
+	private String id;
+	private String name;
+	private String description;
+	private float price;
+	
+	public MenuItem(String id, String name, String description, float price) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.price = price;
 	}
 
+	
+	
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public MenuItem() {
 
 	}
+	
 
-	private String name;
-	private String description;
-	private float price;
 
 	/**
 	 * @return the name
@@ -62,7 +87,7 @@ public class MenuItem {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(description, name, price);
+		return Objects.hash(description, id, name, price);
 	}
 
 	@Override
@@ -74,13 +99,47 @@ public class MenuItem {
 		if (getClass() != obj.getClass())
 			return false;
 		MenuItem other = (MenuItem) obj;
-		return Objects.equals(description, other.description) && Objects.equals(name, other.name)
-				&& Float.floatToIntBits(price) == Float.floatToIntBits(other.price);
+		return Objects.equals(description, other.description) && Objects.equals(id, other.id)
+				&& Objects.equals(name, other.name) && Float.floatToIntBits(price) == Float.floatToIntBits(other.price);
 	}
 
 	@Override
 	public String toString() {
-		return "MenuItem [name=" + name + ", description=" + description + ", price=" + price + "]";
+		return "MenuItem [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price + "]";
 	}
+	
+    public PreparedStatement generateUpdateCommand(Connection conn, List<String> columns, String tableName) {
+    	try {
+            columns.remove(0);
+            String sql = "UPDATE " + tableName + " SET " + 
+                         String.join(", ", columns.stream().map(column -> column + " = ?").toArray(String[]::new)) +
+                         " WHERE id = ?;";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1,getName());
+            stmt.setFloat(2,getPrice());
+            stmt.setString(3,getDescription());
+            stmt.setString(4,getId());
+
+            // Setting parameter values
+//            for (int i = 0; i < columns.size(); i++) {
+//                if ("price".equals(columns.get(i))) {
+//                    stmt.setFloat(i + 1, getPrice());
+//                } else {
+//                    stmt.setString(i + 1, (String) Arrays.asList(getName(), getDescription()).get(i));
+//                }
+//            }
+//            
+//            // Setting the ID parameter
+//            stmt.setString(columns.size() + 1, getId());
+            System.out.println(stmt.toString());
+
+            return stmt;
+    	}catch (Exception e) {
+    		e.printStackTrace();
+    	}
+        
+        
+        return null;
+    }
 
 }

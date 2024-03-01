@@ -173,4 +173,10 @@ public class DataBaseStubImpl implements DataBase {
 		return null;
 	}
 
+	@Override
+	public boolean updateMenuItem(MenuItem menuItem) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

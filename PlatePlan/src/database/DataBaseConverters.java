@@ -130,6 +130,7 @@ public class DataBaseConverters {
 	public static MenuItem convertMenuItem(ResultSet rs) {
 		try {
 			MenuItem menuItem = new MenuItem();
+			menuItem.setId(rs.getString("id"));
 			menuItem.setName(rs.getString("title"));
 			menuItem.setPrice(rs.getFloat("price"));
 			menuItem.setDescription(rs.getString("description"));

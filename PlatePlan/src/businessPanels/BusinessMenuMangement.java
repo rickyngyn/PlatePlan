@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Box;
@@ -33,8 +34,7 @@ public class BusinessMenuMangement extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private Business business;
 	private MenuService menuService;
-	private JList<MenuItem> menuList;
-	private DefaultListModel<MenuItem> menuListModel;
+	private List<String> menuItemsHash;
 	private List<MenuItem> menuItemsLoaded;
 
 	/**
@@ -54,7 +54,7 @@ public class BusinessMenuMangement extends JPanel {
 		this.business = bussiness;
 		this.menuService = MenuServiceImpl.getInstance();
 		this.menuItemsLoaded = menuService.getAllMenuItems();
-
+		this.menuItemsHash = new ArrayList<>();
 //		menuListModel = new DefaultListModel<>();
 
 		JPanel containerPanel = new JPanel();
@@ -65,6 +65,7 @@ public class BusinessMenuMangement extends JPanel {
 		// Adding your components (e.g., menu items) to the container panel
 		for (MenuItem menuItem : menuItemsLoaded) {
 			containerPanel.add(new BusinessMenuComponent(menuItem));
+			menuItemsHash.add(menuItem.hashCode() + "");
 			containerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 		}
 
@@ -88,8 +89,30 @@ public class BusinessMenuMangement extends JPanel {
 
 		JButton btnSaveChanges = new JButton("Save");
 		btnSaveChanges.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
+//		        System.out.println(menuItemsLoaded);
 
+//		        menuItemsLoaded.clear();
+//				for (Component comp : containerPanel.getComponents()) {
+//				    if (comp instanceof BusinessMenuComponent) {
+//				        menuItemsLoaded.add(((BusinessMenuComponent) comp).getMenuItem());
+//				    }
+//				}
+//		        System.out.println(menuItemsLoaded);
+
+				for (int i = 0; i < menuItemsLoaded.size(); i++) {
+					
+					if (!menuItemsHash.get(i).equals(menuItemsLoaded.get(i).hashCode() + "")) {
+						System.out.println("Updating Menu item with id " + menuItemsLoaded.get(i).getId()
+								+ " and values" + menuItemsLoaded.get(i).toString());
+						if (menuService.updateMenuItem(menuItemsLoaded.get(i))) {
+							menuItemsHash.set(i, menuItemsLoaded.get(i).hashCode() + "");
+						}
+
+					}
+
+				}
 			}
 		});
 		btnSaveChanges.setFont(new Font("Arial", Font.BOLD, 16));
@@ -107,27 +130,5 @@ public class BusinessMenuMangement extends JPanel {
 		add(btnCancelChanges);
 	}
 
-	class MenuComponentCellRenderer extends JPanel implements ListCellRenderer<MenuItem> {
-		private static final long serialVersionUID = 1L;
-
-		@Override
-		public Component getListCellRendererComponent(JList<? extends MenuItem> list, MenuItem value, int index,
-				boolean isSelected, boolean cellHasFocus) {
-			BusinessMenuComponent component = new BusinessMenuComponent(value);
-
-			if (isSelected) {
-				component.setBackground(list.getSelectionBackground());
-				component.setForeground(list.getSelectionForeground());
-			} else {
-				component.setBackground(list.getBackground()); // Make sure to set background for non-selected items too
-				component.setForeground(list.getForeground());
-			}
-
-			// Ensure the component is opaque to allow background coloring
-			component.setOpaque(true);
-
-			return component;
-		}
-	}
 
 }

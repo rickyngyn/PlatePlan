@@ -40,4 +40,6 @@ public interface DataBase {
 
 	public List<MenuItem> getAllMenuItems();
 
+	boolean updateMenuItem(MenuItem menuItem);
+
 }

@@ -15,6 +15,7 @@ import javax.security.auth.login.AccountNotFoundException;
 
 import dto.Business;
 import dto.Customer;
+import dto.Feedback;
 import dto.MenuItem;
 import dto.Reservation;
 import dto.Server;
@@ -86,7 +87,6 @@ public class DataBaseImpl implements DataBase {
 		if (tableName.equals(SQLTables.RESERVATION_TABLE)) {
 			Reservation reservation = (Reservation) object;
 			pstmt = reservation.getSQLString(connection, sql);
-
 		} else if (tableName.equals(SQLTables.TABLES_TABLE)) {
 			Table table = (Table) object;
 			pstmt = table.getSQLString(connection, sql);
@@ -99,6 +99,9 @@ public class DataBaseImpl implements DataBase {
 		} else if (tableName.equals(SQLTables.MENU_TABLE)) {
 			MenuItem menuItem = (MenuItem) object;
 			pstmt = menuItem.getSQLString(connection, sql);
+		} else if (tableName.equals(SQLTables.FEEDBACKS_TABLE)) {
+			Feedback feedback = (Feedback) object;
+			pstmt = feedback.getSQLString(connection, sql);
 		}
 
 		System.out.println("Executing Command: " + pstmt.toString());
@@ -406,5 +409,23 @@ public class DataBaseImpl implements DataBase {
 			e.printStackTrace();
 			System.out.println("Error updating customer_menu: " + e.getMessage());
 		}
+	}
+
+	@Override
+	public List<Feedback> getAllFeedbacks() {
+		List<Feedback> feedbacks = new ArrayList<>();
+		String sql = String.format("SELECT * FROM %s ORDER BY timestamp;", SQLTables.FEEDBACKS_TABLE);
+		System.out.println("Executing Query: " + sql);
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			ResultSet rs = pstmt.executeQuery();
+
+			feedbacks = DataBaseConverters.convertFeedbackItemList(rs);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return feedbacks;
 	}
 }

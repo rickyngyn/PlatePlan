@@ -10,6 +10,7 @@ import javax.security.auth.login.AccountNotFoundException;
 
 import dto.Business;
 import dto.Customer;
+import dto.Feedback;
 import dto.MenuItem;
 import dto.Reservation;
 import dto.Server;
@@ -189,6 +190,12 @@ public class DataBaseStubImpl implements DataBase {
 	public void publishCustomerMenu() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public List<Feedback> getAllFeedbacks() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

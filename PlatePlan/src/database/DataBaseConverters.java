@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dto.Customer;
+import dto.Feedback;
 import dto.MenuItem;
 import dto.Reservation;
 import dto.Server;
@@ -156,6 +157,38 @@ public class DataBaseConverters {
 			e.printStackTrace();
 		}
 		return menuItems;
+	}
+	
+	public static Feedback convertFeedbackItem(ResultSet rs) {
+		try {
+			Feedback feedback = new Feedback();
+			feedback.setId(rs.getString("id"));
+			feedback.setCustomer_id(rs.getString("customer_id"));
+			feedback.setFeedback(rs.getString("feedback"));
+			feedback.setRating(rs.getInt("rating"));
+			feedback.setTimestamp(rs.getTimestamp("timestamp").toLocalDateTime());
+			return feedback;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static List<Feedback> convertFeedbackItemList (ResultSet rs) {
+		List<Feedback> feedbacks = new ArrayList<>();
+		try {
+			while (rs.next()) {
+				Feedback feedback = convertFeedbackItem(rs);
+				if (feedback != null) {
+					feedbacks.add(feedback);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return feedbacks;
 	}
 
 }

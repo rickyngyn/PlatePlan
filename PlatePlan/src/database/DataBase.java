@@ -7,6 +7,7 @@ import javax.security.auth.login.AccountNotFoundException;
 
 import dto.Business;
 import dto.Customer;
+import dto.Feedback;
 import dto.MenuItem;
 import dto.Reservation;
 import dto.Server;
@@ -45,5 +46,7 @@ public interface DataBase {
 	boolean deleteMenuItem(MenuItem menuItem);
 
 	void publishCustomerMenu();
+
+	public List<Feedback> getAllFeedbacks();
 
 }

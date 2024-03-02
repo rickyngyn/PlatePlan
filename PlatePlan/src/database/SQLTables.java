@@ -8,4 +8,6 @@ public class SQLTables {
 	public static final String SERVERS_TABLE = "servers";
 	public static final String MENU_TABLE = "menu";
 	public static final String CUSTOMER_MENU_TABLE = "customer_menu";
+	public static final String FEEDBACKS_TABLE = "feedbacks";
+
 }

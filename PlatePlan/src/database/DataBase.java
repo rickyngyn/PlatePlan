@@ -38,8 +38,12 @@ public interface DataBase {
 
 	public boolean deleteServer(String id);
 
-	public List<MenuItem> getAllMenuItems();
+	public List<MenuItem> getAllMenuItems(String table);
 
 	boolean updateMenuItem(MenuItem menuItem);
+
+	boolean deleteMenuItem(MenuItem menuItem);
+
+	void publishCustomerMenu();
 
 }

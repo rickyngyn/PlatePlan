@@ -2,17 +2,18 @@ package dto;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class MenuItem {
-	
+
 	private String id;
 	private String name;
 	private String description;
 	private float price;
-	
+
 	public MenuItem(String id, String name, String description, float price) {
 		super();
 		this.id = id;
@@ -21,8 +22,6 @@ public class MenuItem {
 		this.price = price;
 	}
 
-	
-	
 	/**
 	 * @return the id
 	 */
@@ -40,8 +39,6 @@ public class MenuItem {
 	public MenuItem() {
 
 	}
-	
-
 
 	/**
 	 * @return the name
@@ -107,39 +104,41 @@ public class MenuItem {
 	public String toString() {
 		return "MenuItem [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price + "]";
 	}
-	
-    public PreparedStatement generateUpdateCommand(Connection conn, List<String> columns, String tableName) {
-    	try {
-            columns.remove(0);
-            String sql = "UPDATE " + tableName + " SET " + 
-                         String.join(", ", columns.stream().map(column -> column + " = ?").toArray(String[]::new)) +
-                         " WHERE id = ?;";
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setString(1,getName());
-            stmt.setFloat(2,getPrice());
-            stmt.setString(3,getDescription());
-            stmt.setString(4,getId());
 
-            // Setting parameter values
-//            for (int i = 0; i < columns.size(); i++) {
-//                if ("price".equals(columns.get(i))) {
-//                    stmt.setFloat(i + 1, getPrice());
-//                } else {
-//                    stmt.setString(i + 1, (String) Arrays.asList(getName(), getDescription()).get(i));
-//                }
-//            }
-//            
-//            // Setting the ID parameter
-//            stmt.setString(columns.size() + 1, getId());
-            System.out.println(stmt.toString());
+	public PreparedStatement generateUpdateCommand(Connection conn, List<String> columns, String tableName) {
+		try {
+			columns.remove(0);
+			String sql = "UPDATE " + tableName + " SET "
+					+ String.join(", ", columns.stream().map(column -> column + " = ?").toArray(String[]::new))
+					+ " WHERE id = ?;";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, getName());
+			stmt.setFloat(2, getPrice());
+			stmt.setString(3, getDescription());
+			stmt.setString(4, getId());
 
-            return stmt;
-    	}catch (Exception e) {
-    		e.printStackTrace();
-    	}
-        
-        
-        return null;
-    }
+			return stmt;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	public PreparedStatement getSQLString(Connection connection, String sql) {
+		try {
+			sql = sql + "(?,?,?,?);";
+			PreparedStatement pstmt = connection.prepareStatement(sql);
+			pstmt.setString(1, this.getId());
+			pstmt.setString(2, this.getName());
+			pstmt.setFloat(3, this.getPrice());
+			pstmt.setString(4, this.getDescription());
+			return pstmt;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
 
 }

@@ -41,6 +41,7 @@ public class CustomerHomeView extends JPanel {
 	private ReservationService reservationService;
 	private ServerService serviceUtils;
 	private JLabel lblSpecialInstVal;
+	private JButton btnViewMenu;
 
 	/**
 	 * Create the panel.
@@ -118,7 +119,10 @@ public class CustomerHomeView extends JPanel {
 		currentReservationView = new Panel();
 		currentReservationView.setBackground(new Color(250, 240, 230));
 		currentReservationView.setBounds(113, 315, 462, 186);
-		// add(currentReservationView);
+		// ==============================
+//		add(currentReservationView);
+		// ==============================
+
 		currentReservationView.setLayout(null);
 
 		Label lblWhen = new Label("When");
@@ -173,7 +177,7 @@ public class CustomerHomeView extends JPanel {
 				}
 			}
 		});
-		btnCancelRes.setBounds(10, 152, 138, 23);
+		btnCancelRes.setBounds(10, 152, 171, 23);
 		currentReservationView.add(btnCancelRes);
 
 		lblSpecialInstVal = new JLabel("Value");
@@ -185,6 +189,16 @@ public class CustomerHomeView extends JPanel {
 		lblUpcomingRes.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblUpcomingRes.setBounds(114, 82, 180, 17);
 		add(lblUpcomingRes);
+
+		btnViewMenu = new JButton("View Menu");
+		btnViewMenu.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PlatePlanMain.switchPanels(new CustomerMenuMangement(customer));
+			}
+		});
+		btnViewMenu.setFont(new Font("Dialog", Font.PLAIN, 16));
+		btnViewMenu.setBounds(660, 145, 152, 29);
+		add(btnViewMenu);
 
 	}
 

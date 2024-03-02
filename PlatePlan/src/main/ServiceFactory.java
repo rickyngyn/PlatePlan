@@ -18,7 +18,7 @@ public class ServiceFactory {
 	private static TablesService tablesService;
 	private static ServerService serviceUtils;
 	private static MenuService menuService;
-	
+
 	public static void setUpServices() {
 		System.out.println("Setting Up Accounts Service");
 		accountService = AccountsServiceImpl.getInstance();
@@ -31,7 +31,7 @@ public class ServiceFactory {
 
 		System.out.println("Setting Up Service Utils");
 		serviceUtils = ServerServiceImpl.getInstance();
-		
+
 		System.out.println("Setting Up Menu Service");
 		menuService = MenuServiceImpl.getInstance();
 

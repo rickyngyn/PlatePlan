@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -95,6 +96,9 @@ public class DataBaseImpl implements DataBase {
 		} else if (tableName.equals(SQLTables.SERVERS_TABLE)) {
 			Server server = (Server) object;
 			pstmt = server.getSQLString(connection, sql);
+		} else if (tableName.equals(SQLTables.MENU_TABLE)) {
+			MenuItem menuItem = (MenuItem) object;
+			pstmt = menuItem.getSQLString(connection, sql);
 		}
 
 		System.out.println("Executing Command: " + pstmt.toString());
@@ -324,9 +328,9 @@ public class DataBaseImpl implements DataBase {
 	}
 
 	@Override
-	public List<MenuItem> getAllMenuItems() {
+	public List<MenuItem> getAllMenuItems(String table) {
 		List<MenuItem> menuItems = new ArrayList<>();
-		String sql = String.format("SELECT * FROM %s ;", SQLTables.MENU_TABLE);
+		String sql = String.format("SELECT * FROM %s ;", table);
 		System.out.println("Executing Query: " + sql);
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -354,4 +358,53 @@ public class DataBaseImpl implements DataBase {
 		return false;
 	}
 
+	@Override
+	public boolean deleteMenuItem(MenuItem menuItem) {
+		int affectedRows = 0;
+		// SQL command to delete rows with the specific ID
+		String sql = "DELETE FROM " + SQLTables.MENU_TABLE + " WHERE id = ?;";
+
+		try {
+			// Set the ID in the prepared statement to avoid SQL injection
+			PreparedStatement pstmt = connection.prepareStatement(sql);
+			pstmt.setString(1, menuItem.getId());
+			System.out.println("Delete Query Executed: " + pstmt.toString());
+			// Execute the delete command
+			affectedRows = pstmt.executeUpdate();
+			System.out.println("Deleted " + affectedRows + " rows.");
+
+		} catch (SQLException e) {
+			System.out.println("Error occurred during delete operation: " + e.getMessage());
+		}
+		return affectedRows <= 0 ? false : true;
+	}
+
+	@Override
+	public void publishCustomerMenu() {
+		// SQL statement to delete everything from customer_menu
+		String deleteSQL = String.format("DELETE FROM %s", SQLTables.CUSTOMER_MENU_TABLE);
+
+		// SQL statement to copy everything from menu to customer_menu
+		// Assuming both tables have the same schema and column names
+		String copySQL = String.format("INSERT INTO %s SELECT * FROM %s", SQLTables.CUSTOMER_MENU_TABLE,
+				SQLTables.MENU_TABLE);
+
+		Statement statement = null;
+
+		try {
+			// Create a Statement object for sending SQL statements to the database
+			statement = connection.createStatement();
+
+			// Execute delete statement to clear customer_menu
+			statement.executeUpdate(deleteSQL);
+
+			// Execute copy statement to populate customer_menu with data from menu
+			statement.executeUpdate(copySQL);
+
+			System.out.println("Successfully updated customer_menu from menu.");
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.out.println("Error updating customer_menu: " + e.getMessage());
+		}
+	}
 }

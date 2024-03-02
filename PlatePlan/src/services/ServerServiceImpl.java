@@ -93,6 +93,4 @@ public class ServerServiceImpl implements ServerService {
 		return db.deleteServer(id);
 	}
 
-
-
 }

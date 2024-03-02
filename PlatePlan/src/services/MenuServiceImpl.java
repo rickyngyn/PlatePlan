@@ -1,9 +1,11 @@
 package services;
 
 import java.util.List;
+import java.util.UUID;
 
 import database.DataBase;
 import database.DataBaseFactory;
+import database.SQLTables;
 import dto.MenuItem;
 import service_interfaces.AccountService;
 import service_interfaces.MenuService;
@@ -23,7 +25,7 @@ public class MenuServiceImpl implements MenuService {
 	private MenuServiceImpl() {
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	public static MenuService getInstance() {
 		// Create the instance if it does not exist
 		if (instance == null) {
@@ -44,23 +46,29 @@ public class MenuServiceImpl implements MenuService {
 		this.tablesService = tablesService;
 		this.accountService = accountService;
 	}
-	
 
 	@Override
-	public List<MenuItem> getAllMenuItems() {
-		return db.getAllMenuItems();
+	public List<MenuItem> getAllMenuItems(String table) {
+		return db.getAllMenuItems(table);
 	}
-	
-	
+
 	@Override
 	public boolean updateMenuItem(MenuItem menuItem) {
 		return db.updateMenuItem(menuItem);
 	}
 
 	@Override
-	public MenuItem addMenuItem(String title, float price, String description) {
-		// TODO Auto-generated method stub
+	public MenuItem addMenuItem() {
+		MenuItem menuItem = new MenuItem(UUID.randomUUID().toString(), "TITLE", "DESCRIPTION", 0L);
+		if (db.insertRecord(SQLTables.MENU_TABLE, menuItem)) {
+			return menuItem;
+		}
 		return null;
+	}
+
+	@Override
+	public boolean deleteMenuItem(MenuItem item) {
+		return db.deleteMenuItem(item);
 	}
 
 }

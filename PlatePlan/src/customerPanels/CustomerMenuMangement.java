@@ -1,4 +1,4 @@
-package businessPanels;
+package customerPanels;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -21,11 +21,13 @@ import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 
 import componentPanels.BusinessMenuComponent;
+import componentPanels.CustomerMenuComponent;
 import customerPanels.Constants;
 import database.DataBase;
 import database.DataBaseFactory;
 import database.SQLTables;
 import dto.Business;
+import dto.Customer;
 import dto.MenuItem;
 import main.PlatePlanMain;
 import service_interfaces.MenuService;
@@ -33,17 +35,17 @@ import service_interfaces.ServerService;
 import services.MenuServiceImpl;
 import services.ServerServiceImpl;
 
-public class BusinessMenuMangement extends JPanel {
+public class CustomerMenuMangement extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private Business business;
+	private Customer customer;
 	private MenuService menuService;
 	private List<MenuItem> menuItemsLoaded;
 
 	/**
 	 * Create the panel.
 	 */
-	public BusinessMenuMangement(Business bussiness) {
+	public CustomerMenuMangement(Customer customer) {
 		setFont(new Font("Calibri", Font.PLAIN, 18));
 		// ========================Setting Default Dimensions========================
 		Dimension windowDim = new Dimension(Constants.WINDOW_MAX_WIDTH, Constants.WINDOW_MAX_HEIGHT);
@@ -54,9 +56,9 @@ public class BusinessMenuMangement extends JPanel {
 		setBackground(new Color(255, 250, 250));
 		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		// ===========================================================================
-		this.business = bussiness;
+		this.customer = customer;
 		this.menuService = MenuServiceImpl.getInstance();
-		this.menuItemsLoaded = menuService.getAllMenuItems(SQLTables.MENU_TABLE);
+		this.menuItemsLoaded = menuService.getAllMenuItems(SQLTables.CUSTOMER_MENU_TABLE);
 //		menuListModel = new DefaultListModel<>();
 
 		JPanel containerPanel = new JPanel();
@@ -66,7 +68,7 @@ public class BusinessMenuMangement extends JPanel {
 
 		// Adding your components (e.g., menu items) to the container panel
 		for (MenuItem menuItem : menuItemsLoaded) {
-			containerPanel.add(new BusinessMenuComponent(menuItem, bussiness));
+			containerPanel.add(new CustomerMenuComponent(menuItem));
 			containerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 		}
 
@@ -82,41 +84,11 @@ public class BusinessMenuMangement extends JPanel {
 		JButton btnBack = new JButton("Back");
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PlatePlanMain.switchPanels(new BusinessHomeView(bussiness));
+				PlatePlanMain.switchPanels(new CustomerHomeView(customer));
 			}
 		});
 		btnBack.setBounds(977, 10, 89, 23);
 		add(btnBack);
 
-		JButton btnNewMenuItem = new JButton("Add New Menu Item");
-		btnNewMenuItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				MenuItem menuItem = menuService.addMenuItem();
-				if (menuItem == null) {
-					JOptionPane.showMessageDialog(BusinessMenuMangement.this, "Unable to add new Menu Item", "Error",
-							JOptionPane.ERROR_MESSAGE);
-				} else {
-					menuItemsLoaded.add(menuItem);
-					containerPanel.add(new BusinessMenuComponent(menuItem, bussiness));
-					containerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-					PlatePlanMain.refreshPage();
-				}
-			}
-		});
-		btnNewMenuItem.setBounds(197, 605, 150, 35);
-		add(btnNewMenuItem);
-
-		JButton btnPublishMenu = new JButton("Publish Menu");
-		btnPublishMenu.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				DataBase db = DataBaseFactory.getDatabase();
-				db.publishCustomerMenu();
-				JOptionPane.showMessageDialog(BusinessMenuMangement.this, "Menu successfully published", "Success",
-						JOptionPane.INFORMATION_MESSAGE);
-			}
-		});
-		btnPublishMenu.setActionCommand("");
-		btnPublishMenu.setBounds(747, 605, 150, 35);
-		add(btnPublishMenu);
 	}
 }

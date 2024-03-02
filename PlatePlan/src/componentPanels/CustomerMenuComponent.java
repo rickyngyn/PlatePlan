@@ -27,21 +27,19 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
 import javax.swing.JButton;
 
-public class BusinessMenuComponent extends JPanel {
+public class CustomerMenuComponent extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField txtTitle;
 	private JTextField txtPriceField;
 	private MenuItem menuItem;
 	private MenuService menuService;
-	private Business business;
 
 	/**
 	 * Create the panel.
 	 */
-	public BusinessMenuComponent(MenuItem menuItem, Business business) {
+	public CustomerMenuComponent(MenuItem menuItem) {
 		this.menuItem = menuItem;
-		this.business = business;
 		menuService = MenuServiceImpl.getInstance();
 		Dimension dimension = new Dimension(400, 100);
 		this.setPreferredSize(new Dimension(600, 100));
@@ -52,19 +50,8 @@ public class BusinessMenuComponent extends JPanel {
 
 		// JTextArea for description
 		JTextArea txtDescription = new JTextArea(menuItem.getDescription());
-		txtDescription.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						BusinessMenuComponent.this.menuItem.setDescription(txtDescription.getText());
-						updateMenuItem();
-					}
-				});
 
-			}
-		});
-		txtDescription.setEditable(true); // This line makes the JTextArea editable
+		txtDescription.setEditable(false); // This line makes the JTextArea editable
 		txtDescription.setFont(new Font("Arial", Font.ITALIC, 11));
 		txtDescription.setBounds(15, 49, 474, 40);
 		txtDescription.setWrapStyleWord(true);
@@ -76,19 +63,8 @@ public class BusinessMenuComponent extends JPanel {
 		add(txtDescription);
 
 		txtTitle = new JTextField();
+		txtTitle.setEditable(false);
 
-		txtTitle.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						BusinessMenuComponent.this.menuItem.setName(txtTitle.getText());
-						updateMenuItem();
-					}
-				});
-			}
-
-		});
 		txtTitle.setFont(new Font("Arial", Font.BOLD, 16));
 		txtTitle.setBorder(null);
 		txtTitle.setCaretColor(new Color(0, 0, 0));
@@ -100,17 +76,7 @@ public class BusinessMenuComponent extends JPanel {
 		txtTitle.setColumns(10);
 
 		txtPriceField = new JTextField();
-		txtPriceField.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyTyped(KeyEvent e) {
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						BusinessMenuComponent.this.menuItem.setPrice(Float.valueOf(txtPriceField.getText()));
-						updateMenuItem();
-					}
-				});
-			}
-		});
+		txtPriceField.setEditable(false);
 
 		txtPriceField.setSelectedTextColor(Color.WHITE);
 		txtPriceField.setFont(new Font("Arial", Font.ITALIC, 16));
@@ -124,34 +90,10 @@ public class BusinessMenuComponent extends JPanel {
 		lblNewLabel.setBounds(499, 24, 14, 14);
 		add(lblNewLabel);
 
-		JButton btnNewButton = new JButton("Delete");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				deleteMenuItem();
-			}
-		});
-		btnNewButton.setBounds(516, 58, 74, 31);
-		add(btnNewButton);
-
 	}
 
 	public MenuItem getMenuItem() {
 		return menuItem;
 	}
 
-	public void updateMenuItem() {
-		System.out.println("Updating Menu Item " + menuItem.toString());
-		menuService.updateMenuItem(menuItem);
-	}
-
-	public void deleteMenuItem() {
-		boolean result = menuService.deleteMenuItem(menuItem);
-
-		if (result) {
-			PlatePlanMain.switchPanels(new BusinessMenuMangement(this.business));
-		} else {
-			JOptionPane.showMessageDialog(this, "Unable to delete menu item from database", "Error",
-					JOptionPane.ERROR_MESSAGE);
-		}
-	}
 }

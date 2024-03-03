@@ -79,8 +79,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
 	@Override
 	public boolean deleteFeedback(Feedback feedback) {
-		// TODO Auto-generated method stub
-		return false;
+		return db.deleteDataBaseEntry(SQLTables.FEEDBACKS_TABLE, feedback.getId());
 	}
 
 	@Override

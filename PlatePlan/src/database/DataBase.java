@@ -23,30 +23,24 @@ public interface DataBase {
 
 	public List<Table> getAllTables();
 
-	public boolean deleteTable(String id);
-
 	public List<Server> getAllServers();
 
 	public List<Reservation> getReservationsForDate(LocalDate date);
 
 	public List<Reservation> getAllReservations();
 
-	public boolean deleteReservation(String id);
-
 	public List<Reservation> getCustomerReservations(String email) throws AccountNotFoundException;
 
 	public Reservation getReservationWithId(String id);
-
-	public boolean deleteServer(String id);
 
 	public List<MenuItem> getAllMenuItems(String table);
 
 	boolean updateMenuItem(MenuItem menuItem);
 
-	boolean deleteMenuItem(MenuItem menuItem);
-
 	void publishCustomerMenu();
 
 	public List<Feedback> getAllFeedbacks();
+	
+	public boolean deleteDataBaseEntry (String table, String id);
 
 }

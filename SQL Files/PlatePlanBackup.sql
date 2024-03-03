@@ -172,13 +172,31 @@ INSERT INTO public.customers VALUES ('pouya@email.com', 'pouya', 'sameni', 'pass
 INSERT INTO public.feedbacks VALUES ('655', 'Anonymous', 1, '2024-02-07 23:26:29', 'Food was cold and unappetizing, which was surprising given the restaurant''s reputation. Will think twice before coming back.');
 INSERT INTO public.feedbacks VALUES ('251', 'John Doe', 2, '2024-02-07 23:26:29', 'Not what I expected, quite bland. I had heard good things, so this was a letdown. Hope it improves.');
 INSERT INTO public.feedbacks VALUES ('693', 'Jane Smith', 5, '2024-02-28 23:26:29', 'Excellent service and food! Every dish was a delight, and the staff went above and beyond to ensure a memorable experience.');
-INSERT INTO public.feedbacks VALUES ('433', 'Emily Johnson', 1, '2024-02-28 23:26:29', 'Food was cold and unappetizing, which was surprising given the restaurant''s reputation. Will think twice before coming back.');
-INSERT INTO public.feedbacks VALUES ('239', 'Michael Brown', 5, '2024-03-01 23:26:29', 'Perfect experience, highly recommend! From the appetizers to the desserts, everything was flawless. Can''t wait to return.');
 INSERT INTO public.feedbacks VALUES ('204', 'Anonymous', 5, '2024-02-17 23:26:29', 'Outstanding in every way! The attention to detail, the exquisite flavors, and the warm atmosphere made our dinner unforgettable.');
 INSERT INTO public.feedbacks VALUES ('460', 'Linda Davis', 3, '2024-02-05 23:26:29', 'Average, nothing special. It was an okay visit, but nothing stood out to me as memorable or particularly enjoyable.');
 INSERT INTO public.feedbacks VALUES ('778', 'David Wilson', 4, '2024-02-20 23:26:29', 'Enjoyed the meal, will come again. The dishes were well prepared, and I appreciated the unique flavors.');
 INSERT INTO public.feedbacks VALUES ('160', 'Anonymous', 3, '2024-02-27 23:26:29', 'Average, nothing special. It was an okay visit, but nothing stood out to me as memorable or particularly enjoyable.');
 INSERT INTO public.feedbacks VALUES ('390', 'Jennifer Garcia', 3, '2024-02-03 23:26:29', 'Okay food, but service lacks. I think with a bit more effort, this could be a great place, but it''s just not there yet.');
+INSERT INTO public.feedbacks VALUES ('800', 'Anonymous', 4, '2024-02-15 14:35:20', 'Great ambiance and friendly service. The food was quite good, with some dishes being truly exceptional.');
+INSERT INTO public.feedbacks VALUES ('801', 'Chris Evans', 2, '2024-02-16 17:30:45', 'The atmosphere was nice, but the food did not live up to expectations. Somewhat disappointed.');
+INSERT INTO public.feedbacks VALUES ('802', 'Alex Johnson', 5, '2024-02-18 19:22:33', 'Fantastic experience! The culinary creativity is off the charts. Highly recommend.');
+INSERT INTO public.feedbacks VALUES ('803', 'Sam Lee', 3, '2024-02-19 12:15:47', 'It was a decent meal, but I think the menu could use more variety. Service was good.');
+INSERT INTO public.feedbacks VALUES ('804', 'Kimberly White', 1, '2024-02-21 20:45:10', 'Not worth the hype. Slow service and the food was below average. Unlikely to return.');
+INSERT INTO public.feedbacks VALUES ('805', 'Patricia Brown', 4, '2024-02-22 18:30:55', 'Very enjoyable dinner with innovative dishes. A pleasant surprise and will visit again.');
+INSERT INTO public.feedbacks VALUES ('806', 'Michael Scott', 3, '2024-02-23 16:40:29', 'The meal was okay, but nothing that makes me eager to come back. Just average.');
+INSERT INTO public.feedbacks VALUES ('807', 'Anonymous', 4, '2024-02-24 21:55:13', 'Lovely place with a cozy atmosphere. The staff is welcoming, and the food is consistently good.');
+INSERT INTO public.feedbacks VALUES ('808', 'Nancy Green', 2, '2024-02-25 13:05:22', 'Expected more based on reviews. The dishes were just okay, and the service was slow.');
+INSERT INTO public.feedbacks VALUES ('809', 'Frank Wright', 5, '2024-02-26 22:10:36', 'An absolute gem! Every dish was delightful and presented beautifully. Will definitely return.');
+INSERT INTO public.feedbacks VALUES ('810', 'Julia Roberts', 3, '2024-02-01 17:20:48', 'Had a better experience last time. The food was good but not outstanding. Service was great, though.');
+INSERT INTO public.feedbacks VALUES ('811', 'Daniel Lewis', 1, '2024-02-02 15:35:29', 'Disappointing visit. Waited too long for our meals, and they were just lukewarm.');
+INSERT INTO public.feedbacks VALUES ('812', 'Morgan Freeman', 4, '2024-02-04 18:45:55', 'Very good food with an excellent selection of wine. The ambiance adds to the experience.');
+INSERT INTO public.feedbacks VALUES ('813', 'Emma Watson', 5, '2024-02-06 20:50:12', 'Incredible dining experience from start to finish. The staff made us feel special and the food was spectacular.');
+INSERT INTO public.feedbacks VALUES ('814', 'Ryan Gosling', 2, '2024-02-08 12:30:44', 'Was expecting more from the rave reviews. Found the food to be quite average.');
+INSERT INTO public.feedbacks VALUES ('815', 'Sophia Loren', 3, '2024-02-09 19:40:31', 'A nice place with solid service, but the food didn’t quite hit the mark for me.');
+INSERT INTO public.feedbacks VALUES ('816', 'Leonardo DiCaprio', 4, '2024-02-11 14:25:53', 'Really enjoyed the meal here. The seafood dishes are a must-try!');
+INSERT INTO public.feedbacks VALUES ('817', 'Sandra Bullock', 2, '2024-02-12 13:15:42', 'The service was good, but the food didn’t meet my expectations. Not sure I’d return.');
+INSERT INTO public.feedbacks VALUES ('818', 'Tom Hanks', 5, '2024-02-13 22:05:29', 'Absolutely fantastic! The flavors are complex and satisfying. A must-visit for food lovers.');
+INSERT INTO public.feedbacks VALUES ('819', 'Meryl Streep', 1, '2024-02-14 17:50:11', 'Very disappointed with the quality of the food. Expected much better.');
 
 
 --
@@ -203,6 +221,11 @@ INSERT INTO public.menu VALUES ('9', 'Chicken Parmesan', 13.5, 'Breaded chicken 
 INSERT INTO public.reservations VALUES ('85072301-79b0-4705-8be2-3175c1a1292d', 'john', '2024-02-19', '15:00:00', '', 'table1', 1, 'Peter Parker');
 INSERT INTO public.reservations VALUES ('95c06bb9-fcb2-4679-bed4-29247836d6ea', 'john', '2024-02-27', '12:00:00', '', 'table1', 1, 'Peter Parker');
 INSERT INTO public.reservations VALUES ('c8ebfc03-9c6c-4553-a10d-3e3516a0d984', 'idonotexist', '2024-02-27', '12:00:00', '', 'table1', 0, 'Peter Parker');
+INSERT INTO public.reservations VALUES ('be02dcdd-0f5b-4460-bb4c-778dc8828d18', 'johndoe@example.com', '2024-03-02', '12:00:00', 'Near Window', 'table4', 8, 'James Smith');
+INSERT INTO public.reservations VALUES ('9dcd2721-8e71-438c-814d-cafc81aa98d5', 'johndoe@example.com', '2024-03-02', '12:00:00', 'Near Window', 'table4', 8, 'James Smith');
+INSERT INTO public.reservations VALUES ('28153cb5-c68f-4334-9876-9609d22ad347', 'johndoe@example.com', '2024-03-02', '12:00:00', 'Near Window', 'table4', 8, 'James Smith');
+INSERT INTO public.reservations VALUES ('b84b7797-4b1e-4049-9c0c-fc54c6dd6936', 'johndoe@example.com', '2024-03-02', '12:00:00', 'Near Window', 'table4', 8, 'James Smith');
+INSERT INTO public.reservations VALUES ('3173184f-b81a-418e-a4b8-492296ac0c5d', 'johndoe@example.com', '2024-03-02', '12:00:00', 'Near Window', 'table4', 8, 'James Smith');
 
 
 --

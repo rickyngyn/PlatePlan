@@ -76,7 +76,7 @@ public class TablesServiceImpl implements TablesService {
 	@Override
 	public boolean deleteTable(String id) {
 
-		return db.deleteTable(id);
+		return db.deleteDataBaseEntry(SQLTables.TABLES_TABLE, id);
 
 	}
 

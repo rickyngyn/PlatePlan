@@ -89,19 +89,6 @@ public class DataBaseStubImpl implements DataBase {
 	}
 
 	@Override
-	public boolean deleteTable(String id) {
-
-		for (Table table : StubDataBaseRecords.tables) {
-			if (table.getId().equals(id)) {
-				StubDataBaseRecords.tables.remove(table);
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	@Override
 	public List<Table> getAllTables() {
 		return StubDataBaseRecords.tables;
 	}
@@ -143,29 +130,10 @@ public class DataBaseStubImpl implements DataBase {
 	}
 
 	@Override
-	public boolean deleteReservation(String id) {
-		List<Reservation> reservations = this.getAllReservations();
-		for (int i = 0; i < reservations.size(); i++) {
-			if (reservations.get(i).getId().equals(id)) {
-				reservations.remove(i);
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	@Override
 	public Reservation getReservationWithId(String id) {
 		return StubDataBaseRecords.reservations.stream().filter(reservation -> reservation.getId().equals(id))
 				.findFirst().orElse(null);
 
-	}
-
-	@Override
-	public boolean deleteServer(String id) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	@Override
@@ -181,12 +149,6 @@ public class DataBaseStubImpl implements DataBase {
 	}
 
 	@Override
-	public boolean deleteMenuItem(MenuItem menuItem) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public void publishCustomerMenu() {
 		// TODO Auto-generated method stub
 
@@ -196,6 +158,12 @@ public class DataBaseStubImpl implements DataBase {
 	public List<Feedback> getAllFeedbacks() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean deleteDataBaseEntry(String table, String id) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

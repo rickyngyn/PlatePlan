@@ -90,7 +90,7 @@ public class ServerServiceImpl implements ServerService {
 
 	@Override
 	public boolean deleteServer(String id) {
-		return db.deleteServer(id);
+		return db.deleteDataBaseEntry(SQLTables.SERVERS_TABLE, id);
 	}
 
 }

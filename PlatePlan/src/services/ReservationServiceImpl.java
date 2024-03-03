@@ -104,7 +104,7 @@ public class ReservationServiceImpl implements ReservationService {
 
 	@Override
 	public boolean cancelReservation(String reservationId) {
-		return db.deleteReservation(reservationId);
+		return db.deleteDataBaseEntry(SQLTables.RESERVATION_TABLE, reservationId);
 	}
 
 	// Other service methods would go here

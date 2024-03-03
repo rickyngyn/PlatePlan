@@ -25,6 +25,7 @@ public class BusinessHomeView extends JPanel {
 	private JButton btnManageTables;
 	private JButton btnManageServers;
 	private JButton btnViewManage;
+	private JButton btnViewManage_2;
 
 	/**
 	 * Create the panel.
@@ -93,5 +94,14 @@ public class BusinessHomeView extends JPanel {
 		});
 		btnViewManage.setBounds(429, 263, 231, 23);
 		add(btnViewManage);
+		
+		btnViewManage_2 = new JButton("View & Manage Feedbacks");
+		btnViewManage_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PlatePlanMain.switchPanels(new BusinessFeedbackManagement(bussiness));
+			}
+		});
+		btnViewManage_2.setBounds(429, 297, 231, 23);
+		add(btnViewManage_2);
 	}
 }

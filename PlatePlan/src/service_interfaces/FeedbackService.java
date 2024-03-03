@@ -17,6 +17,8 @@ public interface FeedbackService {
 			ServerService serviceUtils, AccountService accountService, MenuService menuService);
 
 	Feedback addNewAnonymousFeedback(String feedback, int rating);
+
+	double getAverageRating();
 	
 	
 }

@@ -1,5 +1,6 @@
 package services;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -85,6 +86,22 @@ public class FeedbackServiceImpl implements FeedbackService {
 	@Override
 	public List<Feedback> getAllFeedbacks() {
 		return db.getAllFeedbacks();
+	}
+	
+	@Override
+	public double getAverageRating() {
+		double average = 0;
+		List<Feedback> feedbacks = db.getAllFeedbacks();
+		for (Feedback feedback: feedbacks)
+		{
+			average += feedback.getRating();
+		}
+		
+		average = average/feedbacks.size();
+		
+		DecimalFormat df = new DecimalFormat("#.#");
+		
+		return Double.valueOf(df.format(average));
 	}
 
 }

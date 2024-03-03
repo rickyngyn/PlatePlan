@@ -31,10 +31,11 @@ import service_interfaces.TablesService;
 import services.AccountsServiceImpl;
 import services.ReservationServiceImpl;
 import services.ServerServiceImpl;
+import services.TablesServiceImpl;
 
 class ServiceUtilsTest {
 	private ReservationService reservationService;
-	private ServerService serviceUtils;
+	private ServerService serverService;
 	private TablesService tablesService;
 	private DataBase db;
 
@@ -43,6 +44,8 @@ class ServiceUtilsTest {
 		ServiceFactory.setUpServices();
 		DataBaseFactory.ENVIRONMENT = "development";
 		reservationService = ReservationServiceImpl.getInstance();
+		tablesService = TablesServiceImpl.getInstance();
+		serverService = ServerServiceImpl.getInstance();
 		db = DataBaseFactory.getDatabase();
 		StubDataBaseRecords.reset();
 	}
@@ -88,7 +91,7 @@ class ServiceUtilsTest {
 	@Test
 	void getAllTables() {
 
-		Map<String, String> result = serviceUtils.getAllServersMap();
+		Map<String, String> result = serverService.getAllServersMap();
 
 		Set<String> ids = new HashSet<>();
 		for (Server server : StubDataBaseRecords.servers) {

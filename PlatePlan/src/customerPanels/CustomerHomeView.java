@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,11 +21,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import database.DataBaseFactory;
+import dto.Business;
 import dto.Customer;
 import dto.Reservation;
 import main.PlatePlanMain;
+import service_interfaces.FeedbackService;
 import service_interfaces.ReservationService;
 import service_interfaces.ServerService;
+import services.AccountsServiceImpl;
+import services.FeedbackServiceImpl;
 import services.ReservationServiceImpl;
 import services.ServerServiceImpl;
 
@@ -43,7 +49,9 @@ public class CustomerHomeView extends JPanel {
 	private JLabel lblSpecialInstVal;
 	private JButton btnViewMenu;
 	private JButton btnViewFeedback;
-
+	private JLabel lblOpenLabel;
+	private Business business;
+	private JLabel lblAverageRatingOf;
 	/**
 	 * Create the panel.
 	 */
@@ -57,7 +65,10 @@ public class CustomerHomeView extends JPanel {
 		setBackground(new Color(255, 250, 250));
 		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		// ===========================================================================
+		FeedbackService feedbackService = FeedbackServiceImpl.getInstance();
+		
 		Map<String, String> resToIdMap = new HashMap<>();
+		business = DataBaseFactory.getDatabase().getBusinessAccount();
 		this.reservationService = ReservationServiceImpl.getInstance();
 		this.serviceUtils = ServerServiceImpl.getInstance();
 		btnMakeReservation = new JButton("Reserve Table");
@@ -67,7 +78,7 @@ public class CustomerHomeView extends JPanel {
 				PlatePlanMain.switchPanels(new CustomerReservations(customer));
 			}
 		});
-		btnMakeReservation.setBounds(660, 105, 150, 70);
+		btnMakeReservation.setBounds(660, 209, 150, 70);
 		add(btnMakeReservation);
 
 		JLabel lblWelcome = new JLabel(
@@ -108,7 +119,7 @@ public class CustomerHomeView extends JPanel {
 			}
 		});
 
-		reservationList.setBounds(114, 105, 461, 186);
+		reservationList.setBounds(114, 209, 461, 186);
 
 		for (Reservation reservation : reservationService.getCustomerReservation(customer.getEmail())) {
 			resToIdMap.put(convertResToText(reservation), reservation.getId());
@@ -119,9 +130,9 @@ public class CustomerHomeView extends JPanel {
 
 		currentReservationView = new Panel();
 		currentReservationView.setBackground(new Color(250, 240, 230));
-		currentReservationView.setBounds(113, 315, 462, 186);
+		currentReservationView.setBounds(113, 419, 462, 186);
 		// ==============================
-		add(currentReservationView);
+		//add(currentReservationView);
 		// ==============================
 
 		currentReservationView.setLayout(null);
@@ -188,7 +199,7 @@ public class CustomerHomeView extends JPanel {
 
 		JLabel lblUpcomingRes = new JLabel("Upcoming Reservations");
 		lblUpcomingRes.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblUpcomingRes.setBounds(114, 82, 180, 17);
+		lblUpcomingRes.setBounds(114, 186, 180, 17);
 		add(lblUpcomingRes);
 
 		btnViewMenu = new JButton("View Menu");
@@ -198,7 +209,7 @@ public class CustomerHomeView extends JPanel {
 			}
 		});
 		btnViewMenu.setFont(new Font("Dialog", Font.PLAIN, 16));
-		btnViewMenu.setBounds(820, 105, 150, 70);
+		btnViewMenu.setBounds(820, 209, 150, 70);
 		add(btnViewMenu);
 		
 		btnViewFeedback = new JButton("Feedbacks");
@@ -208,8 +219,28 @@ public class CustomerHomeView extends JPanel {
 			}
 		});
 		btnViewFeedback.setFont(new Font("Dialog", Font.PLAIN, 16));
-		btnViewFeedback.setBounds(660, 186, 150, 70);
+		btnViewFeedback.setBounds(660, 290, 150, 70);
 		add(btnViewFeedback);
+		
+		// Assuming business.getOpenFrom() and business.getOpenUntil() return strings like "9:00 AM" and "5:00 PM"
+		String openFrom = business.getOpenFrom().toString();
+		String openUntil = business.getOpenUntil().toString();
+		lblOpenLabel = new JLabel("<html><div style='text-align: center;'>Open Today From <b>" + openFrom + "</b> To <b>" + openUntil + "</b></div></html>");
+		lblOpenLabel.setFont(new Font("SansSerif", Font.PLAIN, 18)); // Using SansSerif for a clean look, and increasing the size for better readability
+		lblOpenLabel.setForeground(new Color(34, 139, 34)); // Setting the text color to a green for a friendly, inviting look
+		lblOpenLabel.setBounds(114, 105, 350, 30); // Adjusting the width to ensure the text fits, especially for longer times
+		add(lblOpenLabel);
+
+		
+		// Assuming feedbackService.getAverageRating() returns a formatted string, for example, "4.3"
+		String averageRating = String.format("%.1f", feedbackService.getAverageRating()); // Formats to one decimal place
+		lblAverageRatingOf = new JLabel("Average Rating Of " + averageRating + " Out of 5");
+		lblAverageRatingOf.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAverageRatingOf.setFont(new Font("Arial", Font.BOLD, 18)); // Increased font size and made it bold for emphasis
+		lblAverageRatingOf.setForeground(new Color(0, 102, 204)); // Set the text color to a soft blue for a pleasant look
+		lblAverageRatingOf.setBounds(645, 107, 325, 30); // Adjusted width to 350 in case the text is longer
+		add(lblAverageRatingOf);
+
 
 	}
 

@@ -32,13 +32,14 @@ import main.PlatePlanMain;
 import service_interfaces.ServerService;
 import service_interfaces.TablesService;
 import services.ServerServiceImpl;
+import services.TablesServiceImpl;
 
 public class BusinessTableManageView extends JPanel {
 	private JTextField textID;
 	private JTextField textCapacity;
 	private JTable table;
 	private JTextField textSearch;
-	private ServerService serviceUtils;
+	private ServerService serverService;
 	private Business business;
 	private TablesService tablesService;
 	private DefaultTableModel model;
@@ -62,8 +63,8 @@ public class BusinessTableManageView extends JPanel {
 		// ===========================================================================
 
 		this.business = business;
-		serviceUtils = ServerServiceImpl.getInstance();
-
+		tablesService = TablesServiceImpl.getInstance();
+		serverService = ServerServiceImpl.getInstance();
 		JLabel welcomeLabel = new JLabel("Table Manager");
 		welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		welcomeLabel.setFont(new Font("Arial", Font.PLAIN, 26));
@@ -96,7 +97,7 @@ public class BusinessTableManageView extends JPanel {
 
 		serverBox = new JComboBox();
 		serverBox.setFont(new Font("Arial", Font.PLAIN, 12));
-		serverBox.setModel(new DefaultComboBoxModel(serviceUtils.getAllServersMap().values().toArray()));
+		serverBox.setModel(new DefaultComboBoxModel(serverService.getAllServersMap().values().toArray()));
 		serverBox.setBounds(765, 288, 168, 22);
 		add(serverBox);
 
@@ -184,8 +185,9 @@ public class BusinessTableManageView extends JPanel {
 		scrollPane.setViewportView(table);
 
 		for (Table table : tablesService.getTablesMatchingResReq(0)) {
+			System.out.println(serverService.getAllServersMap());
 			model.addRow(new Object[] { table.getId(), table.getCapacity(),
-					serviceUtils.getAllServersMap().get(table.getServer()) });
+					serverService.getAllServersMap().get(table.getServer()) });
 		}
 
 		textSearch = new JTextField();
@@ -224,7 +226,7 @@ public class BusinessTableManageView extends JPanel {
 		int cap = Integer.valueOf(textCapacity.getText());
 		String serverId = (String) serverBox.getSelectedItem();
 
-		Map<String, String> serverMap = serviceUtils.getAllServersMap();
+		Map<String, String> serverMap = serverService.getAllServersMap();
 		for (String id : serverMap.keySet()) {
 			if (serverMap.get(id).equals(serverId)) {
 				serverId = id;

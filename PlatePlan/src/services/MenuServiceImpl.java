@@ -54,7 +54,7 @@ public class MenuServiceImpl implements MenuService {
 
 	@Override
 	public boolean updateMenuItem(MenuItem menuItem) {
-		return db.updateMenuItem(menuItem);
+		return db.updateDataBaseEntry(menuItem, SQLTables.MENU_TABLE);
 	}
 
 	@Override

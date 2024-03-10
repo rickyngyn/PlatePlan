@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import customerPanels.Constants;
-import customerPanels.InitialView;
+import customerPanels.CustomerSignIn;
 import dto.Business;
 import main.PlatePlanMain;
 
@@ -61,7 +61,7 @@ public class BusinessHomeView extends JPanel {
 		JButton btnLogOut = new JButton("Log Out");
 		btnLogOut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				PlatePlanMain.switchPanels(new InitialView());
+				PlatePlanMain.switchPanels(new CustomerSignIn());
 			}
 		});
 		btnLogOut.setBounds(6, 6, 117, 29);

@@ -45,6 +45,7 @@ import service_interfaces.ServerService;
 import service_interfaces.TablesService;
 import services.ReservationServiceImpl;
 import services.ServerServiceImpl;
+import services.TablesServiceImpl;
 
 public class CustomerReservations extends JPanel {
 	private JTextField txtSeats;
@@ -56,7 +57,7 @@ public class CustomerReservations extends JPanel {
 	private Customer customer; // Now using email instead of customerId
 	private ReservationService reservationService;
 	private SpringLayout springLayout;
-	private ServerService serviceUtils;
+	private ServerService serverService;
 	private TablesService tablesService;
 	ArrayList<TimeSlot> timeList;
 	private List listOfAvailableTimes;
@@ -75,24 +76,25 @@ public class CustomerReservations extends JPanel {
 		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		// ===========================================================================
 
-		this.serviceUtils = ServerServiceImpl.getInstance();
+		this.serverService = ServerServiceImpl.getInstance();
+		this.tablesService = TablesServiceImpl.getInstance();
 		timeList = new ArrayList<>();
 		this.customer = customer;
 		this.reservationService = ReservationServiceImpl.getInstance();
 		timeSlotMap = new HashMap<>();
 		// Initialize components
 		lblSeats = new JLabel("Number of Seats:");
-		lblSeats.setBounds(277, 164, 125, 14);
+		lblSeats.setBounds(277, 112, 125, 14);
 		lblDate = new JLabel("Date (dd/MM/yyyy):");
-		lblDate.setBounds(277, 121, 134, 14);
+		lblDate.setBounds(277, 69, 134, 14);
 		btnSubmitReservation = new JButton("Submit Reservation");
-		btnSubmitReservation.setBounds(467, 600, 165, 29);
+		btnSubmitReservation.setBounds(467, 426, 165, 29);
 		setLayout(null);
 
 		listOfAvailableTimes = new List();
 		listOfAvailableTimes.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 		listOfAvailableTimes.setFont(new Font("Arial", Font.PLAIN, 18));
-		listOfAvailableTimes.setBounds(318, 239, 200, 300);
+		listOfAvailableTimes.setBounds(277, 171, 169, 210);
 
 		add(listOfAvailableTimes);
 
@@ -108,7 +110,7 @@ public class CustomerReservations extends JPanel {
 		});
 		spinner.setModel(new SpinnerNumberModel(1, 1, 8, 1));
 		spinner.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		spinner.setBounds(423, 156, 61, 30);
+		spinner.setBounds(423, 104, 61, 30);
 		add(spinner);
 
 		UtilDateModel model = new UtilDateModel();
@@ -125,7 +127,7 @@ public class CustomerReservations extends JPanel {
 			}
 		});
 
-		datePicker.setLocation(423, 121);
+		datePicker.setLocation(423, 69);
 		datePicker.setSize(202, 29);
 
 		add(datePicker);
@@ -141,17 +143,17 @@ public class CustomerReservations extends JPanel {
 		add(btnBack);
 
 		txtSpecialNotesPane = new JTextPane();
-		txtSpecialNotesPane.setBounds(555, 239, 200, 300);
+		txtSpecialNotesPane.setBounds(489, 170, 331, 102);
 		add(txtSpecialNotesPane);
 
 		JLabel lblAvailableTimes = new JLabel("Available Times");
 		lblAvailableTimes.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblAvailableTimes.setBounds(318, 219, 90, 15);
+		lblAvailableTimes.setBounds(277, 151, 90, 15);
 		add(lblAvailableTimes);
 
 		JLabel lblSpecialNotes = new JLabel("Special Notes");
 		lblSpecialNotes.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblSpecialNotes.setBounds(555, 220, 90, 15);
+		lblSpecialNotes.setBounds(489, 151, 96, 15);
 		add(lblSpecialNotes);
 		// Add action listener to button
 		btnSubmitReservation.addActionListener(new ActionListener() {

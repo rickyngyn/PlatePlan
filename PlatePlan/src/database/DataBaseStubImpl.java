@@ -142,11 +142,6 @@ public class DataBaseStubImpl implements DataBase {
 		return null;
 	}
 
-	@Override
-	public boolean updateMenuItem(MenuItem menuItem) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	@Override
 	public void publishCustomerMenu() {
@@ -162,6 +157,12 @@ public class DataBaseStubImpl implements DataBase {
 
 	@Override
 	public boolean deleteDataBaseEntry(String table, String id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean updateDataBaseEntry(Object object, String table) {
 		// TODO Auto-generated method stub
 		return false;
 	}

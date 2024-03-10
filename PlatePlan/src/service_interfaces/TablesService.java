@@ -9,6 +9,8 @@ import dto.TimeSlot;
 public interface TablesService {
 
 	boolean registerTable(String id, int cap, String server);
+	
+	boolean updateTable(String id, int cap, String server);
 
 	boolean deleteTable(String id);
 

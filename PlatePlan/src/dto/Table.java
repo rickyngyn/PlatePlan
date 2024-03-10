@@ -3,6 +3,7 @@ package dto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Objects;
 
 public class Table {
@@ -98,6 +99,25 @@ public class Table {
 
 			return pstmt;
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+	
+	public PreparedStatement generateUpdateCommand(Connection conn, List<String> columns, String tableName) {
+		try {
+			columns.remove(0);
+			String sql = "UPDATE " + tableName + " SET "
+					+ String.join(", ", columns.stream().map(column -> column + " = ?").toArray(String[]::new))
+					+ " WHERE id = ?;";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, getCapacity());
+			stmt.setString(2, getServer());
+			stmt.setString(3, getId());
+
+			return stmt;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 

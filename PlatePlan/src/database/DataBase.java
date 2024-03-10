@@ -35,12 +35,12 @@ public interface DataBase {
 
 	public List<MenuItem> getAllMenuItems(String table);
 
-	boolean updateMenuItem(MenuItem menuItem);
-
 	void publishCustomerMenu();
 
 	public List<Feedback> getAllFeedbacks();
 	
 	public boolean deleteDataBaseEntry (String table, String id);
+
+	boolean updateDataBaseEntry(Object object, String table);
 
 }

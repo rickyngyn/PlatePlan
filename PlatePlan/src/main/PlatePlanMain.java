@@ -6,7 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import customerPanels.Constants;
-import customerPanels.InitialView;
+import customerPanels.CustomerSignIn;
 import database.DataBaseFactory;
 
 public class PlatePlanMain {
@@ -58,7 +58,7 @@ public class PlatePlanMain {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// Start with the CustomerSignIn panel
-		switchPanels(new InitialView());
+		switchPanels(new CustomerSignIn());
 	}
 
 	/**

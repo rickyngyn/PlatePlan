@@ -164,7 +164,7 @@ public class DataBaseImpl implements DataBase {
 	@Override
 	public List<Table> getAllTables() {
 		List<Table> tables = new ArrayList<>();
-		String sql = String.format("SELECT * FROM %s", SQLTables.TABLES_TABLE);
+		String sql = String.format("SELECT * FROM %s ORDER BY id", SQLTables.TABLES_TABLE);
 		System.out.println("Executing Query: " + sql);
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -180,7 +180,7 @@ public class DataBaseImpl implements DataBase {
 	@Override
 	public List<Server> getAllServers() {
 		List<Server> servers = new ArrayList<>();
-		String sql = String.format("SELECT * FROM %s", SQLTables.SERVERS_TABLE);
+		String sql = String.format("SELECT * FROM %s ORDER BY id", SQLTables.SERVERS_TABLE);
 		System.out.println("Executing Query: " + sql);
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -217,7 +217,7 @@ public class DataBaseImpl implements DataBase {
 	@Override
 	public List<Reservation> getAllReservations() {
 		List<Reservation> reservations = new ArrayList<>();
-		String sql = String.format("SELECT * FROM %s", SQLTables.RESERVATION_TABLE);
+		String sql = String.format("SELECT * FROM %s ORDER BY id", SQLTables.RESERVATION_TABLE);
 		System.out.println("Executing Query: " + sql);
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -272,7 +272,7 @@ public class DataBaseImpl implements DataBase {
 	@Override
 	public List<MenuItem> getAllMenuItems(String table) {
 		List<MenuItem> menuItems = new ArrayList<>();
-		String sql = String.format("SELECT * FROM %s ;", table);
+		String sql = String.format("SELECT * FROM %s ORDER BY id;", table);
 		System.out.println("Executing Query: " + sql);
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -288,11 +288,23 @@ public class DataBaseImpl implements DataBase {
 	}
 
 	@Override
-	public boolean updateMenuItem(MenuItem menuItem) {
+	public boolean updateDataBaseEntry(Object object, String table) {
 
 		try {
-			PreparedStatement preparedStatement = menuItem.generateUpdateCommand(connection,
-					getColumnNamesList(SQLTables.MENU_TABLE), SQLTables.MENU_TABLE);
+			PreparedStatement preparedStatement = null;
+			if (SQLTables.MENU_TABLE.equals(table))
+			{
+				MenuItem menuItem = (MenuItem) object;
+				preparedStatement = menuItem.generateUpdateCommand(connection,
+						getColumnNamesList(SQLTables.MENU_TABLE), SQLTables.MENU_TABLE);
+			} else if (SQLTables.TABLES_TABLE.equals(table))
+			{
+				Table tableObj = (Table) object;
+				preparedStatement = tableObj.generateUpdateCommand(connection,
+						getColumnNamesList(SQLTables.TABLES_TABLE), SQLTables.TABLES_TABLE);
+			}
+			
+			System.out.println("Executing Update Command: " + preparedStatement.toString());
 			return preparedStatement.executeUpdate() > 0;
 		} catch (SQLException e) {
 			e.printStackTrace();

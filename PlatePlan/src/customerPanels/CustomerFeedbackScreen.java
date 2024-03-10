@@ -1,44 +1,26 @@
 package customerPanels;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.ListCellRenderer;
 
-import componentPanels.BusinessMenuComponent;
-import componentPanels.CustomerMenuComponent;
 import componentPanels.EditableFeedbackComponent;
 import componentPanels.StaticFeedbackComponent;
-import customerPanels.Constants;
-import database.DataBase;
-import database.DataBaseFactory;
-import database.SQLTables;
-import dto.Business;
 import dto.Customer;
 import dto.Feedback;
-import dto.MenuItem;
 import main.PlatePlanMain;
 import service_interfaces.FeedbackService;
-import service_interfaces.MenuService;
-import service_interfaces.ServerService;
 import services.FeedbackServiceImpl;
-import services.MenuServiceImpl;
-import services.ServerServiceImpl;
 
 public class CustomerFeedbackScreen extends JPanel {
 

@@ -114,4 +114,10 @@ public class TablesServiceImpl implements TablesService {
 
 	}
 
+	@Override
+	public boolean updateTable(String id, int cap, String server) {
+		Table table = new Table(id, cap, server);
+		return db.updateDataBaseEntry(table, SQLTables.TABLES_TABLE);
+	}
+
 }

@@ -11,7 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,7 +28,6 @@ import main.PlatePlanMain;
 import service_interfaces.FeedbackService;
 import service_interfaces.ReservationService;
 import service_interfaces.ServerService;
-import services.AccountsServiceImpl;
 import services.FeedbackServiceImpl;
 import services.ReservationServiceImpl;
 import services.ServerServiceImpl;
@@ -91,7 +89,7 @@ public class CustomerHomeView extends JPanel {
 		btnLogOut = new JButton("Log Out");
 		btnLogOut.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PlatePlanMain.switchPanels(new InitialView());
+				PlatePlanMain.switchPanels(new CustomerSignIn());
 			}
 		});
 		btnLogOut.setBounds(6, 6, 117, 29);

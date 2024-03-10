@@ -4,28 +4,14 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 
-import businessPanels.BusinessMenuMangement;
-import dto.Business;
 import dto.MenuItem;
-import main.PlatePlanMain;
 import service_interfaces.MenuService;
 import services.MenuServiceImpl;
-
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
-import javax.swing.JButton;
 
 public class CustomerMenuComponent extends JPanel {
 

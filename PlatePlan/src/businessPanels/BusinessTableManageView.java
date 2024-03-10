@@ -1,6 +1,7 @@
 package businessPanels;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -12,6 +13,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Map;
 
+import javax.swing.AbstractCellEditor;
+import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -22,9 +25,13 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
 
+import componentPanels.BusinessMenuComponent;
 import customerPanels.Constants;
 import dto.Business;
 import dto.Table;
@@ -33,6 +40,7 @@ import service_interfaces.ServerService;
 import service_interfaces.TablesService;
 import services.ServerServiceImpl;
 import services.TablesServiceImpl;
+import javax.swing.ListSelectionModel;
 
 public class BusinessTableManageView extends JPanel {
 	private JTextField textID;
@@ -50,6 +58,7 @@ public class BusinessTableManageView extends JPanel {
 	private JScrollPane scrollPane;
 	private JLabel lblSearch;
 	private JComboBox serverBox;
+	private Map<String, String> serverMap;
 
 	public BusinessTableManageView(Business business) {
 		// ========================Setting Default Dimensions========================
@@ -65,6 +74,7 @@ public class BusinessTableManageView extends JPanel {
 		this.business = business;
 		tablesService = TablesServiceImpl.getInstance();
 		serverService = ServerServiceImpl.getInstance();
+		serverMap = serverService.getAllServersMap();
 		JLabel welcomeLabel = new JLabel("Table Manager");
 		welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		welcomeLabel.setFont(new Font("Arial", Font.PLAIN, 26));
@@ -97,13 +107,13 @@ public class BusinessTableManageView extends JPanel {
 
 		serverBox = new JComboBox();
 		serverBox.setFont(new Font("Arial", Font.PLAIN, 12));
-		serverBox.setModel(new DefaultComboBoxModel(serverService.getAllServersMap().values().toArray()));
+		serverBox.setModel(new DefaultComboBoxModel(serverMap.values().toArray()));
 		serverBox.setBounds(765, 288, 168, 22);
 		add(serverBox);
 
 		btnAddTable = new JButton("Add");
 		btnAddTable.setFont(new Font("Arial", Font.PLAIN, 12));
-		btnAddTable.setBounds(713, 371, 89, 23);
+		btnAddTable.setBounds(731, 363, 89, 23);
 		btnAddTable.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				addTable();
@@ -142,7 +152,7 @@ public class BusinessTableManageView extends JPanel {
 
 			}
 		});
-		btnRemove.setBounds(713, 405, 89, 23);
+		btnRemove.setBounds(830, 363, 89, 23);
 		add(btnRemove);
 
 		btnReset = new JButton("Reset");
@@ -158,37 +168,53 @@ public class BusinessTableManageView extends JPanel {
 		// add(btnReset);
 
 		scrollPane = new JScrollPane();
+		
 		scrollPane.setBounds(56, 66, 579, 562);
 		add(scrollPane);
 
 		table = new JTable();
+		table.setRowHeight(30);
+		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		table.setFont(new Font("Arial", Font.PLAIN, 12));
-		table.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				DefaultTableModel model = (DefaultTableModel) table.getModel();
-				Object tableID = model.getValueAt(table.getSelectedRow(), 0);
-				Object tableCapacity = model.getValueAt(table.getSelectedRow(), 1);
-				Object tableServer = model.getValueAt(table.getSelectedRow(), 2);
-
-				textID.setText((String) tableID);
-				textCapacity.setText((String) tableCapacity + "");
-				serverBox.setSelectedItem(tableServer);
-
-			}
-		});
-
 		model = new DefaultTableModel(new String[] { "ID", "Capacity", "Server" }, 0);
 		table.setModel(model);
 		table.getColumnModel().getColumn(0).setPreferredWidth(15);
+        table.getColumnModel().getColumn(1).setCellEditor(new TextFieldCellEditor());
+
 		table.setBackground(new Color(255, 255, 255));
 		scrollPane.setViewportView(table);
 
+		// Populating the table with data
 		for (Table table : tablesService.getTablesMatchingResReq(0)) {
-			System.out.println(serverService.getAllServersMap());
-			model.addRow(new Object[] { table.getId(), table.getCapacity(),
-					serverService.getAllServersMap().get(table.getServer()) });
+			model.addRow(new Object[] { table.getId(), table.getCapacity(), serverMap.get(table.getServer()) });
 		}
+
+		// Assuming serverService.getAllServersMap().values() gives you the list of
+		// server names
+		// Convert it to an array or collection as needed
+		Object[] serversArray = serverMap.values().toArray();
+
+		// Create a JComboBox with the server names
+		JComboBox<Object> serversComboBox = new JComboBox<>(serversArray);
+		serversComboBox.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+						if (table.getSelectedRow() >= 0) {
+							updateTable();
+						}
+
+					}
+				});
+			}
+
+		});
+
+//		add(serversComboBox);
+		// Set the JComboBox as the cell editor for the "Server" column
+		TableColumn serverColumn = table.getColumnModel().getColumn(2); // Index 2 for "Server" column
+		serverColumn.setCellEditor(new DefaultCellEditor(serversComboBox));
 
 		textSearch = new JTextField();
 		textSearch.setFont(new Font("Arial", Font.PLAIN, 11));
@@ -226,7 +252,6 @@ public class BusinessTableManageView extends JPanel {
 		int cap = Integer.valueOf(textCapacity.getText());
 		String serverId = (String) serverBox.getSelectedItem();
 
-		Map<String, String> serverMap = serverService.getAllServersMap();
 		for (String id : serverMap.keySet()) {
 			if (serverMap.get(id).equals(serverId)) {
 				serverId = id;
@@ -244,5 +269,51 @@ public class BusinessTableManageView extends JPanel {
 
 		tablesService.deleteTable(tableId);
 		PlatePlanMain.switchPanels(new BusinessTableManageView(business));
+	}
+
+	private void updateTable() {
+
+		String tableId = (String) model.getValueAt(table.getSelectedRow(), 0);
+		int tableCap = Integer.valueOf((Integer) model.getValueAt(table.getSelectedRow(), 1));
+		String server = (String) model.getValueAt(table.getSelectedRow(), 2);
+
+		for (String key : serverMap.keySet()) {
+			if (serverMap.get(key).equals(server)) {
+				server = key;
+				break;
+			}
+		}
+
+		tablesService.updateTable(tableId, tableCap, server);
+//		PlatePlanMain.switchPanels(new BusinessTableManageView(business));
+	}
+	
+	class TextFieldCellEditor extends AbstractCellEditor implements TableCellEditor {
+	    JTextField editor = new JTextField();
+
+	    public TextFieldCellEditor() {
+	        // Add a KeyListener to the JTextField
+	        editor.addKeyListener(new KeyAdapter() {
+	            @Override
+	            public void keyPressed(KeyEvent e) {
+	               System.out.println("HERE");
+	                if (table.getSelectedRow() >= 0) {
+						updateTable();
+					}
+
+	            }
+	        });
+	    }
+
+	    @Override
+	    public Object getCellEditorValue() {
+	        return editor.getText();
+	    }
+
+	    @Override
+	    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+	        editor.setText(value != null ? value.toString() : "");
+	        return editor;
+	    }
 	}
 }

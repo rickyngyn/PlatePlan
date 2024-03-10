@@ -1,13 +1,9 @@
 package service_interfaces;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-import dto.MenuItem;
 import dto.Server;
-import dto.Table;
-import dto.TimeSlot;
 
 public interface ServerService {
 

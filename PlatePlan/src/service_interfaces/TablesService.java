@@ -21,4 +21,6 @@ public interface TablesService {
 	void initializeDependency(AccountService accountService, ReservationService reservationService,
 			ServerService serviceUtils);
 
+	boolean combineTables(List<Table> selectedRowDetails);
+
 }

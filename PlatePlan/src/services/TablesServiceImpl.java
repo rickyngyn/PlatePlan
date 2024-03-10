@@ -120,4 +120,32 @@ public class TablesServiceImpl implements TablesService {
 		return db.updateDataBaseEntry(table, SQLTables.TABLES_TABLE);
 	}
 
+	@Override
+	public boolean combineTables(List<Table> selectedRowDetails) {
+		
+		if (selectedRowDetails.size() <= 0)
+		{
+			return false;
+		}
+		String masterId = selectedRowDetails.get(0).getId();
+		int newCapacity = 0;
+		String server = selectedRowDetails.get(0).getServer();
+		
+		for (Table table: selectedRowDetails)
+		{
+			newCapacity += table.getCapacity();
+			
+			if (!db.deleteDataBaseEntry(SQLTables.TABLES_TABLE, table.getId()))
+			{
+				return false;
+			}
+		}
+		
+		Table combinedTable = new Table(masterId, newCapacity, server);
+		
+		return db.insertRecord(SQLTables.TABLES_TABLE, combinedTable);
+		
+		
+	}
+
 }

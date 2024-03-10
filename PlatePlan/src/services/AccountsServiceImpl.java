@@ -92,4 +92,9 @@ public class AccountsServiceImpl implements AccountService {
 		return null;
 	}
 
+	@Override
+	public boolean updateBusinessAccount(Business business) {
+		return db.updateDataBaseEntry(business, SQLTables.BUSINESS_TABLE);
+	}
+
 }

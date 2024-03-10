@@ -29,7 +29,9 @@ CREATE TABLE public.business (
     password character varying(50),
     open_from time(6) without time zone,
     open_until time(6) without time zone,
-    reservation_slots integer
+    reservation_slots integer,
+    phone character varying(20),
+    address character varying(500)
 );
 
 
@@ -137,14 +139,13 @@ ALTER TABLE public.servers OWNER TO postgres;
 -- Data for Name: business; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.business VALUES ('alfredo', 'password', '12:00:00', '23:59:00', 90);
+INSERT INTO public.business VALUES ('alfredo', 'password', '12:00:00', '23:59:00', 90, '(123) 456-7681', '123 Business St, Business City');
 
 
 --
 -- Data for Name: customer_menu; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.customer_menu VALUES ('3', 'Spaghetti Carbonara', 11, 'Spaghetti with creamy sauce, pancetta, and a touch of garlic.');
 INSERT INTO public.customer_menu VALUES ('4', 'Mushroom Risotto', 9.75, 'Creamy Arborio rice with wild mushrooms and a hint of truffle oil.');
 INSERT INTO public.customer_menu VALUES ('5', 'Beef Burger', 10.99, 'Grilled beef patty with lettuce, tomato, and our secret sauce, served with fries.');
 INSERT INTO public.customer_menu VALUES ('6', 'Grilled Salmon', 15.2, 'Freshly grilled salmon with a lemon butter sauce, served with vegetables.');
@@ -203,7 +204,6 @@ INSERT INTO public.feedbacks VALUES ('819', 'Meryl Streep', 1, '2024-02-14 17:50
 -- Data for Name: menu; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.menu VALUES ('3', 'Spaghetti Carbonara', 11, 'Spaghetti with creamy sauce, pancetta, and a touch of garlic.');
 INSERT INTO public.menu VALUES ('4', 'Mushroom Risotto', 9.75, 'Creamy Arborio rice with wild mushrooms and a hint of truffle oil.');
 INSERT INTO public.menu VALUES ('5', 'Beef Burger', 10.99, 'Grilled beef patty with lettuce, tomato, and our secret sauce, served with fries.');
 INSERT INTO public.menu VALUES ('6', 'Grilled Salmon', 15.2, 'Freshly grilled salmon with a lemon butter sauce, served with vegetables.');
@@ -226,6 +226,7 @@ INSERT INTO public.reservations VALUES ('9dcd2721-8e71-438c-814d-cafc81aa98d5', 
 INSERT INTO public.reservations VALUES ('28153cb5-c68f-4334-9876-9609d22ad347', 'johndoe@example.com', '2024-03-02', '12:00:00', 'Near Window', 'table4', 8, 'James Smith');
 INSERT INTO public.reservations VALUES ('b84b7797-4b1e-4049-9c0c-fc54c6dd6936', 'johndoe@example.com', '2024-03-02', '12:00:00', 'Near Window', 'table4', 8, 'James Smith');
 INSERT INTO public.reservations VALUES ('3173184f-b81a-418e-a4b8-492296ac0c5d', 'johndoe@example.com', '2024-03-02', '12:00:00', 'Near Window', 'table4', 8, 'James Smith');
+INSERT INTO public.reservations VALUES ('bf41db0f-954c-405e-bdc9-140ddf17d088', 'john', '2024-03-20', '13:30:00', 'This is my birthday', 'table2', 4, 'Alex Johnson');
 
 
 --

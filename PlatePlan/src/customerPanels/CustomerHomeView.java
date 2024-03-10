@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import componentPanels.BusinessInfoPanel;
 import database.DataBaseFactory;
 import dto.Business;
 import dto.Customer;
@@ -76,7 +77,7 @@ public class CustomerHomeView extends JPanel {
 				PlatePlanMain.switchPanels(new CustomerReservations(customer));
 			}
 		});
-		btnMakeReservation.setBounds(660, 209, 150, 70);
+		btnMakeReservation.setBounds(574, 161, 150, 70);
 		add(btnMakeReservation);
 
 		JLabel lblWelcome = new JLabel(
@@ -117,7 +118,7 @@ public class CustomerHomeView extends JPanel {
 			}
 		});
 
-		reservationList.setBounds(114, 209, 461, 186);
+		reservationList.setBounds(11, 120, 400, 186);
 
 		for (Reservation reservation : reservationService.getCustomerReservation(customer.getEmail())) {
 			resToIdMap.put(convertResToText(reservation), reservation.getId());
@@ -128,7 +129,7 @@ public class CustomerHomeView extends JPanel {
 
 		currentReservationView = new Panel();
 		currentReservationView.setBackground(new Color(250, 240, 230));
-		currentReservationView.setBounds(113, 419, 462, 186);
+		currentReservationView.setBounds(10, 419, 400, 186);
 		// ==============================
 		//add(currentReservationView);
 		// ==============================
@@ -137,18 +138,18 @@ public class CustomerHomeView extends JPanel {
 
 		Label lblWhen = new Label("When");
 		lblWhen.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblWhen.setBounds(10, 10, 62, 22);
+		lblWhen.setBounds(25, 10, 62, 22);
 		currentReservationView.add(lblWhen);
 
 		Label lblWhatTime = new Label("What Time");
 		lblWhatTime.setFont(new Font("Arial", Font.PLAIN, 14));
 		lblWhatTime.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-		lblWhatTime.setBounds(178, 10, 83, 22);
+		lblWhatTime.setBounds(158, 10, 83, 22);
 		currentReservationView.add(lblWhatTime);
 
 		Label lblCap = new Label("For How Many");
 		lblCap.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblCap.setBounds(344, 10, 108, 22);
+		lblCap.setBounds(253, 10, 108, 22);
 		currentReservationView.add(lblCap);
 
 		Label lblCap_1 = new Label("Special Instructions:");
@@ -158,17 +159,17 @@ public class CustomerHomeView extends JPanel {
 
 		lblWhenVal = new Label("When");
 		lblWhenVal.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblWhenVal.setBounds(10, 38, 108, 22);
+		lblWhenVal.setBounds(25, 38, 108, 22);
 		currentReservationView.add(lblWhenVal);
 
 		lblWhatTimeVal = new Label("What Time");
 		lblWhatTimeVal.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblWhatTimeVal.setBounds(178, 38, 83, 22);
+		lblWhatTimeVal.setBounds(158, 38, 83, 22);
 		currentReservationView.add(lblWhatTimeVal);
 
 		lblCapVal = new Label("For How Many");
 		lblCapVal.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblCapVal.setBounds(344, 38, 108, 22);
+		lblCapVal.setBounds(253, 38, 108, 22);
 		currentReservationView.add(lblCapVal);
 
 		JButton btnCancelRes = new JButton("Cancel Reservation");
@@ -197,7 +198,7 @@ public class CustomerHomeView extends JPanel {
 
 		JLabel lblUpcomingRes = new JLabel("Upcoming Reservations");
 		lblUpcomingRes.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblUpcomingRes.setBounds(114, 186, 180, 17);
+		lblUpcomingRes.setBounds(11, 97, 180, 17);
 		add(lblUpcomingRes);
 
 		btnViewMenu = new JButton("View Menu");
@@ -207,7 +208,7 @@ public class CustomerHomeView extends JPanel {
 			}
 		});
 		btnViewMenu.setFont(new Font("Dialog", Font.PLAIN, 16));
-		btnViewMenu.setBounds(820, 209, 150, 70);
+		btnViewMenu.setBounds(734, 161, 150, 70);
 		add(btnViewMenu);
 		
 		btnViewFeedback = new JButton("Feedbacks");
@@ -217,7 +218,7 @@ public class CustomerHomeView extends JPanel {
 			}
 		});
 		btnViewFeedback.setFont(new Font("Dialog", Font.PLAIN, 16));
-		btnViewFeedback.setBounds(660, 290, 150, 70);
+		btnViewFeedback.setBounds(574, 242, 150, 70);
 		add(btnViewFeedback);
 		
 		// Assuming business.getOpenFrom() and business.getOpenUntil() return strings like "9:00 AM" and "5:00 PM"
@@ -226,7 +227,7 @@ public class CustomerHomeView extends JPanel {
 		lblOpenLabel = new JLabel("<html><div style='text-align: center;'>Open Today From <b>" + openFrom + "</b> To <b>" + openUntil + "</b></div></html>");
 		lblOpenLabel.setFont(new Font("SansSerif", Font.PLAIN, 18)); // Using SansSerif for a clean look, and increasing the size for better readability
 		lblOpenLabel.setForeground(new Color(34, 139, 34)); // Setting the text color to a green for a friendly, inviting look
-		lblOpenLabel.setBounds(114, 105, 350, 30); // Adjusting the width to ensure the text fits, especially for longer times
+		lblOpenLabel.setBounds(584, 82, 300, 30); // Adjusting the width to ensure the text fits, especially for longer times
 		add(lblOpenLabel);
 
 		
@@ -236,10 +237,13 @@ public class CustomerHomeView extends JPanel {
 		lblAverageRatingOf.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAverageRatingOf.setFont(new Font("Arial", Font.BOLD, 18)); // Increased font size and made it bold for emphasis
 		lblAverageRatingOf.setForeground(new Color(0, 102, 204)); // Set the text color to a soft blue for a pleasant look
-		lblAverageRatingOf.setBounds(645, 107, 325, 30); // Adjusted width to 350 in case the text is longer
+		lblAverageRatingOf.setBounds(549, 120, 325, 30); // Adjusted width to 350 in case the text is longer
 		add(lblAverageRatingOf);
 
-
+		BusinessInfoPanel businessInfoPanel = new BusinessInfoPanel(DataBaseFactory.getDatabase().getBusinessAccount());
+		businessInfoPanel.setLocation(483, 329);
+		businessInfoPanel.setSize(560, 318);
+		add(businessInfoPanel);
 	}
 
 	private String convertResToText(Reservation reservation) {

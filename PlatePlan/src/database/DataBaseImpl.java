@@ -66,6 +66,12 @@ public class DataBaseImpl implements DataBase {
 					business = new Business(null, null);
 					business.setEmail(rs.getString("email"));
 					business.setPassword(rs.getString("password"));
+					business.setAddress(rs.getString("address"));
+					business.setPhoneNumber(rs.getString("phone"));
+					business.setOpenFrom(rs.getTime("open_from").toLocalTime());
+					business.setOpenUntil(rs.getTime("open_until").toLocalTime());
+					business.setReservationSlots(rs.getInt("reservation_slots"));
+
 				}
 			}
 		} catch (SQLException e) {
@@ -292,18 +298,21 @@ public class DataBaseImpl implements DataBase {
 
 		try {
 			PreparedStatement preparedStatement = null;
-			if (SQLTables.MENU_TABLE.equals(table))
-			{
+			if (SQLTables.MENU_TABLE.equals(table)) {
 				MenuItem menuItem = (MenuItem) object;
-				preparedStatement = menuItem.generateUpdateCommand(connection,
-						getColumnNamesList(SQLTables.MENU_TABLE), SQLTables.MENU_TABLE);
-			} else if (SQLTables.TABLES_TABLE.equals(table))
-			{
+				preparedStatement = menuItem.generateUpdateCommand(connection, getColumnNamesList(SQLTables.MENU_TABLE),
+						SQLTables.MENU_TABLE);
+			} else if (SQLTables.TABLES_TABLE.equals(table)) {
 				Table tableObj = (Table) object;
 				preparedStatement = tableObj.generateUpdateCommand(connection,
 						getColumnNamesList(SQLTables.TABLES_TABLE), SQLTables.TABLES_TABLE);
+			} else if (SQLTables.BUSINESS_TABLE.equals(table)) {
+				Business business = (Business) object;
+				preparedStatement = business.generateUpdateCommand(connection,
+						getColumnNamesList(SQLTables.BUSINESS_TABLE), SQLTables.BUSINESS_TABLE);
 			}
 			
+
 			System.out.println("Executing Update Command: " + preparedStatement.toString());
 			return preparedStatement.executeUpdate() > 0;
 		} catch (SQLException e) {

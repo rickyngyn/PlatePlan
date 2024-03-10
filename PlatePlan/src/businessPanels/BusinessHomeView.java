@@ -17,10 +17,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import componentPanels.BusinessInfoPanel;
 import customerPanels.Constants;
 import customerPanels.CustomerSignIn;
+import database.DataBaseFactory;
 import dto.Business;
 import main.PlatePlanMain;
+import service_interfaces.AccountService;
+import services.AccountsServiceImpl;
 
 public class BusinessHomeView extends JPanel {
 
@@ -32,6 +36,7 @@ public class BusinessHomeView extends JPanel {
 	private JButton btnManageServers;
 	private JButton btnManageMenu;
 	private JButton btnManageFeedback;
+	private JButton btnManageStore;
 
 	/**
 	 * Create the panel.
@@ -47,7 +52,7 @@ public class BusinessHomeView extends JPanel {
 		setBackground(Color.decode("#E7F6F2"));
 		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		// ===========================================================================
-		
+
 		this.business = bussiness;
 		lblNewLabel = new JLabel("BUSINESS MANAGEMENT");
 		lblNewLabel.setForeground(new Color(0, 0, 0));
@@ -196,5 +201,32 @@ public class BusinessHomeView extends JPanel {
 		});
 		btnManageFeedback.setBounds(455, 317, 200, 50);
 		add(btnManageFeedback);
+
+		btnManageStore = new JButton("Store");
+		btnManageStore.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PlatePlanMain.switchPanels(new BusinessStoreManagement(bussiness));
+			}
+		});
+		btnManageStore.setBackground(new Color(250, 240, 230));
+		btnManageStore.setBounds(665, 317, 200, 50);
+
+		btnManageStore.addMouseListener(new MouseAdapter() {
+			Icon hoverIcon = new ImageIcon(new ImageIcon(BusinessHomeView.class.getResource("/businessIcon.png"))
+					.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnManageStore.setIcon(hoverIcon);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnManageStore.setIcon(null); // Remove the icon when the mouse exits the button
+			}
+		});
+		add(btnManageStore);
+		
+		
 	}
 }

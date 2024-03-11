@@ -198,6 +198,27 @@ INSERT INTO public.feedbacks VALUES ('816', 'Leonardo DiCaprio', 4, '2024-02-11 
 INSERT INTO public.feedbacks VALUES ('817', 'Sandra Bullock', 2, '2024-02-12 13:15:42', 'The service was good, but the food didn’t meet my expectations. Not sure I’d return.');
 INSERT INTO public.feedbacks VALUES ('818', 'Tom Hanks', 5, '2024-02-13 22:05:29', 'Absolutely fantastic! The flavors are complex and satisfying. A must-visit for food lovers.');
 INSERT INTO public.feedbacks VALUES ('819', 'Meryl Streep', 1, '2024-02-14 17:50:11', 'Very disappointed with the quality of the food. Expected much better.');
+INSERT INTO public.feedbacks VALUES ('594b7f3f-930e-496c-a53f-4d99cf39ec34', 'Anonymous', 4, '2024-03-11 01:04:48', 'I think the restaurant had great vibes and was very romantic for my anniversary!');
+INSERT INTO public.feedbacks VALUES ('1', 'John Doe', 4, '2023-03-10 08:00:00', 'Great service!');
+INSERT INTO public.feedbacks VALUES ('2', 'Jane Smith', 5, '2023-03-10 12:00:00', 'Loved the ambiance.');
+INSERT INTO public.feedbacks VALUES ('3', 'Emily Johnson', 3, '2023-03-10 16:00:00', 'Good, but too noisy.');
+INSERT INTO public.feedbacks VALUES ('4', 'Michael Brown', 2, '2023-03-11 09:00:00', 'Service was slow.');
+INSERT INTO public.feedbacks VALUES ('5', 'Linda Davis', 4, '2023-03-11 13:00:00', 'Very friendly staff.');
+INSERT INTO public.feedbacks VALUES ('6', 'Robert Wilson', 5, '2023-03-11 17:00:00', 'Best coffee in town.');
+INSERT INTO public.feedbacks VALUES ('7', 'Patricia Miller', 4, '2023-03-12 10:00:00', 'Delicious breakfast options.');
+INSERT INTO public.feedbacks VALUES ('8', 'David Moore', 3, '2023-03-12 14:00:00', 'Average experience.');
+INSERT INTO public.feedbacks VALUES ('9', 'Lucas Anderson', 5, '2023-03-12 18:00:00', 'I will definitely come back!');
+INSERT INTO public.feedbacks VALUES ('10', 'Maria Thomas', 4, '2023-03-13 11:00:00', 'Lovely place for a quick snack.');
+INSERT INTO public.feedbacks VALUES ('14234', 'John Doe', 4, '2024-03-09 08:00:00', 'Great service!');
+INSERT INTO public.feedbacks VALUES ('223423', 'Jane Smith', 5, '2024-03-09 12:00:00', 'Loved the ambiance.');
+INSERT INTO public.feedbacks VALUES ('353452', 'Emily Johnson', 3, '2024-03-09 16:00:00', 'Good, but too noisy.');
+INSERT INTO public.feedbacks VALUES ('44123', 'Michael Brown', 2, '2024-03-05 09:00:00', 'Service was slow.');
+INSERT INTO public.feedbacks VALUES ('52342', 'Linda Davis', 4, '2024-03-05 13:00:00', 'Very friendly staff.');
+INSERT INTO public.feedbacks VALUES ('62134', 'Robert Wilson', 5, '2024-03-05 17:00:00', 'Best coffee in town.');
+INSERT INTO public.feedbacks VALUES ('75345', 'Patricia Miller', 4, '2024-03-01 10:00:00', 'Delicious breakfast options.');
+INSERT INTO public.feedbacks VALUES ('64568', 'David Moore', 3, '2024-03-01 14:00:00', 'Average experience.');
+INSERT INTO public.feedbacks VALUES ('9234', 'Lucas Anderson', 5, '2024-03-01 18:00:00', 'I will definitely come back!');
+INSERT INTO public.feedbacks VALUES ('10234', 'Maria Thomas', 4, '2024-03-08 11:00:00', 'Lovely place for a quick snack.');
 
 
 --
@@ -236,15 +257,13 @@ INSERT INTO public.reservations VALUES ('e5baaad8-75c4-48ab-86cd-afb2c7e689b3', 
 --
 
 INSERT INTO public.restaurant_tables VALUES ('table1', 2, '1');
-INSERT INTO public.restaurant_tables VALUES ('table2', 4, '2');
 INSERT INTO public.restaurant_tables VALUES ('table3', 6, '3');
-INSERT INTO public.restaurant_tables VALUES ('table4', 8, '4');
-INSERT INTO public.restaurant_tables VALUES ('table5', 10, '5');
-INSERT INTO public.restaurant_tables VALUES ('table6', 2, '1');
 INSERT INTO public.restaurant_tables VALUES ('table7', 4, '2');
 INSERT INTO public.restaurant_tables VALUES ('table8', 6, '3');
 INSERT INTO public.restaurant_tables VALUES ('table9', 8, '4');
 INSERT INTO public.restaurant_tables VALUES ('table10', 10, '1');
+INSERT INTO public.restaurant_tables VALUES ('table2', 14, '2');
+INSERT INTO public.restaurant_tables VALUES ('table4', 10, '4');
 
 
 --

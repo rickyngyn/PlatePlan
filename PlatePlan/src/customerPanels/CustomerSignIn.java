@@ -59,15 +59,14 @@ public class CustomerSignIn extends JPanel {
 		welcomeLabel.setBounds(308, 36, 483, 70); // Adjust bounds as needed for better positioning
 		add(welcomeLabel);
 
-        JLabel welcomeLabel_1 = new JLabel("Flavors of Italy, Fresh to Your Table");
-        welcomeLabel_1.setVerticalAlignment(SwingConstants.CENTER);
-        welcomeLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-        welcomeLabel_1.setForeground(new Color(0, 0, 0));
-        welcomeLabel_1.setFont(new Font("Serif", Font.BOLD, 17));
-        welcomeLabel_1.setBounds(308, 92, 483, 47);
-        add(welcomeLabel_1);
+		JLabel welcomeLabel_1 = new JLabel("Flavors of Italy, Fresh to Your Table");
+		welcomeLabel_1.setVerticalAlignment(SwingConstants.CENTER);
+		welcomeLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+		welcomeLabel_1.setForeground(new Color(0, 0, 0));
+		welcomeLabel_1.setFont(new Font("Serif", Font.BOLD, 17));
+		welcomeLabel_1.setBounds(308, 92, 483, 47);
+		add(welcomeLabel_1);
 
-		
 		username = new JTextField();
 		username.setBounds(425, 242, 250, 30);
 		add(username);
@@ -108,7 +107,7 @@ public class CustomerSignIn extends JPanel {
 		btnRegister.setBackground(new Color(255, 250, 250));
 		btnRegister.setBounds(400, 512, 300, 29);
 		add(btnRegister);
-		
+
 		btnBusinessLogin = new JButton("Business Login");
 		btnBusinessLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -117,28 +116,26 @@ public class CustomerSignIn extends JPanel {
 		});
 		btnBusinessLogin.setBounds(938, 30, 133, 39);
 		add(btnBusinessLogin);
-		
-        int width = Constants.WINDOW_MAX_WIDTH;
-        int height = Constants.WINDOW_MAX_HEIGHT;
+
+		int width = Constants.WINDOW_MAX_WIDTH;
+		int height = Constants.WINDOW_MAX_HEIGHT;
 		// Load the original ImageIcon
-        ImageIcon originalIcon = new ImageIcon(CustomerSignIn.class.getResource("/backgroundimage.jpg"));
-        
-        // Resize the image
-        Image originalImage = originalIcon.getImage();
-        Image resizedImage = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-        
-        // Create a new ImageIcon for the JLabel
-        ImageIcon resizedIcon = new ImageIcon(resizedImage);
+		ImageIcon originalIcon = new ImageIcon(CustomerSignIn.class.getResource("/backgroundimage.jpg"));
 
-        // Create the JLabel with the resized ImageIcon
-        JLabel back = new JLabel(resizedIcon);
-        back.setLayout(null);
-        back.setBounds(0, 0, width, height);
+		// Resize the image
+		Image originalImage = originalIcon.getImage();
+		Image resizedImage = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
 
-        // Add the JLabel to your container (e.g., a JFrame or JPanel)
-        add(back);
-        
+		// Create a new ImageIcon for the JLabel
+		ImageIcon resizedIcon = new ImageIcon(resizedImage);
 
+		// Create the JLabel with the resized ImageIcon
+		JLabel back = new JLabel(resizedIcon);
+		back.setLayout(null);
+		back.setBounds(0, 0, width, height);
+
+		// Add the JLabel to your container (e.g., a JFrame or JPanel)
+		add(back);
 
 	}
 

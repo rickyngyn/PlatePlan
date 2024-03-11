@@ -28,6 +28,7 @@ public class CustomerFeedbackScreen extends JPanel {
 	private Customer customer;
 	private List<Feedback> feedbacks;
 	private FeedbackService feedbackService;
+
 	/**
 	 * Create the panel.
 	 */
@@ -74,11 +75,11 @@ public class CustomerFeedbackScreen extends JPanel {
 		});
 		btnBack.setBounds(979, 10, 89, 23);
 		add(btnBack);
-		
+
 		EditableFeedbackComponent feedbackComponent = new EditableFeedbackComponent(customer);
 		feedbackComponent.setLocation(620, 310);
 		feedbackComponent.setSize(451, 300);
-		
+
 		add(feedbackComponent);
 
 	}

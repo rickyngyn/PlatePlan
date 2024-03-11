@@ -40,14 +40,15 @@ public class ServiceFactory {
 
 		System.out.println("Setting Up Feedback Service");
 		feedbackService = FeedbackServiceImpl.getInstance();
-		
+
 		System.out.println("Initializing Dependencies");
 		accountService.initializeDependency(reservationService, tablesService, serviceUtils);
 		reservationService.initializeDependency(accountService, tablesService, serviceUtils);
 		tablesService.initializeDependency(accountService, reservationService, serviceUtils);
 		serviceUtils.initializeDependency(accountService, reservationService, tablesService);
 		menuService.initializeDependency(reservationService, tablesService, serviceUtils, accountService);
-		feedbackService.initializeDependency(reservationService, tablesService, serviceUtils, accountService, menuService);
+		feedbackService.initializeDependency(reservationService, tablesService, serviceUtils, accountService,
+				menuService);
 
 	}
 

@@ -41,7 +41,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 		return instance;
 
 	}
-	
+
 	@Override
 	public void initializeDependency(ReservationService reservationService, TablesService tablesService,
 			ServerService serviceUtils, AccountService accountService, MenuService menuService) {
@@ -53,25 +53,23 @@ public class FeedbackServiceImpl implements FeedbackService {
 		this.accountService = accountService;
 		this.menuService = menuService;
 	}
-	
+
 	@Override
 	public Feedback addNewFeedback(String givenString, int rating, Customer customer) {
 		String customerName = customer.getFirstName() + " " + customer.getLastName();
-		Feedback feedback = new Feedback(UUID.randomUUID().toString(), 
-				customerName, rating, LocalDateTime.now(), givenString);
-		if (db.insertRecord(SQLTables.FEEDBACKS_TABLE, feedback))
-		{
+		Feedback feedback = new Feedback(UUID.randomUUID().toString(), customerName, rating, LocalDateTime.now(),
+				givenString);
+		if (db.insertRecord(SQLTables.FEEDBACKS_TABLE, feedback)) {
 			return feedback;
 		}
 		return null;
 	}
-	
+
 	@Override
 	public Feedback addNewAnonymousFeedback(String givenString, int rating) {
-		Feedback feedback = new Feedback(UUID.randomUUID().toString(), 
-				"Anonymous", rating, LocalDateTime.now(), givenString);
-		if (db.insertRecord(SQLTables.FEEDBACKS_TABLE, feedback))
-		{
+		Feedback feedback = new Feedback(UUID.randomUUID().toString(), "Anonymous", rating, LocalDateTime.now(),
+				givenString);
+		if (db.insertRecord(SQLTables.FEEDBACKS_TABLE, feedback)) {
 			return feedback;
 		}
 		return null;
@@ -86,20 +84,19 @@ public class FeedbackServiceImpl implements FeedbackService {
 	public List<Feedback> getAllFeedbacks() {
 		return db.getAllFeedbacks();
 	}
-	
+
 	@Override
 	public double getAverageRating() {
 		double average = 0;
 		List<Feedback> feedbacks = db.getAllFeedbacks();
-		for (Feedback feedback: feedbacks)
-		{
+		for (Feedback feedback : feedbacks) {
 			average += feedback.getRating();
 		}
-		
-		average = average/feedbacks.size();
-		
+
+		average = average / feedbacks.size();
+
 		DecimalFormat df = new DecimalFormat("#.#");
-		
+
 		return Double.valueOf(df.format(average));
 	}
 

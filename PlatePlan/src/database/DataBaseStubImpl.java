@@ -142,7 +142,6 @@ public class DataBaseStubImpl implements DataBase {
 		return null;
 	}
 
-
 	@Override
 	public void publishCustomerMenu() {
 		// TODO Auto-generated method stub

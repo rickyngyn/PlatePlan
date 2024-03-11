@@ -315,7 +315,6 @@ public class DataBaseImpl implements DataBase {
 				preparedStatement = reservation.generateUpdateCommand(connection,
 						getColumnNamesList(SQLTables.RESERVATION_TABLE), SQLTables.RESERVATION_TABLE);
 			}
-			
 
 			System.out.println("Executing Update Command: " + preparedStatement.toString());
 			return preparedStatement.executeUpdate() > 0;

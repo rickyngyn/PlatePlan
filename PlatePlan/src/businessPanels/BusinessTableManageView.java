@@ -1,7 +1,6 @@
 package businessPanels;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -9,13 +8,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.AbstractCellEditor;
 import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -25,15 +23,13 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
 
-import componentPanels.BusinessMenuComponent;
 import customerPanels.Constants;
 import dto.Business;
 import dto.Table;
@@ -42,9 +38,6 @@ import service_interfaces.ServerService;
 import service_interfaces.TablesService;
 import services.ServerServiceImpl;
 import services.TablesServiceImpl;
-import javax.swing.ListSelectionModel;
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent;
 
 public class BusinessTableManageView extends JPanel {
 	private JTextField textID;

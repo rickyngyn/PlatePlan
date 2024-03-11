@@ -37,11 +37,10 @@ public class Business {
 	private LocalTime openUntil = LocalTime.of(23, 59);
 
 	private long reservationSlots = 90;
-	
+
 	private String phoneNumber;
-	
+
 	private String address;
-	
 
 	private List<TimeSlot> allTimeSlots = calculateTimeSlots();
 
@@ -194,18 +193,19 @@ public class Business {
 				&& Objects.equals(openUntil, other.openUntil) && Objects.equals(password, other.password)
 				&& Objects.equals(phoneNumber, other.phoneNumber) && reservationSlots == other.reservationSlots;
 	}
-	
+
 	public PreparedStatement generateUpdateCommand(Connection conn, List<String> columns, String tableName) {
 		try {
 			columns.remove(0);
 			String sql = "UPDATE " + tableName + " SET "
 					+ String.join(", ", columns.stream().map(column -> column + " = ?").toArray(String[]::new))
 					+ " WHERE email = ?;";
-			
+
 			System.out.println(sql);
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			int index = 1; // Start from the first "?" in SET clause
-			// Assuming setters/getters are named in the standard Java convention based on the field names.
+			// Assuming setters/getters are named in the standard Java convention based on
+			// the field names.
 			stmt.setString(index++, getPassword());
 			stmt.setTime(index++, Time.valueOf(getOpenFrom())); // Convert LocalTime to SQL Time
 			stmt.setTime(index++, Time.valueOf(getOpenUntil())); // Convert LocalTime to SQL Time

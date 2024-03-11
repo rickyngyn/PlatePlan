@@ -16,6 +16,7 @@ public class Feedback {
 		this.timestamp = timestamp;
 		this.feedback = feedback;
 	}
+
 	public Feedback() {
 		super();
 	}
@@ -129,7 +130,6 @@ public class Feedback {
 			pstmt.setInt(3, this.getRating());
 			pstmt.setTimestamp(4, Timestamp.valueOf(this.getTimestamp()));
 			pstmt.setString(5, this.getFeedback());
-
 
 			return pstmt;
 		} catch (SQLException e) {

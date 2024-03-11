@@ -104,7 +104,7 @@ public class Table {
 
 		return null;
 	}
-	
+
 	public PreparedStatement generateUpdateCommand(Connection conn, List<String> columns, String tableName) {
 		try {
 			columns.remove(0);

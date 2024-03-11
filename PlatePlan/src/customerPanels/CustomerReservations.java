@@ -108,7 +108,7 @@ public class CustomerReservations extends JPanel {
 				getDateAvailableSlots();
 			}
 		});
-		spinner.setModel(new SpinnerNumberModel(1, 1, 8, 1));
+		spinner.setModel(new SpinnerNumberModel(1, 1, tablesService.maxTableSize(), 1));
 		spinner.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		spinner.setBounds(423, 104, 61, 30);
 		add(spinner);

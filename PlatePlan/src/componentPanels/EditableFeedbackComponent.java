@@ -30,6 +30,7 @@ public class EditableFeedbackComponent extends JPanel {
 	private JSpinner spinner;
 	private Customer customer;
 	private FeedbackService feedbackService;
+
 	/**
 	 * Create the panel.
 	 */
@@ -40,7 +41,7 @@ public class EditableFeedbackComponent extends JPanel {
 		this.setMaximumSize(new Dimension(451, 300));
 		setBackground(new Color(248, 248, 255));
 		setLayout(null);
-		
+
 		this.customer = customer;
 		this.feedbackService = FeedbackServiceImpl.getInstance();
 		// JTextArea for description
@@ -55,34 +56,33 @@ public class EditableFeedbackComponent extends JPanel {
 		txtDescription.setBorder(null); // No border to mimic a JLabel
 
 		add(txtDescription);
-		
+
 		JLabel lblNewLabel = new JLabel("Tell us about your recent experience");
 		lblNewLabel.setBounds(10, 11, 250, 27);
 		add(lblNewLabel);
-		
+
 		spinner = new JSpinner();
 		spinner.setModel(new SpinnerNumberModel(5, 0, 5, 1));
 		spinner.setFont(new Font("Arial", Font.BOLD, 16));
 		spinner.setBounds(376, 169, 62, 27);
 		add(spinner);
-		
+
 		anonChckBox = new JCheckBox("Anonymous Post");
 		anonChckBox.setBounds(266, 225, 172, 23);
 		add(anonChckBox);
-		
+
 		JLabel lblRateUsOut = new JLabel("Rate us out of 5");
 		lblRateUsOut.setBounds(270, 171, 96, 27);
 		add(lblRateUsOut);
-		
+
 		btnNewButton = new JButton("Post");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (anonChckBox.isSelected())
-				{
-					feedbackService.addNewAnonymousFeedback(txtDescription.getText(), (int)spinner.getValue());
-				}else {
-					feedbackService.addNewFeedback(txtDescription.getText(), (int)spinner.getValue(), customer);
-					
+				if (anonChckBox.isSelected()) {
+					feedbackService.addNewAnonymousFeedback(txtDescription.getText(), (int) spinner.getValue());
+				} else {
+					feedbackService.addNewFeedback(txtDescription.getText(), (int) spinner.getValue(), customer);
+
 				}
 				JOptionPane.showMessageDialog(EditableFeedbackComponent.this, "Feedback posted successfully", "Success",
 						JOptionPane.INFORMATION_MESSAGE);
@@ -92,8 +92,6 @@ public class EditableFeedbackComponent extends JPanel {
 		btnNewButton.setFont(new Font("Arial", Font.PLAIN, 14));
 		btnNewButton.setBounds(304, 255, 105, 34);
 		add(btnNewButton);
-		
-		
 
 	}
 }

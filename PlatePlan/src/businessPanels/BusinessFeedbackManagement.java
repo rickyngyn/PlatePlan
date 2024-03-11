@@ -15,8 +15,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import componentPanels.BusinessFeedbackComponent;
 import componentPanels.FeedbackAnalysisPanel;
-import componentPanels.StaticFeedbackComponent;
 import customerPanels.Constants;
 import dto.Business;
 import dto.Feedback;
@@ -30,6 +30,7 @@ public class BusinessFeedbackManagement extends JPanel {
 	private List<Feedback> feedbacks;
 	private FeedbackService feedbackService;
 	private Business business;
+
 	/**
 	 * Create the panel.
 	 */
@@ -55,7 +56,7 @@ public class BusinessFeedbackManagement extends JPanel {
 
 		// Adding your components (e.g., menu items) to the container panel
 		for (Feedback feedback : this.feedbacks) {
-			containerPanel.add(new StaticFeedbackComponent(feedback));
+			containerPanel.add(new BusinessFeedbackComponent(feedback));
 			containerPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 		}
 
@@ -76,7 +77,6 @@ public class BusinessFeedbackManagement extends JPanel {
 		});
 		btnBack.setBounds(979, 10, 89, 23);
 		add(btnBack);
-		
 
 		// Label for "Current Average Rating"
 		JLabel lblAvgRating = new JLabel("Current Average Rating: " + feedbackService.getAverageRating());
@@ -95,7 +95,7 @@ public class BusinessFeedbackManagement extends JPanel {
 		FeedbackAnalysisPanel feedbackAnalysisPanel = new FeedbackAnalysisPanel(feedbacks);
 		feedbackAnalysisPanel.setSize(450, 450);
 		feedbackAnalysisPanel.setLocation(620, 160);
-		
+
 		add(feedbackAnalysisPanel);
 	}
 }

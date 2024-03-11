@@ -15,16 +15,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.Timer;
 
-import componentPanels.BusinessInfoPanel;
 import customerPanels.Constants;
 import customerPanels.CustomerSignIn;
-import database.DataBaseFactory;
 import dto.Business;
 import main.PlatePlanMain;
-import service_interfaces.AccountService;
-import services.AccountsServiceImpl;
 
 public class BusinessHomeView extends JPanel {
 
@@ -226,7 +221,6 @@ public class BusinessHomeView extends JPanel {
 			}
 		});
 		add(btnManageStore);
-		
-		
+
 	}
 }

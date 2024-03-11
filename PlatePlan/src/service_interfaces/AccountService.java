@@ -12,7 +12,7 @@ public interface AccountService {
 	public Business businessLogin(String email, String password);
 
 	public Customer getCustomerAccountDetails(String email);
-	
+
 	public boolean updateBusinessAccount(Business business);
 
 	void initializeDependency(ReservationService reservationService, TablesService tablesService,

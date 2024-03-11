@@ -90,26 +90,26 @@ public class BusinessSignIn extends JPanel {
 		signInErrorLbl.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		signInErrorLbl.setForeground(Color.RED);
 		signInErrorLbl.setBounds(372, 118, 356, 30);
-		
+
 		int width = Constants.WINDOW_MAX_WIDTH;
-        int height = Constants.WINDOW_MAX_HEIGHT;
+		int height = Constants.WINDOW_MAX_HEIGHT;
 		// Load the original ImageIcon
-        ImageIcon originalIcon = new ImageIcon(CustomerSignIn.class.getResource("/backgroundimage.jpg"));
-        
-        // Resize the image
-        Image originalImage = originalIcon.getImage();
-        Image resizedImage = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-        
-        // Create a new ImageIcon for the JLabel
-        ImageIcon resizedIcon = new ImageIcon(resizedImage);
+		ImageIcon originalIcon = new ImageIcon(CustomerSignIn.class.getResource("/backgroundimage.jpg"));
 
-        // Create the JLabel with the resized ImageIcon
-        JLabel back = new JLabel(resizedIcon);
-        back.setLayout(null);
-        back.setBounds(0, 0, width, height);
+		// Resize the image
+		Image originalImage = originalIcon.getImage();
+		Image resizedImage = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
 
-        // Add the JLabel to your container (e.g., a JFrame or JPanel)
-        add(back);
+		// Create a new ImageIcon for the JLabel
+		ImageIcon resizedIcon = new ImageIcon(resizedImage);
+
+		// Create the JLabel with the resized ImageIcon
+		JLabel back = new JLabel(resizedIcon);
+		back.setLayout(null);
+		back.setBounds(0, 0, width, height);
+
+		// Add the JLabel to your container (e.g., a JFrame or JPanel)
+		add(back);
 
 	}
 

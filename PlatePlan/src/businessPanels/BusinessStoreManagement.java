@@ -1,34 +1,30 @@
 package businessPanels;
 
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.SpinnerDateModel;
 import javax.swing.SpinnerNumberModel;
 
 import componentPanels.BusinessInfoPanel;
 import customerPanels.Constants;
+import dto.Business;
 import main.PlatePlanMain;
 import service_interfaces.AccountService;
 import services.AccountsServiceImpl;
-import dto.Business;
-
-import java.util.Calendar;
-import java.util.Date;
-import javax.swing.JTextPane;
 
 public class BusinessStoreManagement extends JPanel {
 
@@ -42,6 +38,7 @@ public class BusinessStoreManagement extends JPanel {
 	private JTextPane textPane;
 	private BusinessInfoPanel businessInfoPanel;
 	private AccountService accountService;
+
 	public BusinessStoreManagement(Business bussiness) {
 		accountService = AccountsServiceImpl.getInstance();
 		setFont(new Font("Calibri", Font.PLAIN, 18));
@@ -75,9 +72,9 @@ public class BusinessStoreManagement extends JPanel {
 		lblOpenUntil.setBounds(113, 153, 120, 25);
 		add(lblOpenUntil);
 
-		spinnerOpenUntil = new JSpinner(
-				new SpinnerDateModel(Date.from(business.getOpenUntil().atDate(LocalDate.now()).atZone(ZoneId.systemDefault()).toInstant()),
-						null, null, Calendar.MINUTE));
+		spinnerOpenUntil = new JSpinner(new SpinnerDateModel(
+				Date.from(business.getOpenUntil().atDate(LocalDate.now()).atZone(ZoneId.systemDefault()).toInstant()),
+				null, null, Calendar.MINUTE));
 		JSpinner.DateEditor timeEditorUntil = new JSpinner.DateEditor(spinnerOpenUntil, "HH:mm");
 		spinnerOpenUntil.setEditor(timeEditorUntil);
 		spinnerOpenUntil.setBounds(243, 153, 200, 25);
@@ -119,8 +116,10 @@ public class BusinessStoreManagement extends JPanel {
 				business.setAddress(textPane.getText().trim());
 				business.setPhoneNumber(textFieldPhoneNumber.getText());
 				business.setReservationSlots(((Double) spinnerSittingDuration.getValue()).longValue());
-				business.setOpenFrom(((Date) spinnerOpenFrom.getValue()).toInstant().atZone(ZoneId.systemDefault()).toLocalTime());
-				business.setOpenUntil(((Date) spinnerOpenUntil.getValue()).toInstant().atZone(ZoneId.systemDefault()).toLocalTime());
+				business.setOpenFrom(
+						((Date) spinnerOpenFrom.getValue()).toInstant().atZone(ZoneId.systemDefault()).toLocalTime());
+				business.setOpenUntil(
+						((Date) spinnerOpenUntil.getValue()).toInstant().atZone(ZoneId.systemDefault()).toLocalTime());
 				accountService.updateBusinessAccount(business);
 				PlatePlanMain.switchPanels(new BusinessStoreManagement(business));
 			}

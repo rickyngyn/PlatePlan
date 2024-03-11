@@ -38,8 +38,8 @@ public interface DataBase {
 	void publishCustomerMenu();
 
 	public List<Feedback> getAllFeedbacks();
-	
-	public boolean deleteDataBaseEntry (String table, String id);
+
+	public boolean deleteDataBaseEntry(String table, String id);
 
 	boolean updateDataBaseEntry(Object object, String table);
 

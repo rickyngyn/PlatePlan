@@ -9,7 +9,7 @@ import dto.TimeSlot;
 public interface TablesService {
 
 	boolean registerTable(String id, int cap, String server);
-	
+
 	boolean updateTable(String id, int cap, String server);
 
 	boolean deleteTable(String id);
@@ -22,5 +22,7 @@ public interface TablesService {
 			ServerService serviceUtils);
 
 	boolean combineTables(List<Table> selectedRowDetails);
+
+	int maxTableSize();
 
 }

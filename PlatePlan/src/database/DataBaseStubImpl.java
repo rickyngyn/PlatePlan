@@ -15,13 +15,13 @@ import dto.MenuItem;
 import dto.Reservation;
 import dto.Server;
 import dto.Table;
-import misc.StubDataBaseRecords;
 
 public class DataBaseStubImpl implements DataBase {
 
 	private static DataBaseStubImpl dataBaseInstance;
-
+	private StubDataBaseRecords db;
 	private DataBaseStubImpl() {
+		db = StubDataBaseRecords.getInstance();
 	}
 
 	public static synchronized DataBaseStubImpl getInstance() {
@@ -39,18 +39,18 @@ public class DataBaseStubImpl implements DataBase {
 			if (tableName.equals(SQLTables.RESERVATION_TABLE)) {
 				Reservation reservation = (Reservation) object;
 
-				StubDataBaseRecords.reservations.add(reservation);
+				db.reservations.add(reservation);
 
 			} else if (tableName.equals(SQLTables.TABLES_TABLE)) {
 				Table table = (Table) object;
-				StubDataBaseRecords.tables.add(table);
+				db.tables.add(table);
 			} else if (tableName.equals(SQLTables.ACCOUNTS_TABLE)) {
 				Customer customer = (Customer) object;
 				try {
 					getCustomerAccount(customer.getEmail());
 					return false;
 				} catch (Exception e) {
-					StubDataBaseRecords.customers.add(customer);
+					db.customers.add(customer);
 
 				}
 			}
@@ -69,7 +69,7 @@ public class DataBaseStubImpl implements DataBase {
 
 	@Override
 	public Customer getCustomerAccount(String email) throws AccountNotFoundException {
-		List<Customer> customers = StubDataBaseRecords.customers;
+		List<Customer> customers = db.customers;
 
 		try {
 
@@ -85,30 +85,30 @@ public class DataBaseStubImpl implements DataBase {
 
 	@Override
 	public Business getBusinessAccount() {
-		return StubDataBaseRecords.business;
+		return db.business;
 	}
 
 	@Override
 	public List<Table> getAllTables() {
-		return StubDataBaseRecords.tables;
+		return db.tables;
 	}
 
 	@Override
 	public List<Server> getAllServers() {
-		return StubDataBaseRecords.servers;
+		return db.servers;
 	}
 
 	@Override
 	public List<Reservation> getAllReservations() {
-		return StubDataBaseRecords.reservations != null ? StubDataBaseRecords.reservations
+		return db.reservations != null ? db.reservations
 				: new ArrayList<Reservation>();
 	}
 
 	@Override
 	public List<Reservation> getReservationsForDate(LocalDate date) {
 
-		System.out.println(date + " All Reservations: " + StubDataBaseRecords.reservations);
-		return StubDataBaseRecords.reservations.stream().filter(reservation -> reservation.getDate().equals(date))
+		System.out.println(date + " All Reservations: " + db.reservations);
+		return db.reservations.stream().filter(reservation -> reservation.getDate().equals(date))
 				.collect(Collectors.toList());
 
 	}
@@ -120,7 +120,7 @@ public class DataBaseStubImpl implements DataBase {
 		if (customer != null) {
 
 			List<Reservation> reservations = new ArrayList<Reservation>();
-			for (Reservation resId : StubDataBaseRecords.reservations) {
+			for (Reservation resId : db.reservations) {
 				reservations.add(getReservationWithId(resId.getId()));
 			}
 			reservations.removeAll(Collections.singleton(null));
@@ -131,7 +131,7 @@ public class DataBaseStubImpl implements DataBase {
 
 	@Override
 	public Reservation getReservationWithId(String id) {
-		return StubDataBaseRecords.reservations.stream().filter(reservation -> reservation.getId().equals(id))
+		return db.reservations.stream().filter(reservation -> reservation.getId().equals(id))
 				.findFirst().orElse(null);
 
 	}

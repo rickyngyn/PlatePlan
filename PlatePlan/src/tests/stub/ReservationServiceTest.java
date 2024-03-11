@@ -1,4 +1,4 @@
-package tests;
+package tests.stub;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -17,11 +17,11 @@ import org.junit.jupiter.api.Test;
 import database.DataBase;
 import database.DataBaseFactory;
 import database.DataBaseStubImpl;
+import database.StubDataBaseRecords;
 import dto.Customer;
 import dto.Reservation;
 import dto.TimeSlot;
 import main.ServiceFactory;
-import misc.StubDataBaseRecords;
 import service_interfaces.AccountService;
 import service_interfaces.ReservationService;
 import services.AccountsServiceImpl;
@@ -31,7 +31,7 @@ class ReservationServiceTest {
 	private ReservationService reservationService;
 	private DataBase dataBase;
 	private AccountService accountService;
-
+	private StubDataBaseRecords stubDb;
 	@BeforeEach
 	void setUp() {
 		ServiceFactory.setUpServices();
@@ -39,7 +39,8 @@ class ReservationServiceTest {
 		accountService = AccountsServiceImpl.getInstance();
 		reservationService = ReservationServiceImpl.getInstance();
 		dataBase = DataBaseFactory.getDatabase();
-		StubDataBaseRecords.reset();
+		stubDb = StubDataBaseRecords.getInstance();
+		stubDb.reset();
 	}
 
 	@Test
@@ -72,13 +73,13 @@ class ReservationServiceTest {
 	@Test
 	void getCustomerReservation_ExistingReservations() {
 		dataBase = DataBaseStubImpl.getInstance();
-		StubDataBaseRecords.reservations.clear(); // clearing any previous reservations
+		stubDb.reservations.clear(); // clearing any previous reservations
 
 		// setting up a fake reservation
 		String customerEmail = "max@email.com";
 		Reservation fakeReservation = new Reservation("fakeReservationId", customerEmail, LocalDate.now(),
 				new TimeSlot(LocalTime.of(18, 0), LocalTime.of(20, 0)), "Test reservation", "table1", 4);
-		StubDataBaseRecords.reservations.add(fakeReservation);
+		stubDb.reservations.add(fakeReservation);
 
 		List<Reservation> results = reservationService.getCustomerReservation(customerEmail);
 
@@ -99,10 +100,10 @@ class ReservationServiceTest {
 	@Test
 	void createCustomerReservation_NonOverlappingTimeSlotsSameDay() {
 		dataBase = DataBaseStubImpl.getInstance();
-		StubDataBaseRecords.reservations.clear();
+		stubDb.reservations.clear();
 
 		dataBase = DataBaseStubImpl.getInstance();
-		StubDataBaseRecords.reservations.clear();
+		stubDb.reservations.clear();
 		String customerEmail = "johndoe@example.com";
 		Customer customer = new Customer("johndoe@example.com", "john", "doe", "password");
 		LocalDate reservationDate = LocalDate.now();
@@ -111,7 +112,7 @@ class ReservationServiceTest {
 		// adding an existing reservation for the customer
 		Reservation existingReservation = new Reservation("resId1", customerEmail, reservationDate, existingSlot,
 				"Existing reservation", "table1", 4);
-		StubDataBaseRecords.reservations.add(existingReservation); // Add to the fake database
+		stubDb.reservations.add(existingReservation); // Add to the fake database
 
 		// attempt to create a new reservation for the same day but different time slot
 		TimeSlot newSlot = new TimeSlot(LocalTime.of(16, 0), LocalTime.of(18, 0));
@@ -126,13 +127,13 @@ class ReservationServiceTest {
 	@Test
 	void createCustomerReservation_AccountNotFoundException() {
 		dataBase = DataBaseStubImpl.getInstance();
-		StubDataBaseRecords.reservations.clear();
+		stubDb.reservations.clear();
 
 		String customerEmail = "johndoe@example.com";
 		Customer customer = new Customer("johndoe@example.com", "john", "doe", "password");
 
 		// ensure no reservations for this customer in StubDataBaseRecords
-		StubDataBaseRecords.reservations.removeIf(res -> res.getCustomerId().equals(customerEmail));
+		stubDb.reservations.removeIf(res -> res.getCustomerId().equals(customerEmail));
 
 		// create a new reservation for a date
 		LocalDate reservationDate = LocalDate.now();

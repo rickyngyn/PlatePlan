@@ -1,4 +1,4 @@
-package tests;
+package tests.stub;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -19,12 +19,12 @@ import org.junit.jupiter.api.Test;
 
 import database.DataBase;
 import database.DataBaseFactory;
+import database.StubDataBaseRecords;
 import dto.Customer;
 import dto.Server;
 import dto.Table;
 import dto.TimeSlot;
 import main.ServiceFactory;
-import misc.StubDataBaseRecords;
 import service_interfaces.ReservationService;
 import service_interfaces.ServerService;
 import service_interfaces.TablesService;
@@ -37,6 +37,7 @@ class ServiceUtilsTest {
 	private ServerService serverService;
 	private TablesService tablesService;
 	private DataBase db;
+	private StubDataBaseRecords stubDb;
 
 	@BeforeEach
 	void setUp() {
@@ -46,13 +47,14 @@ class ServiceUtilsTest {
 		tablesService = TablesServiceImpl.getInstance();
 		serverService = ServerServiceImpl.getInstance();
 		db = DataBaseFactory.getDatabase();
-		StubDataBaseRecords.reset();
+		stubDb = StubDataBaseRecords.getInstance();
+		stubDb.reset();
 	}
 
 	@Test
 	void deleteTableTest() {
 		tablesService.deleteTable("1");
-		assertEquals(5, StubDataBaseRecords.tables.size());
+		assertEquals(5, stubDb.tables.size());
 		// Delete table with ID 1. Was 6 tables now should be 5
 		boolean result = tablesService.deleteTable("0");
 		assertFalse(result);
@@ -93,7 +95,7 @@ class ServiceUtilsTest {
 		Map<String, String> result = serverService.getAllServersMap();
 
 		Set<String> ids = new HashSet<>();
-		for (Server server : StubDataBaseRecords.servers) {
+		for (Server server : stubDb.servers) {
 			ids.add(server.getId());
 		}
 

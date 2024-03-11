@@ -1,4 +1,4 @@
-package tests;
+package tests.stub;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -9,10 +9,10 @@ import org.junit.jupiter.api.Test;
 
 import database.DataBase;
 import database.DataBaseFactory;
+import database.StubDataBaseRecords;
 import dto.Business;
 import dto.Customer;
 import main.ServiceFactory;
-import misc.StubDataBaseRecords;
 import service_interfaces.AccountService;
 import service_interfaces.ReservationService;
 import services.AccountsServiceImpl;
@@ -30,7 +30,7 @@ class AccountServiceTest {
 		accountService = AccountsServiceImpl.getInstance();
 		reservationService = ReservationServiceImpl.getInstance();
 		db = DataBaseFactory.getDatabase();
-		StubDataBaseRecords.reset();
+		StubDataBaseRecords.getInstance().reset();
 
 	}
 

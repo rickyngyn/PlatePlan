@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalDate;
+import java.util.List;
 
 public class Reservation {
 
@@ -188,6 +189,32 @@ public class Reservation {
 			e.printStackTrace();
 		}
 
+		return null;
+	}
+
+	public PreparedStatement generateUpdateCommand(Connection conn, List<String> columns, String tableName) {
+		try {
+			columns.remove(0);
+			String sql = "UPDATE " + tableName + " SET "
+					+ String.join(", ", columns.stream().map(column -> column + " = ?").toArray(String[]::new))
+					+ " WHERE id = ?;";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+
+			stmt.setString(1, this.customerId);
+			stmt.setDate(2, Date.valueOf(this.date));
+			stmt.setTime(3, Time.valueOf(this.time.getFrom()));
+			stmt.setString(4, this.specialNotes);
+			stmt.setString(5, this.tableId);
+			stmt.setInt(6, this.partySize);
+
+			stmt.setString(7, this.serverId);
+
+			stmt.setString(8, this.id);
+
+			return stmt;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Label;
 import java.awt.List;
 import java.awt.Panel;
@@ -14,12 +15,15 @@ import java.awt.event.MouseEvent;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import businessPanels.BusinessHomeView;
 import componentPanels.BusinessInfoPanel;
 import database.DataBaseFactory;
 import dto.Business;
@@ -51,6 +55,7 @@ public class CustomerHomeView extends JPanel {
 	private JLabel lblOpenLabel;
 	private Business business;
 	private JLabel lblAverageRatingOf;
+	private JButton btnViewResHistory;
 	/**
 	 * Create the panel.
 	 */
@@ -71,13 +76,13 @@ public class CustomerHomeView extends JPanel {
 		this.reservationService = ReservationServiceImpl.getInstance();
 		this.serviceUtils = ServerServiceImpl.getInstance();
 		btnMakeReservation = new JButton("Reserve Table");
-		btnMakeReservation.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
+		btnMakeReservation.setFont(new Font("Arial", Font.PLAIN, 12));
 		btnMakeReservation.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PlatePlanMain.switchPanels(new CustomerReservations(customer));
 			}
 		});
-		btnMakeReservation.setBounds(574, 161, 150, 70);
+		btnMakeReservation.setBounds(555, 161, 170, 70);
 		add(btnMakeReservation);
 
 		JLabel lblWelcome = new JLabel(
@@ -128,6 +133,7 @@ public class CustomerHomeView extends JPanel {
 		add(reservationList);
 
 		currentReservationView = new Panel();
+		
 		currentReservationView.setBackground(new Color(250, 240, 230));
 		currentReservationView.setBounds(10, 419, 400, 186);
 		// ==============================
@@ -207,8 +213,8 @@ public class CustomerHomeView extends JPanel {
 				PlatePlanMain.switchPanels(new CustomerMenuMangement(customer));
 			}
 		});
-		btnViewMenu.setFont(new Font("Dialog", Font.PLAIN, 16));
-		btnViewMenu.setBounds(734, 161, 150, 70);
+		btnViewMenu.setFont(new Font("Arial", Font.PLAIN, 12));
+		btnViewMenu.setBounds(806, 161, 170, 70);
 		add(btnViewMenu);
 		
 		btnViewFeedback = new JButton("Feedbacks");
@@ -217,8 +223,8 @@ public class CustomerHomeView extends JPanel {
 				PlatePlanMain.switchPanels(new CustomerFeedbackScreen(customer));
 			}
 		});
-		btnViewFeedback.setFont(new Font("Dialog", Font.PLAIN, 16));
-		btnViewFeedback.setBounds(574, 242, 150, 70);
+		btnViewFeedback.setFont(new Font("Arial", Font.PLAIN, 12));
+		btnViewFeedback.setBounds(555, 242, 170, 70);
 		add(btnViewFeedback);
 		
 		// Assuming business.getOpenFrom() and business.getOpenUntil() return strings like "9:00 AM" and "5:00 PM"
@@ -227,23 +233,92 @@ public class CustomerHomeView extends JPanel {
 		lblOpenLabel = new JLabel("<html><div style='text-align: center;'>Open Today From <b>" + openFrom + "</b> To <b>" + openUntil + "</b></div></html>");
 		lblOpenLabel.setFont(new Font("SansSerif", Font.PLAIN, 18)); // Using SansSerif for a clean look, and increasing the size for better readability
 		lblOpenLabel.setForeground(new Color(34, 139, 34)); // Setting the text color to a green for a friendly, inviting look
-		lblOpenLabel.setBounds(584, 82, 300, 30); // Adjusting the width to ensure the text fits, especially for longer times
+		lblOpenLabel.setBounds(555, 82, 347, 30); // Adjusting the width to ensure the text fits, especially for longer times
 		add(lblOpenLabel);
 
 		
 		// Assuming feedbackService.getAverageRating() returns a formatted string, for example, "4.3"
 		String averageRating = String.format("%.1f", feedbackService.getAverageRating()); // Formats to one decimal place
 		lblAverageRatingOf = new JLabel("Average Rating Of " + averageRating + " Out of 5");
-		lblAverageRatingOf.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAverageRatingOf.setHorizontalAlignment(SwingConstants.LEFT);
 		lblAverageRatingOf.setFont(new Font("Arial", Font.BOLD, 18)); // Increased font size and made it bold for emphasis
 		lblAverageRatingOf.setForeground(new Color(0, 102, 204)); // Set the text color to a soft blue for a pleasant look
-		lblAverageRatingOf.setBounds(549, 120, 325, 30); // Adjusted width to 350 in case the text is longer
+		lblAverageRatingOf.setBounds(553, 120, 325, 30); // Adjusted width to 350 in case the text is longer
 		add(lblAverageRatingOf);
 
 		BusinessInfoPanel businessInfoPanel = new BusinessInfoPanel(DataBaseFactory.getDatabase().getBusinessAccount());
 		businessInfoPanel.setLocation(483, 329);
 		businessInfoPanel.setSize(560, 318);
 		add(businessInfoPanel);
+		
+		btnViewResHistory = new JButton("Reservation History");
+		btnViewResHistory.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		btnViewResHistory.setFont(new Font("Arial", Font.PLAIN, 12));
+		btnViewResHistory.setBounds(806, 242, 170, 70);
+		add(btnViewResHistory);
+		
+		btnMakeReservation.addMouseListener(new MouseAdapter() {
+			Icon hoverIcon = new ImageIcon(new ImageIcon(BusinessHomeView.class.getResource("/reservationsIcon.png"))
+					.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnMakeReservation.setIcon(hoverIcon);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnMakeReservation.setIcon(null); // Remove the icon when the mouse exits the button
+			}
+		});
+		
+		btnViewFeedback.addMouseListener(new MouseAdapter() {
+			Icon hoverIcon = new ImageIcon(new ImageIcon(BusinessHomeView.class.getResource("/feedbackIcon.png"))
+					.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnViewFeedback.setIcon(hoverIcon);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnViewFeedback.setIcon(null); // Remove the icon when the mouse exits the button
+			}
+		});
+		
+		btnViewMenu.addMouseListener(new MouseAdapter() {
+			Icon hoverIcon = new ImageIcon(new ImageIcon(BusinessHomeView.class.getResource("/menuIcon.png"))
+					.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnViewMenu.setIcon(hoverIcon);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnViewMenu.setIcon(null); // Remove the icon when the mouse exits the button
+			}
+		});
+		btnViewResHistory.addMouseListener(new MouseAdapter() {
+			Icon hoverIcon = new ImageIcon(new ImageIcon(BusinessHomeView.class.getResource("/historyIcon.png"))
+					.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH));
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnViewResHistory.setIcon(hoverIcon);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnViewResHistory.setIcon(null); // Remove the icon when the mouse exits the button
+			}
+		});
 	}
 
 	private String convertResToText(Reservation reservation) {

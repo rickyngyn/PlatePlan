@@ -226,7 +226,9 @@ INSERT INTO public.reservations VALUES ('9dcd2721-8e71-438c-814d-cafc81aa98d5', 
 INSERT INTO public.reservations VALUES ('28153cb5-c68f-4334-9876-9609d22ad347', 'johndoe@example.com', '2024-03-02', '12:00:00', 'Near Window', 'table4', 8, 'James Smith');
 INSERT INTO public.reservations VALUES ('b84b7797-4b1e-4049-9c0c-fc54c6dd6936', 'johndoe@example.com', '2024-03-02', '12:00:00', 'Near Window', 'table4', 8, 'James Smith');
 INSERT INTO public.reservations VALUES ('3173184f-b81a-418e-a4b8-492296ac0c5d', 'johndoe@example.com', '2024-03-02', '12:00:00', 'Near Window', 'table4', 8, 'James Smith');
-INSERT INTO public.reservations VALUES ('bf41db0f-954c-405e-bdc9-140ddf17d088', 'john', '2024-03-20', '13:30:00', 'This is my birthday', 'table2', 4, 'Alex Johnson');
+INSERT INTO public.reservations VALUES ('b27632a6-c789-4c26-80c0-b9b30275881a', 'john', '2024-03-28', '18:00:00', '', 'table10', 7, 'Peter Parker');
+INSERT INTO public.reservations VALUES ('c324a5de-9fd2-42d5-bcaf-f678cf98d0a9', 'john', '2024-03-30', '16:30:00', '', 'table10', 5, 'Peter Parker');
+INSERT INTO public.reservations VALUES ('e5baaad8-75c4-48ab-86cd-afb2c7e689b3', 'john', '2024-03-24', '18:00:00', '', 'table10', 7, 'Peter Parker');
 
 
 --

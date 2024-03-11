@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import dto.Business;
 import dto.Customer;
 import dto.Feedback;
 import dto.MenuItem;
@@ -15,11 +16,11 @@ import dto.TimeSlot;
 
 public class DataBaseConverters {
 
-	public static List<Reservation> convertReservationList(ResultSet rs) {
+	public static List<Reservation> convertReservationList(ResultSet rs, Business business) {
 		List<Reservation> reservations = new ArrayList<>();
 		try {
 			while (rs.next()) {
-				Reservation reservation = convertReservation(rs);
+				Reservation reservation = convertReservation(rs, business);
 				if (reservation != null) {
 					reservations.add(reservation);
 				}
@@ -31,14 +32,14 @@ public class DataBaseConverters {
 		return reservations;
 	}
 
-	public static Reservation convertReservation(ResultSet rs) {
+	public static Reservation convertReservation(ResultSet rs, Business business) {
 		try {
 			Reservation reservation = new Reservation();
 			reservation.setId(rs.getString("id"));
 			reservation.setCustomerId(rs.getString("customer_id"));
 			reservation.setDate(rs.getDate("date").toLocalDate());
-			reservation.setTime(
-					new TimeSlot(rs.getTime("time").toLocalTime(), rs.getTime("time").toLocalTime().plusMinutes(90)));
+			reservation.setTime(new TimeSlot(rs.getTime("time").toLocalTime(),
+					rs.getTime("time").toLocalTime().plusMinutes(business.getReservationSlots())));
 			reservation.setSpecialNotes(rs.getString("special_notes"));
 			reservation.setTableId(rs.getString("table_id"));
 			reservation.setPartySize(rs.getInt("party_size"));
@@ -158,7 +159,7 @@ public class DataBaseConverters {
 		}
 		return menuItems;
 	}
-	
+
 	public static Feedback convertFeedbackItem(ResultSet rs) {
 		try {
 			Feedback feedback = new Feedback();
@@ -175,7 +176,7 @@ public class DataBaseConverters {
 		}
 	}
 
-	public static List<Feedback> convertFeedbackItemList (ResultSet rs) {
+	public static List<Feedback> convertFeedbackItemList(ResultSet rs) {
 		List<Feedback> feedbacks = new ArrayList<>();
 		try {
 			while (rs.next()) {

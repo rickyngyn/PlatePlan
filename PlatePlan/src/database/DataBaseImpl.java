@@ -211,7 +211,7 @@ public class DataBaseImpl implements DataBase {
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			ResultSet rs = pstmt.executeQuery();
 
-			reservations = DataBaseConverters.convertReservationList(rs);
+			reservations = DataBaseConverters.convertReservationList(rs, getBusinessAccount());
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -229,7 +229,7 @@ public class DataBaseImpl implements DataBase {
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			ResultSet rs = pstmt.executeQuery();
 
-			reservations = DataBaseConverters.convertReservationList(rs);
+			reservations = DataBaseConverters.convertReservationList(rs, getBusinessAccount());
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -248,7 +248,7 @@ public class DataBaseImpl implements DataBase {
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			ResultSet rs = pstmt.executeQuery();
 
-			reservations = DataBaseConverters.convertReservationList(rs);
+			reservations = DataBaseConverters.convertReservationList(rs, getBusinessAccount());
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -266,7 +266,7 @@ public class DataBaseImpl implements DataBase {
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			ResultSet rs = pstmt.executeQuery();
 
-			reservation = DataBaseConverters.convertReservation(rs);
+			reservation = DataBaseConverters.convertReservation(rs, getBusinessAccount());
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -310,6 +310,10 @@ public class DataBaseImpl implements DataBase {
 				Business business = (Business) object;
 				preparedStatement = business.generateUpdateCommand(connection,
 						getColumnNamesList(SQLTables.BUSINESS_TABLE), SQLTables.BUSINESS_TABLE);
+			} else if (SQLTables.RESERVATION_TABLE.equals(table)) {
+				Reservation reservation = (Reservation) object;
+				preparedStatement = reservation.generateUpdateCommand(connection,
+						getColumnNamesList(SQLTables.RESERVATION_TABLE), SQLTables.RESERVATION_TABLE);
 			}
 			
 

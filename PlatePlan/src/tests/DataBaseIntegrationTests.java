@@ -162,6 +162,7 @@ class DataBaseIntegrationTests {
 		reservation.setTime(new TimeSlot(LocalTime.now(), LocalTime.now()));
 		reservation.setCustomerId("");
 		reservation.setSpecialNotes("");
+		
 		assertTrue(db.insertRecord(SQLTables.RESERVATION_TABLE, reservation));
 
 		Reservation reservations = db.getReservationWithId("temp");

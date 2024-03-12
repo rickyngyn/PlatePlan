@@ -5,9 +5,12 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
-public class Feedback {
+import database.SQLTables;
+
+public class Feedback implements QueryGenerator {
 	public Feedback(String id, String customer_id, int rating, LocalDateTime timestamp, String feedback) {
 		super();
 		this.id = id;
@@ -121,8 +124,12 @@ public class Feedback {
 				+ ", feedback=" + feedback + "]";
 	}
 
-	public PreparedStatement getSQLString(Connection connection, String sql) {
+	@Override
+	public PreparedStatement generateInsertStatement(Connection connection, List<String> columns) {
 		try {
+			String sql = "INSERT INTO %s %s VALUES ";
+
+			sql = String.format(sql, SQLTables.FEEDBACKS_TABLE, "(" + String.join(",", columns) + ")");
 			sql = sql + "(?,?,?,?,?);";
 			PreparedStatement pstmt = connection.prepareStatement(sql);
 			pstmt.setString(1, this.getId());
@@ -136,6 +143,11 @@ public class Feedback {
 			e.printStackTrace();
 		}
 
+		return null;
+	}
+
+	@Override
+	public PreparedStatement generateUpdateStatement(Connection conn, List<String> columns) {
 		return null;
 	}
 }

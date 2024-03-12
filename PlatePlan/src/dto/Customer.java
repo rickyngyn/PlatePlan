@@ -6,7 +6,9 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
-public class Customer {
+import database.SQLTables;
+
+public class Customer implements QueryGenerator {
 
 	public Customer() {
 
@@ -127,8 +129,12 @@ public class Customer {
 				&& Objects.equals(lastName, other.lastName) && Objects.equals(password, other.password);
 	}
 
-	public PreparedStatement getSQLString(Connection connection, String sql) {
+	@Override
+	public PreparedStatement generateInsertStatement(Connection connection, List<String> columns) {
 		try {
+			String sql = "INSERT INTO %s %s VALUES ";
+
+			sql = String.format(sql, SQLTables.ACCOUNTS_TABLE, "(" + String.join(",", columns) + ")");
 			sql = sql + "(?,?,?,?);";
 			PreparedStatement pstmt = connection.prepareStatement(sql);
 			pstmt.setString(1, this.getEmail());
@@ -147,6 +153,11 @@ public class Customer {
 	public String toString() {
 		return "Customer [email=" + email + ", firstName=" + firstName + ", lastName=" + lastName + ", password="
 				+ password + ", reservations=" + reservations + "]";
+	}
+
+	@Override
+	public PreparedStatement generateUpdateStatement(Connection conn, List<String> columns) {
+		return null;
 	}
 
 }

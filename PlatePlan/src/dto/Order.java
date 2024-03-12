@@ -11,7 +11,7 @@ import java.util.Objects;
 
 import database.SQLTables;
 
-public class Order {
+public class Order implements QueryGenerator {
 
 	public Order(String id, String item, String customer, double price, LocalDate date, String reservation,
 			int quantity) {
@@ -161,52 +161,8 @@ public class Order {
 				+ ", reservation=" + reservation + ", quantity=" + quantity + "]";
 	}
 
-	public PreparedStatement getSQLString(Connection connection, String sql) {
-		try {
-			sql = sql + "(?,?,?,?,?,?,?);";
-			PreparedStatement pstmt = connection.prepareStatement(sql);
-			pstmt.setString(1, this.getId());
-			pstmt.setString(2, this.getItem());
-			pstmt.setString(3, this.getCustomer());
-			pstmt.setDouble(4, this.getPrice());
-			pstmt.setDate(5, Date.valueOf(this.getDate()));
-			pstmt.setString(6, this.getReservation());
-			pstmt.setInt(7, this.getQuantity());
-
-			return pstmt;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	public PreparedStatement generateUpdateCommand(Connection conn, List<String> columns, String tableName) {
-		try {
-			columns.remove(0);
-			String sql = "UPDATE " + tableName + " SET "
-					+ String.join(", ", columns.stream().map(column -> column + " = ?").toArray(String[]::new))
-					+ " WHERE id = ?;";
-			PreparedStatement stmt = conn.prepareStatement(sql);
-
-			stmt.setString(1, this.getItem());
-			stmt.setString(2, this.getCustomer());
-			stmt.setDouble(3, this.getPrice());
-			stmt.setDate(4, Date.valueOf(this.getDate()));
-			stmt.setString(5, this.getReservation());
-			stmt.setInt(6, this.getQuantity());
-
-			stmt.setString(7, this.id);
-
-			return stmt;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
 	public PreparedStatement upsertRecord(Connection conn, List<String> columns) {
-		 // Replace with your actual table name
+		// Replace with your actual table name
 
 		try {
 			// Assuming 'columns' contains all column names except 'id' which is handled
@@ -220,7 +176,6 @@ public class Order {
 					+ ") " + "ON CONFLICT (id) " + "DO UPDATE SET " + updates + ";";
 
 			PreparedStatement stmt = conn.prepareStatement(sql);
-
 
 			int index = 1;
 			for (String column : columns) {
@@ -255,6 +210,16 @@ public class Order {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public PreparedStatement generateInsertStatement(Connection conn, List<String> columns) {
+		return upsertRecord(conn, columns);
+	}
+
+	@Override
+	public PreparedStatement generateUpdateStatement(Connection conn, List<String> columns) {
+		return upsertRecord(conn, columns);
 	}
 
 }

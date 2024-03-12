@@ -194,7 +194,7 @@ public class DataBaseConverters {
 		}
 		return feedbacks;
 	}
-	
+
 	public static Order convertOrderItem(ResultSet rs) {
 		try {
 			Order order = new Order();
@@ -205,7 +205,7 @@ public class DataBaseConverters {
 			order.setQuantity(rs.getInt("quantity"));
 			order.setDate(rs.getDate("date").toLocalDate());
 			order.setReservation(rs.getString("reservation"));
-			
+
 			return order;
 
 		} catch (Exception e) {
@@ -229,13 +229,11 @@ public class DataBaseConverters {
 		}
 		return orders;
 	}
-	
-	
+
 	public static Receipt convertReceiptItem(ResultSet rs) {
 		try {
 			Receipt receipt = new Receipt();
-			
-			
+
 			receipt.setId(rs.getString("id"));
 			receipt.setCustomer(rs.getString("customer"));
 			receipt.setReservation(rs.getString("reservation"));
@@ -247,7 +245,7 @@ public class DataBaseConverters {
 			receipt.setTip_percent(rs.getInt("tip"));
 			receipt.setTotal(rs.getDouble("total"));
 			receipt.setPaid(rs.getBoolean("paid"));
-			
+
 			return receipt;
 
 		} catch (Exception e) {

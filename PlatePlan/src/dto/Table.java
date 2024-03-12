@@ -6,7 +6,9 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
-public class Table {
+import database.SQLTables;
+
+public class Table implements QueryGenerator {
 
 	public Table() {
 
@@ -89,10 +91,14 @@ public class Table {
 		return "Table [id=" + id + ", capacity=" + capacity + ", server=" + server + "]";
 	}
 
-	public PreparedStatement getSQLString(Connection connection, String sql) {
+	@Override
+	public PreparedStatement generateInsertStatement(Connection conn, List<String> columns) {
 		try {
+			String sql = "INSERT INTO %s %s VALUES ";
+
+			sql = String.format(sql, SQLTables.TABLES_TABLE, "(" + String.join(",", columns) + ")");
 			sql = sql + "(?,?,?);";
-			PreparedStatement pstmt = connection.prepareStatement(sql);
+			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, this.getId());
 			pstmt.setInt(2, this.getCapacity());
 			pstmt.setString(3, this.getServer());
@@ -105,10 +111,11 @@ public class Table {
 		return null;
 	}
 
-	public PreparedStatement generateUpdateCommand(Connection conn, List<String> columns, String tableName) {
+	@Override
+	public PreparedStatement generateUpdateStatement(Connection conn, List<String> columns) {
 		try {
 			columns.remove(0);
-			String sql = "UPDATE " + tableName + " SET "
+			String sql = "UPDATE " + SQLTables.TABLES_TABLE + " SET "
 					+ String.join(", ", columns.stream().map(column -> column + " = ?").toArray(String[]::new))
 					+ " WHERE id = ?;";
 			PreparedStatement stmt = conn.prepareStatement(sql);

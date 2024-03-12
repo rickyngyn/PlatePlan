@@ -18,6 +18,7 @@ import dto.Customer;
 import dto.Feedback;
 import dto.MenuItem;
 import dto.Order;
+import dto.QueryGenerator;
 import dto.Receipt;
 import dto.Reservation;
 import dto.Server;
@@ -86,37 +87,9 @@ public class DataBaseImpl implements DataBase {
 	}
 
 	@Override
-	public boolean insertRecord(String tableName, Object object) {
-		String sql = "INSERT INTO %s %s VALUES ";
-		sql = String.format(sql, tableName, getColumnNamesString(tableName));
+	public boolean insertRecord(String tableName, QueryGenerator object) {
 
-		PreparedStatement pstmt = null;
-
-		if (tableName.equals(SQLTables.RESERVATION_TABLE)) {
-			Reservation reservation = (Reservation) object;
-			pstmt = reservation.getSQLString(connection, sql);
-		} else if (tableName.equals(SQLTables.TABLES_TABLE)) {
-			Table table = (Table) object;
-			pstmt = table.getSQLString(connection, sql);
-		} else if (tableName.equals(SQLTables.ACCOUNTS_TABLE)) {
-			Customer customer = (Customer) object;
-			pstmt = customer.getSQLString(connection, sql);
-		} else if (tableName.equals(SQLTables.SERVERS_TABLE)) {
-			Server server = (Server) object;
-			pstmt = server.getSQLString(connection, sql);
-		} else if (tableName.equals(SQLTables.MENU_TABLE)) {
-			MenuItem menuItem = (MenuItem) object;
-			pstmt = menuItem.getSQLString(connection, sql);
-		} else if (tableName.equals(SQLTables.FEEDBACKS_TABLE)) {
-			Feedback feedback = (Feedback) object;
-			pstmt = feedback.getSQLString(connection, sql);
-		} else if (tableName.equals(SQLTables.ORDERS_TABLE)) {
-			Order order = (Order) object;
-			pstmt = order.getSQLString(connection, sql);
-		} else if (tableName.equals(SQLTables.RECEIPT_TABLE)) {
-			Receipt receipt = (Receipt) object;
-			pstmt = receipt.genSQLInsertStatement(connection, getColumnNamesList(tableName));
-		}
+		PreparedStatement pstmt = object.generateInsertStatement(connection, getColumnNamesList(tableName));
 
 		System.out.println("Executing Command: " + pstmt.toString());
 		try {
@@ -304,30 +277,10 @@ public class DataBaseImpl implements DataBase {
 	}
 
 	@Override
-	public boolean updateDataBaseEntry(Object object, String table) {
+	public boolean updateDataBaseEntry(QueryGenerator object, String table) {
 
 		try {
-			PreparedStatement preparedStatement = null;
-			if (SQLTables.MENU_TABLE.equals(table)) {
-				MenuItem menuItem = (MenuItem) object;
-				preparedStatement = menuItem.generateUpdateCommand(connection, getColumnNamesList(SQLTables.MENU_TABLE),
-						SQLTables.MENU_TABLE);
-			} else if (SQLTables.TABLES_TABLE.equals(table)) {
-				Table tableObj = (Table) object;
-				preparedStatement = tableObj.generateUpdateCommand(connection,
-						getColumnNamesList(SQLTables.TABLES_TABLE), SQLTables.TABLES_TABLE);
-			} else if (SQLTables.BUSINESS_TABLE.equals(table)) {
-				Business business = (Business) object;
-				preparedStatement = business.generateUpdateCommand(connection,
-						getColumnNamesList(SQLTables.BUSINESS_TABLE), SQLTables.BUSINESS_TABLE);
-			} else if (SQLTables.RESERVATION_TABLE.equals(table)) {
-				Reservation reservation = (Reservation) object;
-				preparedStatement = reservation.generateUpdateCommand(connection,
-						getColumnNamesList(SQLTables.RESERVATION_TABLE), SQLTables.RESERVATION_TABLE);
-			} else if (SQLTables.ORDERS_TABLE.equals(table)) {
-				Order order = (Order) object;
-				preparedStatement = order.upsertRecord(connection, getColumnNamesList(SQLTables.ORDERS_TABLE));
-			}
+			PreparedStatement preparedStatement = object.generateUpdateStatement(connection, getColumnNamesList(table));
 
 			System.out.println("Executing Update Command: " + preparedStatement.toString());
 			return preparedStatement.executeUpdate() > 0;
@@ -358,7 +311,7 @@ public class DataBaseImpl implements DataBase {
 			System.out.println("Error updating customer_menu: " + e.getMessage());
 			return false;
 		}
-		
+
 	}
 
 	@Override
@@ -378,7 +331,7 @@ public class DataBaseImpl implements DataBase {
 
 		return feedbacks;
 	}
-	
+
 	@Override
 	public List<Receipt> getAllReceipts() {
 		List<Receipt> receipts = new ArrayList<>();

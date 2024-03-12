@@ -12,7 +12,7 @@ import java.util.Objects;
 
 import database.SQLTables;
 
-public class Receipt {
+public class Receipt implements QueryGenerator {
 
 	public Receipt(String id, String reservation, String customer, LocalDate date, LocalTime time, double subtotal,
 			double tax, int tip_percent, double total, boolean paid) {
@@ -39,8 +39,6 @@ public class Receipt {
 	private int tip_percent;
 	private double total;
 	private boolean paid;
-
-
 
 	public Receipt() {
 	}
@@ -204,68 +202,15 @@ public class Receipt {
 				&& Double.doubleToLongBits(total) == Double.doubleToLongBits(other.total);
 	}
 
-	public PreparedStatement upsertRecord(Connection conn, List<String> columns) {
-		try {
-			String columnNames = String.join(", ", columns);
-			String placeholders = String.join(", ", columns.stream().map(column -> "?").toArray(String[]::new));
-			String updates = String.join(", ",
-					columns.stream().map(column -> column + " = EXCLUDED." + column).toArray(String[]::new));
-
-			String sql = "INSERT INTO " + SQLTables.RECEIPT_TABLE + " (" + columnNames + ") VALUES (" + placeholders
-					+ ") ON CONFLICT (id) DO UPDATE SET " + updates + ";";
-			PreparedStatement stmt = conn.prepareStatement(sql);
-
-			int index = 1;
-			for (String column : columns) {
-				switch (column) {
-				case "id":
-					stmt.setString(index++, this.id);
-					break;
-				case "reservation":
-					stmt.setString(index++, this.reservation);
-					break;
-				case "customer":
-					stmt.setString(index++, this.customer);
-					break;
-				case "date":
-					stmt.setDate(index++, Date.valueOf(this.date));
-					break;
-				case "time":
-					stmt.setTime(index++, Time.valueOf(this.time));
-					break;
-				case "subtotal":
-					stmt.setDouble(index++, this.subtotal);
-					break;
-				case "tax":
-					stmt.setDouble(index++, this.tax);
-					break;
-				case "tip":
-					stmt.setInt(index++, this.tip_percent);
-					break;
-				case "total":
-					stmt.setDouble(index++, this.total);
-					break;
-				case "paid":
-					stmt.setBoolean(index++, this.paid);
-					break;
-				// Add more cases as per your class fields
-				}
-			}
-
-			return stmt;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public PreparedStatement genSQLInsertStatement(Connection conn, List<String> columns) {
+	@Override
+	public PreparedStatement generateInsertStatement(Connection conn, List<String> columns) {
 		try {
 			String columnNames = String.join(", ", columns);
 			String placeholders = String.join(", ", columns.stream().map(column -> "?").toArray(String[]::new));
 
 			// Removed the ON CONFLICT clause to make it an insert-only statement
-			String sql = "INSERT INTO " + SQLTables.RECEIPT_TABLE + " (" + columnNames + ") VALUES (" + placeholders + ");";
+			String sql = "INSERT INTO " + SQLTables.RECEIPT_TABLE + " (" + columnNames + ") VALUES (" + placeholders
+					+ ");";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 
 			int index = 1;
@@ -320,7 +265,6 @@ public class Receipt {
 		this.total = Double.parseDouble(String.format("%.2f", total));
 		return this.total;
 
-
 	}
 
 	/**
@@ -336,9 +280,14 @@ public class Receipt {
 	public void setPaid(boolean paid) {
 		this.paid = paid;
 	}
-	
+
 	public double getTipAmount() {
-		return (this.subtotal*(tip_percent/100.0));
+		return (this.subtotal * (tip_percent / 100.0));
+	}
+
+	@Override
+	public PreparedStatement generateUpdateStatement(Connection conn, List<String> columns) {
+		return null;
 	}
 
 }

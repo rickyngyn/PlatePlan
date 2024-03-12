@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.time.LocalDate;
+import java.util.List;
 
 public class Reservation {
 
@@ -173,21 +174,47 @@ public class Reservation {
 		try {
 			sql = sql + "(?,?,?,?,?,?,?,?);";
 			PreparedStatement pstmt = connection.prepareStatement(sql);
-		    pstmt.setString(1, this.getId());
-		    pstmt.setString(2, this.getCustomerId());
-		    pstmt.setDate(3, Date.valueOf(this.date.toString()));		    
-		    pstmt.setTime(4, Time.valueOf(this.getTime().getFrom())); // Assuming TimeSlot can be converted to String directly or has a toString method
-		    pstmt.setString(5, this.getSpecialNotes());
-		    pstmt.setString(6, this.getTableId());
-		    pstmt.setInt(7, this.getPartySize());
-		    pstmt.setString(8, this.getServerId());
+			pstmt.setString(1, this.getId());
+			pstmt.setString(2, this.getCustomerId());
+			pstmt.setDate(3, Date.valueOf(this.date.toString()));
+			pstmt.setTime(4, Time.valueOf(this.getTime().getFrom())); // Assuming TimeSlot can be converted to String
+																		// directly or has a toString method
+			pstmt.setString(5, this.getSpecialNotes());
+			pstmt.setString(6, this.getTableId());
+			pstmt.setInt(7, this.getPartySize());
+			pstmt.setString(8, this.getServerId());
 
-			
-		    return pstmt;
+			return pstmt;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
+		return null;
+	}
+
+	public PreparedStatement generateUpdateCommand(Connection conn, List<String> columns, String tableName) {
+		try {
+			columns.remove(0);
+			String sql = "UPDATE " + tableName + " SET "
+					+ String.join(", ", columns.stream().map(column -> column + " = ?").toArray(String[]::new))
+					+ " WHERE id = ?;";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+
+			stmt.setString(1, this.customerId);
+			stmt.setDate(2, Date.valueOf(this.date));
+			stmt.setTime(3, Time.valueOf(this.time.getFrom()));
+			stmt.setString(4, this.specialNotes);
+			stmt.setString(5, this.tableId);
+			stmt.setInt(6, this.partySize);
+
+			stmt.setString(7, this.serverId);
+
+			stmt.setString(8, this.id);
+
+			return stmt;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 

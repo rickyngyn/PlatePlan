@@ -1,5 +1,6 @@
 package tests;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -9,9 +10,10 @@ import org.junit.jupiter.api.Test;
 
 import database.DataBase;
 import database.DataBaseFactory;
+import database.StubDataBaseRecords;
 import dto.Business;
 import dto.Customer;
-import misc.StubDataBaseRecords;
+import main.ServiceFactory;
 import service_interfaces.AccountService;
 import service_interfaces.ReservationService;
 import services.AccountsServiceImpl;
@@ -21,15 +23,17 @@ class AccountServiceTest {
 	AccountService accountService;
 	ReservationService reservationService;
 	DataBase db;
-
+	StubDataBaseRecords stubDb;
 	@BeforeEach
 	void setUp() throws Exception {
 		DataBaseFactory.ENVIRONMENT = "development";
-		accountService = new AccountsServiceImpl();
-		reservationService = new ReservationServiceImpl();
+		ServiceFactory.setUpServices();
+		accountService = AccountsServiceImpl.getInstance();
+		reservationService = ReservationServiceImpl.getInstance();
 		db = DataBaseFactory.getDatabase();
-		StubDataBaseRecords.reset();
-
+		stubDb = StubDataBaseRecords.getInstance();
+		stubDb.reset();
+		
 	}
 
 	@Test
@@ -97,6 +101,15 @@ class AccountServiceTest {
 		Customer object = accountService.getCustomerAccountDetails("Idonotexist@email.com");
 
 		assertNull(object);
+
+	}
+	
+	@Test
+	void updateBusinessAccount() {
+		Business business = db.getBusinessAccount();
+		business.setEmail("newemail");
+		assertTrue(accountService.updateBusinessAccount(business));
+		assertEquals("newemail", stubDb.business.getEmail());
 
 	}
 }

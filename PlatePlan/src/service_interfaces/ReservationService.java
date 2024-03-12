@@ -16,4 +16,8 @@ public interface ReservationService {
 
 	public boolean cancelReservation(String reservationId);
 
+	void initializeDependency(AccountService accountService, TablesService tablesService, ServerService serviceUtils);
+
+	boolean updateReservation(Reservation reservation);
+
 }

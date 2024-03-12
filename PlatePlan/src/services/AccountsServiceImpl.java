@@ -8,12 +8,40 @@ import database.SQLTables;
 import dto.Business;
 import dto.Customer;
 import service_interfaces.AccountService;
+import service_interfaces.ReservationService;
+import service_interfaces.ServerService;
+import service_interfaces.TablesService;
 
 public class AccountsServiceImpl implements AccountService {
-	DataBase db;
 
-	public AccountsServiceImpl() {
+	private static AccountService instance;
+
+	private DataBase db;
+	private ReservationService reservationService;
+	private TablesService tablesService;
+	private ServerService serviceUtils;
+
+	private AccountsServiceImpl() {
+	}
+
+	public static AccountService getInstance() {
+		// Create the instance if it does not exist
+		if (instance == null) {
+			instance = new AccountsServiceImpl();
+		}
+		// Return the existing instance
+		return instance;
+
+	}
+
+	@Override
+	public void initializeDependency(ReservationService reservationService, TablesService tablesService,
+			ServerService serviceUtils) {
+
 		db = DataBaseFactory.getDatabase();
+		this.reservationService = reservationService;
+		this.serviceUtils = serviceUtils;
+		this.tablesService = tablesService;
 	}
 
 	public Customer registerAccount(String email, String firstName, String lastName, String password) {
@@ -62,6 +90,11 @@ public class AccountsServiceImpl implements AccountService {
 		System.out.println("Incorrect password given: expected " + business.getPassword() + " but was " + password);
 
 		return null;
+	}
+
+	@Override
+	public boolean updateBusinessAccount(Business business) {
+		return db.updateDataBaseEntry(business, SQLTables.BUSINESS_TABLE);
 	}
 
 }

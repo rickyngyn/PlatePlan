@@ -19,8 +19,8 @@ import customerPanels.Constants;
 import dto.Business;
 import dto.Server;
 import main.PlatePlanMain;
-import service_interfaces.ServiceUtils;
-import services.ServiceUtilsImpl;
+import service_interfaces.ServerService;
+import services.ServerServiceImpl;
 
 public class BusinessServerManage extends JPanel {
 
@@ -28,7 +28,7 @@ public class BusinessServerManage extends JPanel {
 	private JTextField txtFirstName;
 	private JTextField txtLastName;
 	private JButton btnNewButton;
-	private ServiceUtils serviceUtils;
+	private ServerService serviceUtils;
 	private Business business;
 	private DefaultTableModel tableModel;
 	private JTable table;
@@ -48,7 +48,7 @@ public class BusinessServerManage extends JPanel {
 		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		// ===========================================================================
 		this.business = business;
-		serviceUtils = ServiceUtilsImpl.getInstance();
+		serviceUtils = ServerServiceImpl.getInstance();
 
 		txtFirstName = new JTextField();
 		txtFirstName.setBounds(657, 191, 213, 30);
@@ -96,7 +96,7 @@ public class BusinessServerManage extends JPanel {
 
 		tableModel = new DefaultTableModel(new String[] { "ID", "First Name", "Last Name" }, 0);
 		table.setModel(tableModel);
-		
+
 		btnBack = new JButton("Back");
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

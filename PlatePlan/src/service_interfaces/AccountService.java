@@ -13,4 +13,9 @@ public interface AccountService {
 
 	public Customer getCustomerAccountDetails(String email);
 
+	public boolean updateBusinessAccount(Business business);
+
+	void initializeDependency(ReservationService reservationService, TablesService tablesService,
+			ServerService serviceUtils);
+
 }

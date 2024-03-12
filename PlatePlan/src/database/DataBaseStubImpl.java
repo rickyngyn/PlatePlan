@@ -10,16 +10,19 @@ import javax.security.auth.login.AccountNotFoundException;
 
 import dto.Business;
 import dto.Customer;
+import dto.Feedback;
+import dto.MenuItem;
 import dto.Reservation;
 import dto.Server;
 import dto.Table;
-import misc.StubDataBaseRecords;
 
 public class DataBaseStubImpl implements DataBase {
 
 	private static DataBaseStubImpl dataBaseInstance;
+	private StubDataBaseRecords db;
 
 	private DataBaseStubImpl() {
+		db = StubDataBaseRecords.getInstance();
 	}
 
 	public static synchronized DataBaseStubImpl getInstance() {
@@ -37,21 +40,25 @@ public class DataBaseStubImpl implements DataBase {
 			if (tableName.equals(SQLTables.RESERVATION_TABLE)) {
 				Reservation reservation = (Reservation) object;
 
-				StubDataBaseRecords.reservations.add(reservation);
+				db.reservations.add(reservation);
 
 			} else if (tableName.equals(SQLTables.TABLES_TABLE)) {
 				Table table = (Table) object;
-				StubDataBaseRecords.tables.add(table);
+				db.tables.add(table);
 			} else if (tableName.equals(SQLTables.ACCOUNTS_TABLE)) {
 				Customer customer = (Customer) object;
 				try {
 					getCustomerAccount(customer.getEmail());
 					return false;
 				} catch (Exception e) {
-					StubDataBaseRecords.customers.add(customer);
+					db.customers.add(customer);
 
 				}
+			}else if (tableName.equals(SQLTables.MENU_TABLE)) {
+				MenuItem menuItem = (MenuItem) object;
+				db.menus.add(menuItem);
 			}
+
 
 			System.out.println("Inserting record into " + tableName + ": " + object.toString());
 
@@ -67,7 +74,7 @@ public class DataBaseStubImpl implements DataBase {
 
 	@Override
 	public Customer getCustomerAccount(String email) throws AccountNotFoundException {
-		List<Customer> customers = StubDataBaseRecords.customers;
+		List<Customer> customers = db.customers;
 
 		try {
 
@@ -83,43 +90,29 @@ public class DataBaseStubImpl implements DataBase {
 
 	@Override
 	public Business getBusinessAccount() {
-		return StubDataBaseRecords.business;
-	}
-
-	@Override
-	public boolean deleteTable(String id) {
-
-		for (Table table : StubDataBaseRecords.tables) {
-			if (table.getId().equals(id)) {
-				StubDataBaseRecords.tables.remove(table);
-				return true;
-			}
-		}
-
-		return false;
+		return db.business;
 	}
 
 	@Override
 	public List<Table> getAllTables() {
-		return StubDataBaseRecords.tables;
+		return db.tables;
 	}
 
 	@Override
 	public List<Server> getAllServers() {
-		return StubDataBaseRecords.servers;
+		return db.servers;
 	}
 
 	@Override
 	public List<Reservation> getAllReservations() {
-		return StubDataBaseRecords.reservations != null ? StubDataBaseRecords.reservations
-				: new ArrayList<Reservation>();
+		return db.reservations != null ? db.reservations : new ArrayList<Reservation>();
 	}
 
 	@Override
 	public List<Reservation> getReservationsForDate(LocalDate date) {
 
-		System.out.println(date + " All Reservations: " + StubDataBaseRecords.reservations);
-		return StubDataBaseRecords.reservations.stream().filter(reservation -> reservation.getDate().equals(date))
+		System.out.println(date + " All Reservations: " + db.reservations);
+		return db.reservations.stream().filter(reservation -> reservation.getDate().equals(date))
 				.collect(Collectors.toList());
 
 	}
@@ -131,7 +124,7 @@ public class DataBaseStubImpl implements DataBase {
 		if (customer != null) {
 
 			List<Reservation> reservations = new ArrayList<Reservation>();
-			for (Reservation resId : StubDataBaseRecords.reservations) {
+			for (Reservation resId : db.reservations) {
 				reservations.add(getReservationWithId(resId.getId()));
 			}
 			reservations.removeAll(Collections.singleton(null));
@@ -141,31 +134,105 @@ public class DataBaseStubImpl implements DataBase {
 	}
 
 	@Override
-	public boolean deleteReservation(String id) {
-		List<Reservation> reservations = this.getAllReservations();
-		for (int i = 0; i < reservations.size(); i++) {
-			if (reservations.get(i).getId().equals(id)) {
-				reservations.remove(i);
-				return true;
+	public Reservation getReservationWithId(String id) {
+		return db.reservations.stream().filter(reservation -> reservation.getId().equals(id)).findFirst().orElse(null);
+
+	}
+
+	@Override
+	public List<MenuItem> getAllMenuItems(String table) {
+		if (table.equals(SQLTables.CUSTOMER_MENU_TABLE)) {
+			return db.customer_menu;
+		} else {
+			return db.menus;
+		}
+	}
+
+	@Override
+	public void publishCustomerMenu() {
+		db.customer_menu.clear();
+		db.customer_menu.addAll(db.menus);
+
+	}
+
+	@Override
+	public List<Feedback> getAllFeedbacks() {
+		return db.feedbacks;
+	}
+
+	@Override
+	public boolean deleteDataBaseEntry(String table, String id) {
+		if (table.equals(SQLTables.RESERVATION_TABLE)) {
+			for (Reservation object : db.reservations) {
+				if (id.equals(object.getId())) {
+					db.reservations.remove(object);
+					return true;
+				}
+			}
+		} else if (table.equals(SQLTables.TABLES_TABLE)) {
+			for (Table object : db.tables) {
+				if (id.equals(object.getId())) {
+					db.tables.remove(object);
+					return true;
+				}
+			}
+		} else if (table.equals(SQLTables.SERVERS_TABLE)) {
+			for (Server object : db.servers) {
+				if (id.equals(object.getId())) {
+					db.servers.remove(object);
+					return true;
+				}
+			}
+		} else if (table.equals(SQLTables.MENU_TABLE)) {
+			for (MenuItem object : db.menus) {
+				if (id.equals(object.getId())) {
+					db.menus.remove(object);
+					return true;
+				}
+			}
+		} else if (table.equals(SQLTables.FEEDBACKS_TABLE)) {
+			for (Feedback object : db.feedbacks) {
+				if (id.equals(object.getId())) {
+					db.feedbacks.remove(object);
+					return true;
+				}
 			}
 		}
-
 		return false;
 	}
 
 	@Override
-	public Reservation getReservationWithId(String id) {
-		return StubDataBaseRecords.reservations.stream().filter(reservation -> reservation.getId().equals(id))
-				.findFirst().orElse(null);
-
-	}
-
-	@Override
-	public boolean deleteServer(String id) {
-		// TODO Auto-generated method stub
+	public boolean updateDataBaseEntry(Object object, String table) {
+		if (table.equals(SQLTables.RESERVATION_TABLE)) {
+			for (Reservation tempObj : db.reservations) {
+				if (((Reservation) object).getId().equals(tempObj.getId())) {
+					db.reservations.remove(tempObj);
+					db.reservations.add(((Reservation) object));
+					return true;
+				}
+			}
+		} else if (table.equals(SQLTables.TABLES_TABLE)) {
+			for (Table tempObj : db.tables) {
+				if (((Table) object).getId().equals(tempObj.getId())) {
+					db.tables.remove(tempObj);
+					db.tables.add(((Table) object));
+					return true;
+				}
+			}
+		} else if (table.equals(SQLTables.MENU_TABLE)) {
+			for (MenuItem tempObj : db.menus) {
+				if (((MenuItem) object).getId().equals(tempObj.getId())) {
+					db.menus.remove(tempObj);
+					db.menus.add(((MenuItem) object));
+					return true;
+				}
+			}
+		} 
+		else if (table.equals(SQLTables.BUSINESS_TABLE)) {
+			db.business = (Business)object;
+			return true;
+		}
 		return false;
 	}
-
-
 
 }

@@ -7,6 +7,8 @@ import javax.security.auth.login.AccountNotFoundException;
 
 import dto.Business;
 import dto.Customer;
+import dto.Feedback;
+import dto.MenuItem;
 import dto.Reservation;
 import dto.Server;
 import dto.Table;
@@ -21,20 +23,24 @@ public interface DataBase {
 
 	public List<Table> getAllTables();
 
-	public boolean deleteTable(String id);
-
 	public List<Server> getAllServers();
 
 	public List<Reservation> getReservationsForDate(LocalDate date);
 
 	public List<Reservation> getAllReservations();
 
-	public boolean deleteReservation(String id);
-
 	public List<Reservation> getCustomerReservations(String email) throws AccountNotFoundException;
 
 	public Reservation getReservationWithId(String id);
 
-	public boolean deleteServer(String id);
+	public List<MenuItem> getAllMenuItems(String table);
+
+	void publishCustomerMenu();
+
+	public List<Feedback> getAllFeedbacks();
+
+	public boolean deleteDataBaseEntry(String table, String id);
+
+	boolean updateDataBaseEntry(Object object, String table);
 
 }

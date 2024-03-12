@@ -53,7 +53,7 @@ public class CustomerSignUp extends JPanel {
 		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		// ===========================================================================
 
-		accountService = new AccountsServiceImpl();
+		accountService = AccountsServiceImpl.getInstance();
 
 		lblSignUp = new JLabel("Let's Get You Started");
 		lblSignUp.setHorizontalAlignment(SwingConstants.CENTER);

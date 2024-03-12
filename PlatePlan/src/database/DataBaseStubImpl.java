@@ -219,14 +219,6 @@ public class DataBaseStubImpl implements DataBase {
 					return true;
 				}
 			}
-		} else if (table.equals(SQLTables.SERVERS_TABLE)) {
-			for (Server tempObj : db.servers) {
-				if (((Server) object).getId().equals(tempObj.getId())) {
-					db.servers.remove(tempObj);
-					db.servers.add(((Server) object));
-					return true;
-				}
-			}
 		} else if (table.equals(SQLTables.MENU_TABLE)) {
 			for (MenuItem tempObj : db.menus) {
 				if (((MenuItem) object).getId().equals(tempObj.getId())) {
@@ -235,15 +227,7 @@ public class DataBaseStubImpl implements DataBase {
 					return true;
 				}
 			}
-		} else if (table.equals(SQLTables.FEEDBACKS_TABLE)) {
-			for (Feedback tempObj : db.feedbacks) {
-				if (((Feedback) object).getId().equals(tempObj.getId())) {
-					db.feedbacks.remove(tempObj);
-					db.feedbacks.add(((Feedback) object));
-					return true;
-				}
-			}
-		}
+		} 
 		else if (table.equals(SQLTables.BUSINESS_TABLE)) {
 			db.business = (Business)object;
 			return true;

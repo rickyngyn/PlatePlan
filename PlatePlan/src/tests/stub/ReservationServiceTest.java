@@ -163,19 +163,31 @@ class ReservationServiceTest {
 	}
 
 	@Test
-	void createCustomerReservation_sameDayWrongCustomer() {
+	void updateExistingReservation() {
+		Customer customer = new Customer("johndoe@example.com", "john", "doe", "password");
+		LocalDate date = LocalDate.now();
+		TimeSlot slot = new TimeSlot(LocalTime.of(12, 0), LocalTime.of(14, 0));
+		int capacity = 4;
+		String specialNotes = "Near window";
 
-		Customer customer = new Customer("idonotexist", "john", "doe", "pass", new ArrayList<>());
-		LocalDate reservationDate = LocalDate.now();
-		TimeSlot existingSlot = new TimeSlot(LocalTime.of(12, 0), LocalTime.of(14, 0));
-
-		Reservation reservation = reservationService.createCustomerReservation(customer, reservationDate, existingSlot,
-				0, "");
-
-		Reservation reservationExisting = reservationService.createCustomerReservation(customer, reservationDate,
-				existingSlot, 0, "");
-
-		assertNotNull(reservationExisting);
+		Reservation result = reservationService.createCustomerReservation(customer, date, slot, capacity, specialNotes);
+		result.setDate(LocalDate.now().plusDays(2L));
+		
+		assertTrue(reservationService.updateReservation(result));
 	}
+	
+	@Test
+	void cancelReservation() {
+		Customer customer = new Customer("johndoe@example.com", "john", "doe", "password");
+		LocalDate date = LocalDate.now();
+		TimeSlot slot = new TimeSlot(LocalTime.of(12, 0), LocalTime.of(14, 0));
+		int capacity = 4;
+		String specialNotes = "Near window";
+
+		Reservation result = reservationService.createCustomerReservation(customer, date, slot, capacity, specialNotes);
+		
+		assertTrue(reservationService.cancelReservation(result.getId()));
+	}
+
 
 }

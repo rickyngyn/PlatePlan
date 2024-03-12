@@ -18,4 +18,6 @@ public interface ReservationService {
 
 	void initializeDependency(AccountService accountService, TablesService tablesService, ServerService serviceUtils);
 
+	boolean updateReservation(Reservation reservation);
+
 }

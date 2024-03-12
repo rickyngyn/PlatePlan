@@ -59,6 +59,7 @@ public class DataBaseStubImpl implements DataBase {
 				db.menus.add(menuItem);
 			}
 
+
 			System.out.println("Inserting record into " + tableName + ": " + object.toString());
 
 			return true; // Return true to indicate success
@@ -242,6 +243,10 @@ public class DataBaseStubImpl implements DataBase {
 					return true;
 				}
 			}
+		}
+		else if (table.equals(SQLTables.BUSINESS_TABLE)) {
+			db.business = (Business)object;
+			return true;
 		}
 		return false;
 	}

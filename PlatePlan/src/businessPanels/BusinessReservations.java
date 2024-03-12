@@ -123,7 +123,7 @@ public class BusinessReservations extends JPanel {
 
 					Reservation reservation = new Reservation(id, customerId, date, timeSlot, specialNotes, server,
 							tableId, partySize);
-					DataBaseFactory.getDatabase().updateDataBaseEntry(reservation, SQLTables.RESERVATION_TABLE);
+					reservationService.updateReservation(reservation);
 				}
 
 			}

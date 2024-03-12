@@ -65,6 +65,8 @@ public class StubDataBaseRecords {
 		customer_menu = new ArrayList<MenuItem>(Arrays.asList(new MenuItem("1", "pizza", "peperoni", (float) 9.99),
 				new MenuItem("2", "burger", "cheese", (float) 10.99),
 				new MenuItem("3", "pasta", "alfredo", (float) 8.99)));
+		
+		reservations = new ArrayList<>();
 	}
 
 }

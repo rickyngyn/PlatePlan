@@ -101,6 +101,12 @@ public class ReservationServiceImpl implements ReservationService {
 
 		return null;
 	}
+	
+	@Override
+	public boolean updateReservation (Reservation reservation)
+	{
+		return db.updateDataBaseEntry(reservation, SQLTables.RESERVATION_TABLE);
+	}
 
 	@Override
 	public boolean cancelReservation(String reservationId) {

@@ -33,7 +33,9 @@ Create a database named `PlatePlan` with `postgres` as the user.
 
 ## Step 3: Import Database Backup
 
-1. Go into the query executor and select **Import from file**.
-2. The database backup can be found under the directory `\PlatePlan\SQL Files` with a file named `PlatePlanBackup.sql`.
+1. Create a new DataBase called "PlatePlan"
+2. Go into the query executor and select **Import from file**.
+3. The database backup can be found under the directory `\PlatePlan\SQL Files` with a file named `PlatePlanBackup.sql`.
+4. Make sure the correct username and password is set in DataBaseImpl.java
 
 This backup will set up all the tables, including sample data for business and customer logins.

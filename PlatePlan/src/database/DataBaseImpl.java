@@ -265,8 +265,11 @@ public class DataBaseImpl implements DataBase {
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			ResultSet rs = pstmt.executeQuery();
-
-			reservation = DataBaseConverters.convertReservation(rs, getBusinessAccount());
+			
+			if (rs.next())
+			{
+				reservation = DataBaseConverters.convertReservation(rs, getBusinessAccount());
+			}
 
 		} catch (SQLException e) {
 			e.printStackTrace();

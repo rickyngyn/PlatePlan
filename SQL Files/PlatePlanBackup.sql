@@ -164,6 +164,7 @@ INSERT INTO public.customers VALUES ('john', 'john', 'doe', 'password');
 INSERT INTO public.customers VALUES ('janedoe@email.com', 'jane', 'doe', 'password');
 INSERT INTO public.customers VALUES ('max@email.com', 'max', 'payne', 'password');
 INSERT INTO public.customers VALUES ('pouya@email.com', 'pouya', 'sameni', 'password');
+INSERT INTO public.customers VALUES ('newCus@email.com', 'john', 'doe', 'password');
 
 
 --
@@ -219,6 +220,7 @@ INSERT INTO public.feedbacks VALUES ('75345', 'Patricia Miller', 4, '2024-03-01 
 INSERT INTO public.feedbacks VALUES ('64568', 'David Moore', 3, '2024-03-01 14:00:00', 'Average experience.');
 INSERT INTO public.feedbacks VALUES ('9234', 'Lucas Anderson', 5, '2024-03-01 18:00:00', 'I will definitely come back!');
 INSERT INTO public.feedbacks VALUES ('10234', 'Maria Thomas', 4, '2024-03-08 11:00:00', 'Lovely place for a quick snack.');
+INSERT INTO public.feedbacks VALUES ('6c9c4721-772f-4eaa-9679-11f9260bd64f', 'john doe', 5, '2024-03-11 16:29:03', 'This place has the best cake for any celebration');
 
 
 --
@@ -247,9 +249,11 @@ INSERT INTO public.reservations VALUES ('9dcd2721-8e71-438c-814d-cafc81aa98d5', 
 INSERT INTO public.reservations VALUES ('28153cb5-c68f-4334-9876-9609d22ad347', 'johndoe@example.com', '2024-03-02', '12:00:00', 'Near Window', 'table4', 8, 'James Smith');
 INSERT INTO public.reservations VALUES ('b84b7797-4b1e-4049-9c0c-fc54c6dd6936', 'johndoe@example.com', '2024-03-02', '12:00:00', 'Near Window', 'table4', 8, 'James Smith');
 INSERT INTO public.reservations VALUES ('3173184f-b81a-418e-a4b8-492296ac0c5d', 'johndoe@example.com', '2024-03-02', '12:00:00', 'Near Window', 'table4', 8, 'James Smith');
-INSERT INTO public.reservations VALUES ('b27632a6-c789-4c26-80c0-b9b30275881a', 'john', '2024-03-28', '18:00:00', '', 'table10', 7, 'Peter Parker');
 INSERT INTO public.reservations VALUES ('c324a5de-9fd2-42d5-bcaf-f678cf98d0a9', 'john', '2024-03-30', '16:30:00', '', 'table10', 5, 'Peter Parker');
 INSERT INTO public.reservations VALUES ('e5baaad8-75c4-48ab-86cd-afb2c7e689b3', 'john', '2024-03-24', '18:00:00', '', 'table10', 7, 'Peter Parker');
+INSERT INTO public.reservations VALUES ('f3db2942-d57f-42a9-86a5-ffbffeaf9c8d', 'john', '2024-03-30', '21:00:00', '', 'table10', 6, 'Peter Parker');
+INSERT INTO public.reservations VALUES ('0dcbfd15-251b-43a2-826c-92cf13599468', 'johndoe@example.com', '2024-03-11', '12:00:00', 'Near Window', 'table10', 8, 'Peter Parker');
+INSERT INTO public.reservations VALUES ('0bdaabcf-5703-4ae2-890a-eb96dd35bf12', 'johndoe@example.com', '2024-03-11', '12:00:00', 'Near Window', 'table10', 8, 'Peter Parker');
 
 
 --
@@ -258,12 +262,12 @@ INSERT INTO public.reservations VALUES ('e5baaad8-75c4-48ab-86cd-afb2c7e689b3', 
 
 INSERT INTO public.restaurant_tables VALUES ('table1', 2, '1');
 INSERT INTO public.restaurant_tables VALUES ('table3', 6, '3');
-INSERT INTO public.restaurant_tables VALUES ('table7', 4, '2');
 INSERT INTO public.restaurant_tables VALUES ('table8', 6, '3');
 INSERT INTO public.restaurant_tables VALUES ('table9', 8, '4');
-INSERT INTO public.restaurant_tables VALUES ('table10', 10, '1');
-INSERT INTO public.restaurant_tables VALUES ('table2', 14, '2');
 INSERT INTO public.restaurant_tables VALUES ('table4', 10, '4');
+INSERT INTO public.restaurant_tables VALUES ('table2', 4, '1');
+INSERT INTO public.restaurant_tables VALUES ('table10', 10, '1');
+INSERT INTO public.restaurant_tables VALUES ('table7', 4, '2');
 
 
 --

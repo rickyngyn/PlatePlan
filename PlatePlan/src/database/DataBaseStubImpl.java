@@ -20,6 +20,7 @@ public class DataBaseStubImpl implements DataBase {
 
 	private static DataBaseStubImpl dataBaseInstance;
 	private StubDataBaseRecords db;
+
 	private DataBaseStubImpl() {
 		db = StubDataBaseRecords.getInstance();
 	}
@@ -53,6 +54,9 @@ public class DataBaseStubImpl implements DataBase {
 					db.customers.add(customer);
 
 				}
+			}else if (tableName.equals(SQLTables.MENU_TABLE)) {
+				MenuItem menuItem = (MenuItem) object;
+				db.menus.add(menuItem);
 			}
 
 			System.out.println("Inserting record into " + tableName + ": " + object.toString());
@@ -100,8 +104,7 @@ public class DataBaseStubImpl implements DataBase {
 
 	@Override
 	public List<Reservation> getAllReservations() {
-		return db.reservations != null ? db.reservations
-				: new ArrayList<Reservation>();
+		return db.reservations != null ? db.reservations : new ArrayList<Reservation>();
 	}
 
 	@Override
@@ -131,38 +134,115 @@ public class DataBaseStubImpl implements DataBase {
 
 	@Override
 	public Reservation getReservationWithId(String id) {
-		return db.reservations.stream().filter(reservation -> reservation.getId().equals(id))
-				.findFirst().orElse(null);
+		return db.reservations.stream().filter(reservation -> reservation.getId().equals(id)).findFirst().orElse(null);
 
 	}
 
 	@Override
 	public List<MenuItem> getAllMenuItems(String table) {
-		// TODO Auto-generated method stub
-		return null;
+		if (table.equals(SQLTables.CUSTOMER_MENU_TABLE)) {
+			return db.customer_menu;
+		} else {
+			return db.menus;
+		}
 	}
 
 	@Override
 	public void publishCustomerMenu() {
-		// TODO Auto-generated method stub
+		db.customer_menu.clear();
+		db.customer_menu.addAll(db.menus);
 
 	}
 
 	@Override
 	public List<Feedback> getAllFeedbacks() {
-		// TODO Auto-generated method stub
-		return null;
+		return db.feedbacks;
 	}
 
 	@Override
 	public boolean deleteDataBaseEntry(String table, String id) {
-		// TODO Auto-generated method stub
+		if (table.equals(SQLTables.RESERVATION_TABLE)) {
+			for (Reservation object : db.reservations) {
+				if (id.equals(object.getId())) {
+					db.reservations.remove(object);
+					return true;
+				}
+			}
+		} else if (table.equals(SQLTables.TABLES_TABLE)) {
+			for (Table object : db.tables) {
+				if (id.equals(object.getId())) {
+					db.tables.remove(object);
+					return true;
+				}
+			}
+		} else if (table.equals(SQLTables.SERVERS_TABLE)) {
+			for (Server object : db.servers) {
+				if (id.equals(object.getId())) {
+					db.servers.remove(object);
+					return true;
+				}
+			}
+		} else if (table.equals(SQLTables.MENU_TABLE)) {
+			for (MenuItem object : db.menus) {
+				if (id.equals(object.getId())) {
+					db.menus.remove(object);
+					return true;
+				}
+			}
+		} else if (table.equals(SQLTables.FEEDBACKS_TABLE)) {
+			for (Feedback object : db.feedbacks) {
+				if (id.equals(object.getId())) {
+					db.feedbacks.remove(object);
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 
 	@Override
 	public boolean updateDataBaseEntry(Object object, String table) {
-		// TODO Auto-generated method stub
+		if (table.equals(SQLTables.RESERVATION_TABLE)) {
+			for (Reservation tempObj : db.reservations) {
+				if (((Reservation) object).getId().equals(tempObj.getId())) {
+					db.reservations.remove(tempObj);
+					db.reservations.add(((Reservation) object));
+					return true;
+				}
+			}
+		} else if (table.equals(SQLTables.TABLES_TABLE)) {
+			for (Table tempObj : db.tables) {
+				if (((Table) object).getId().equals(tempObj.getId())) {
+					db.tables.remove(tempObj);
+					db.tables.add(((Table) object));
+					return true;
+				}
+			}
+		} else if (table.equals(SQLTables.SERVERS_TABLE)) {
+			for (Server tempObj : db.servers) {
+				if (((Server) object).getId().equals(tempObj.getId())) {
+					db.servers.remove(tempObj);
+					db.servers.add(((Server) object));
+					return true;
+				}
+			}
+		} else if (table.equals(SQLTables.MENU_TABLE)) {
+			for (MenuItem tempObj : db.menus) {
+				if (((MenuItem) object).getId().equals(tempObj.getId())) {
+					db.menus.remove(tempObj);
+					db.menus.add(((MenuItem) object));
+					return true;
+				}
+			}
+		} else if (table.equals(SQLTables.FEEDBACKS_TABLE)) {
+			for (Feedback tempObj : db.feedbacks) {
+				if (((Feedback) object).getId().equals(tempObj.getId())) {
+					db.feedbacks.remove(tempObj);
+					db.feedbacks.add(((Feedback) object));
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 

@@ -32,7 +32,7 @@ import services.ReservationServiceImpl;
 import services.ServerServiceImpl;
 import services.TablesServiceImpl;
 
-class ServiceUtilsTest {
+class TableServiceTest {
 	private ReservationService reservationService;
 	private ServerService serverService;
 	private TablesService tablesService;
@@ -41,8 +41,8 @@ class ServiceUtilsTest {
 
 	@BeforeEach
 	void setUp() {
-		ServiceFactory.setUpServices();
 		DataBaseFactory.ENVIRONMENT = "development";
+		ServiceFactory.setUpServices();
 		reservationService = ReservationServiceImpl.getInstance();
 		tablesService = TablesServiceImpl.getInstance();
 		serverService = ServerServiceImpl.getInstance();

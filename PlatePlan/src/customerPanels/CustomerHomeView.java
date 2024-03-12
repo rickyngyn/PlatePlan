@@ -52,7 +52,6 @@ public class CustomerHomeView extends JPanel {
 	private JLabel lblSpecialInstVal;
 	private JButton btnViewMenu;
 	private JButton btnViewFeedback;
-	private JLabel lblOpenLabel;
 	private Business business;
 	private JLabel lblAverageRatingOf;
 	private JButton btnViewResHistory;
@@ -232,15 +231,6 @@ public class CustomerHomeView extends JPanel {
 		// like "9:00 AM" and "5:00 PM"
 		String openFrom = business.getOpenFrom().toString();
 		String openUntil = business.getOpenUntil().toString();
-		lblOpenLabel = new JLabel("<html><div style='text-align: center;'>Open Today From <b>" + openFrom
-				+ "</b> To <b>" + openUntil + "</b></div></html>");
-		lblOpenLabel.setFont(new Font("SansSerif", Font.PLAIN, 18)); // Using SansSerif for a clean look, and increasing
-																		// the size for better readability
-		lblOpenLabel.setForeground(new Color(34, 139, 34)); // Setting the text color to a green for a friendly,
-															// inviting look
-		lblOpenLabel.setBounds(555, 82, 347, 30); // Adjusting the width to ensure the text fits, especially for longer
-													// times
-		add(lblOpenLabel);
 
 		// Assuming feedbackService.getAverageRating() returns a formatted string, for
 		// example, "4.3"
@@ -252,7 +242,7 @@ public class CustomerHomeView extends JPanel {
 																		// emphasis
 		lblAverageRatingOf.setForeground(new Color(0, 102, 204)); // Set the text color to a soft blue for a pleasant
 																	// look
-		lblAverageRatingOf.setBounds(553, 120, 325, 30); // Adjusted width to 350 in case the text is longer
+		lblAverageRatingOf.setBounds(500, 348, 325, 30); // Adjusted width to 350 in case the text is longer
 		add(lblAverageRatingOf);
 
 		BusinessInfoPanel businessInfoPanel = new BusinessInfoPanel(DataBaseFactory.getDatabase().getBusinessAccount());

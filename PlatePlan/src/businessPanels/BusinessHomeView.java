@@ -53,7 +53,7 @@ public class BusinessHomeView extends JPanel {
 		lblNewLabel.setForeground(new Color(0, 0, 0));
 		lblNewLabel.setFont(new Font("Calibri", Font.ITALIC, 30));
 		lblNewLabel.setLabelFor(this);
-		lblNewLabel.setBounds(375, 122, 349, 38);
+		lblNewLabel.setBounds(389, 122, 322, 38);
 		add(lblNewLabel);
 
 		btnReservations = new JButton("Reservations");
@@ -152,7 +152,7 @@ public class BusinessHomeView extends JPanel {
 				PlatePlanMain.switchPanels(new BusinessReservations(business));
 			}
 		});
-		btnReservations.setBounds(245, 206, 200, 50);
+		btnReservations.setBounds(240, 206, 200, 50);
 		add(btnReservations);
 
 		JButton btnLogOut = new JButton("Log Out");
@@ -169,7 +169,7 @@ public class BusinessHomeView extends JPanel {
 				PlatePlanMain.switchPanels(new BusinessTableManageView(bussiness));
 			}
 		});
-		btnManageTables.setBounds(455, 206, 200, 50);
+		btnManageTables.setBounds(450, 206, 200, 50);
 		add(btnManageTables);
 
 		btnManageServers.addActionListener(new ActionListener() {
@@ -178,7 +178,7 @@ public class BusinessHomeView extends JPanel {
 
 			}
 		});
-		btnManageServers.setBounds(665, 206, 200, 50);
+		btnManageServers.setBounds(660, 206, 200, 50);
 		add(btnManageServers);
 
 		btnManageMenu.addActionListener(new ActionListener() {
@@ -186,7 +186,7 @@ public class BusinessHomeView extends JPanel {
 				PlatePlanMain.switchPanels(new BusinessMenuMangement(bussiness));
 			}
 		});
-		btnManageMenu.setBounds(245, 317, 200, 50);
+		btnManageMenu.setBounds(240, 317, 200, 50);
 		add(btnManageMenu);
 
 		btnManageFeedback.addActionListener(new ActionListener() {
@@ -194,7 +194,7 @@ public class BusinessHomeView extends JPanel {
 				PlatePlanMain.switchPanels(new BusinessFeedbackManagement(bussiness));
 			}
 		});
-		btnManageFeedback.setBounds(455, 317, 200, 50);
+		btnManageFeedback.setBounds(450, 317, 200, 50);
 		add(btnManageFeedback);
 
 		btnManageStore = new JButton("Store");
@@ -204,7 +204,7 @@ public class BusinessHomeView extends JPanel {
 			}
 		});
 		btnManageStore.setBackground(new Color(250, 240, 230));
-		btnManageStore.setBounds(665, 317, 200, 50);
+		btnManageStore.setBounds(660, 317, 200, 50);
 
 		btnManageStore.addMouseListener(new MouseAdapter() {
 			Icon hoverIcon = new ImageIcon(new ImageIcon(BusinessHomeView.class.getResource("/businessIcon.png"))

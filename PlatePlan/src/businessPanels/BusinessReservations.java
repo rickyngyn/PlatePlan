@@ -80,6 +80,8 @@ public class BusinessReservations extends JPanel {
 		tableModel = new DefaultTableModel(new String[] { "ID", "Date", "Time", "Customer ID", "Party Size",
 				"Special Notes", "Server", "Table ID", }, 0);
 		table.setModel(tableModel);
+		table.getColumnModel().getColumn(0).setPreferredWidth(15);
+		table.setRowHeight(30);
 
 		JButton btnNewButton_1 = new JButton("Cancel Reservation");
 		btnNewButton_1.addActionListener(new ActionListener() {
@@ -94,7 +96,7 @@ public class BusinessReservations extends JPanel {
 
 			}
 		});
-		btnNewButton_1.setBounds(283, 575, 135, 40);
+		btnNewButton_1.setBounds(283, 575, 155, 40);
 		add(btnNewButton_1);
 
 		JButton btnNewButton_1_1 = new JButton("Save Changes");

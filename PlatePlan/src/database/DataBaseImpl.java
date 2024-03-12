@@ -326,24 +326,16 @@ public class DataBaseImpl implements DataBase {
 
 	@Override
 	public void publishCustomerMenu() {
-		// SQL statement to delete everything from customer_menu
 		String deleteSQL = String.format("DELETE FROM %s", SQLTables.CUSTOMER_MENU_TABLE);
 
-		// SQL statement to copy everything from menu to customer_menu
-		// Assuming both tables have the same schema and column names
 		String copySQL = String.format("INSERT INTO %s SELECT * FROM %s", SQLTables.CUSTOMER_MENU_TABLE,
 				SQLTables.MENU_TABLE);
 
 		Statement statement = null;
 
 		try {
-			// Create a Statement object for sending SQL statements to the database
 			statement = connection.createStatement();
-
-			// Execute delete statement to clear customer_menu
 			statement.executeUpdate(deleteSQL);
-
-			// Execute copy statement to populate customer_menu with data from menu
 			statement.executeUpdate(copySQL);
 
 			System.out.println("Successfully updated customer_menu from menu.");

@@ -1,4 +1,4 @@
-package tests.integration;
+package tests;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -22,6 +22,8 @@ import database.SQLTables;
 import database.StubDataBaseRecords;
 import dto.Business;
 import dto.Customer;
+import dto.Feedback;
+import dto.MenuItem;
 import dto.Reservation;
 import dto.Server;
 import dto.Table;
@@ -146,6 +148,30 @@ class DataBaseIntegrationTests {
 		Reservation reservations = db.getReservationWithId("temp");
 		assertNotNull(reservations);
 		assertTrue(db.deleteDataBaseEntry(SQLTables.RESERVATION_TABLE, "temp"));
+	}
+	
+	@Test
+	void testGetAllMenuItems ()
+	{
+		List<MenuItem> menuItems = db.getAllMenuItems(SQLTables.MENU_TABLE);
+		assertNotNull(menuItems);
+		assertTrue(menuItems.size()>0);
+	}
+	
+	@Test
+	void testUpdateDataBase ()
+	{
+		List<MenuItem> menuItems = db.getAllMenuItems(SQLTables.MENU_TABLE);
+		
+		assertTrue(db.updateDataBaseEntry(menuItems.get(0), SQLTables.MENU_TABLE));
+	}
+	
+	@Test
+	void testGetAllFeedback()
+	{
+		List<Feedback> feedbacks = db.getAllFeedbacks();
+		assertNotNull(feedbacks);
+		assertTrue(feedbacks.size()>0);
 	}
 
 	

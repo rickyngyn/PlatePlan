@@ -374,8 +374,14 @@ public class DataBaseImpl implements DataBase {
 	@Override
 	public boolean deleteDataBaseEntry(String table, String id) {
 		int affectedRows = 0;
-		// SQL command to delete rows with the specific ID
 		String sql = "DELETE FROM " + table + " WHERE id = ?;";
+
+		// SQL command to delete rows with the specific ID
+		if (table.equals(SQLTables.ACCOUNTS_TABLE))
+		{
+			sql = "DELETE FROM " + table + " WHERE email = ?;";
+
+		}
 
 		try {
 			// Set the ID in the prepared statement to avoid SQL injection

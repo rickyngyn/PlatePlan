@@ -35,21 +35,25 @@ public class DataBaseConverters {
 	public static Reservation convertReservation(ResultSet rs, Business business) {
 		try {
 			Reservation reservation = new Reservation();
-			reservation.setId(rs.getString("id"));
-			reservation.setCustomerId(rs.getString("customer_id"));
-			reservation.setDate(rs.getDate("date").toLocalDate());
-			reservation.setTime(new TimeSlot(rs.getTime("time").toLocalTime(),
-					rs.getTime("time").toLocalTime().plusMinutes(business.getReservationSlots())));
-			reservation.setSpecialNotes(rs.getString("special_notes"));
-			reservation.setTableId(rs.getString("table_id"));
-			reservation.setPartySize(rs.getInt("party_size"));
-			reservation.setServerId(rs.getString("server"));
-			return reservation;
+			if (rs.next())
+			{
+				reservation.setId(rs.getString("id"));
+				reservation.setCustomerId(rs.getString("customer_id"));
+				reservation.setDate(rs.getDate("date").toLocalDate());
+				reservation.setTime(new TimeSlot(rs.getTime("time").toLocalTime(),
+						rs.getTime("time").toLocalTime().plusMinutes(business.getReservationSlots())));
+				reservation.setSpecialNotes(rs.getString("special_notes"));
+				reservation.setTableId(rs.getString("table_id"));
+				reservation.setPartySize(rs.getInt("party_size"));
+				reservation.setServerId(rs.getString("server"));
+				return reservation;
+			}
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
 		}
+		return null;
 
 	}
 

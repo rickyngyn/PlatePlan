@@ -117,4 +117,34 @@ class TableServiceTest {
 
 		assertFalse(result);
 	}
+	
+	@Test
+	void testGetMaxSize() {
+
+		assertEquals(8, tablesService.maxTableSize());
+	}
+	
+	@Test
+	void testUpdateTable() {
+		
+		
+		assertTrue(tablesService.updateTable("1", 20, "Peter Parker"));
+		Table table = stubDb.tables.get(stubDb.tables.size()-1);
+		assertEquals(20, table.getCapacity());
+		assertEquals("1", table.getId());
+	}
+	
+	@Test
+	void testCombineTable_success() {
+		List<Table> tables = new ArrayList<Table>(Arrays.asList(new Table("1", 4, "1"), new Table("2", 2, "1"),
+				new Table("3", 2, "2"), new Table("4", 6, "2"), new Table("5", 8, "3"), new Table("6", 4, "3")));
+		tablesService.combineTables(tables);
+		assertEquals(1,stubDb.tables.size());
+	}
+	@Test
+	void testCombineTable_fail() {
+		List<Table> tables = new ArrayList<Table>();
+		
+		assertFalse(tablesService.combineTables(tables));
+	}
 }

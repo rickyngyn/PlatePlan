@@ -34,8 +34,8 @@ class ReservationServiceTest {
 	private StubDataBaseRecords stubDb;
 	@BeforeEach
 	void setUp() {
-		ServiceFactory.setUpServices();
 		DataBaseFactory.ENVIRONMENT = "development";
+		ServiceFactory.setUpServices();
 		accountService = AccountsServiceImpl.getInstance();
 		reservationService = ReservationServiceImpl.getInstance();
 		dataBase = DataBaseFactory.getDatabase();

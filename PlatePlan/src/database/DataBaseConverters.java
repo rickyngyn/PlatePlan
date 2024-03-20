@@ -9,6 +9,7 @@ import dto.Business;
 import dto.Customer;
 import dto.Feedback;
 import dto.MenuItem;
+import dto.Order;
 import dto.Reservation;
 import dto.Server;
 import dto.Table;
@@ -191,6 +192,41 @@ public class DataBaseConverters {
 			e.printStackTrace();
 		}
 		return feedbacks;
+	}
+	
+	public static Order convertOrderItem(ResultSet rs) {
+		try {
+			Order order = new Order();
+			order.setId(rs.getString("id"));
+			order.setCustomer(rs.getString("customer"));
+			order.setItem(rs.getString("item"));
+			order.setPrice(rs.getDouble("price"));
+			order.setQuantity(rs.getInt("quantity"));
+			order.setDate(rs.getDate("date").toLocalDate());
+			order.setReservation(rs.getString("reservation"));
+			
+			return order;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static List<Order> convertOrderItemList(ResultSet rs) {
+		List<Order> orders = new ArrayList<>();
+		try {
+			while (rs.next()) {
+				Order order = convertOrderItem(rs);
+				if (order != null) {
+					orders.add(order);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return orders;
 	}
 
 }

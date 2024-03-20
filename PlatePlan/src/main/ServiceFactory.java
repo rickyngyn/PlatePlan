@@ -3,12 +3,14 @@ package main;
 import service_interfaces.AccountService;
 import service_interfaces.FeedbackService;
 import service_interfaces.MenuService;
+import service_interfaces.OrdersService;
 import service_interfaces.ReservationService;
 import service_interfaces.ServerService;
 import service_interfaces.TablesService;
 import services.AccountsServiceImpl;
 import services.FeedbackServiceImpl;
 import services.MenuServiceImpl;
+import services.OrdersServiceImpl;
 import services.ReservationServiceImpl;
 import services.ServerServiceImpl;
 import services.TablesServiceImpl;
@@ -21,6 +23,7 @@ public class ServiceFactory {
 	private static ServerService serviceUtils;
 	private static MenuService menuService;
 	private static FeedbackService feedbackService;
+	private static OrdersService orderService;
 
 	public static void setUpServices() {
 		System.out.println("Setting Up Accounts Service");
@@ -40,6 +43,9 @@ public class ServiceFactory {
 
 		System.out.println("Setting Up Feedback Service");
 		feedbackService = FeedbackServiceImpl.getInstance();
+		
+		System.out.println("Setting Up Orders Service");
+		orderService = OrdersServiceImpl.getInstance();
 
 		System.out.println("Initializing Dependencies");
 		accountService.initializeDependency(reservationService, tablesService, serviceUtils);
@@ -49,7 +55,7 @@ public class ServiceFactory {
 		menuService.initializeDependency(reservationService, tablesService, serviceUtils, accountService);
 		feedbackService.initializeDependency(reservationService, tablesService, serviceUtils, accountService,
 				menuService);
-
+		orderService.initializeDependency(accountService, tablesService, serviceUtils, reservationService, menuService);
 	}
 
 }

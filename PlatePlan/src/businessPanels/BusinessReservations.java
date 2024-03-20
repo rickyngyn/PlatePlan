@@ -31,7 +31,6 @@ import services.ReservationServiceImpl;
 public class BusinessReservations extends JPanel {
 	private JTable table;
 	private Business business;
-	private DataBase db;
 	private JButton btnNewButton;
 	private JLabel lblNewLabel;
 	private DefaultTableModel tableModel;
@@ -51,7 +50,6 @@ public class BusinessReservations extends JPanel {
 
 		this.reservationService = ReservationServiceImpl.getInstance();
 		this.business = business;
-		this.db = DataBaseFactory.getDatabase();
 
 		btnNewButton = new JButton("Back");
 		btnNewButton.setFont(new Font("Calibri", Font.PLAIN, 16));
@@ -131,7 +129,7 @@ public class BusinessReservations extends JPanel {
 		btnNewButton_1_1.setBounds(691, 575, 125, 40);
 		add(btnNewButton_1_1);
 
-		for (Reservation r : db.getAllReservations()) {
+		for (Reservation r : reservationService.getAllReservations()) {
 			if (r.getDate().isAfter(LocalDate.now()) || r.getDate().isEqual(LocalDate.now())) {
 				tableModel.addRow(new Object[] { r.getId(), r.getDate(),
 						String.format("%s - %s", r.getTime().getFrom(), r.getTime().getTo()), r.getCustomerId(),

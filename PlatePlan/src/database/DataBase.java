@@ -9,6 +9,7 @@ import dto.Business;
 import dto.Customer;
 import dto.Feedback;
 import dto.MenuItem;
+import dto.Order;
 import dto.Reservation;
 import dto.Server;
 import dto.Table;
@@ -42,5 +43,7 @@ public interface DataBase {
 	public boolean deleteDataBaseEntry(String table, String id);
 
 	boolean updateDataBaseEntry(Object object, String table);
+
+	public List<Order> getAllOrders();
 
 }

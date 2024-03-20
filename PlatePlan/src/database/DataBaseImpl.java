@@ -17,6 +17,7 @@ import dto.Business;
 import dto.Customer;
 import dto.Feedback;
 import dto.MenuItem;
+import dto.Order;
 import dto.Reservation;
 import dto.Server;
 import dto.Table;
@@ -108,6 +109,9 @@ public class DataBaseImpl implements DataBase {
 		} else if (tableName.equals(SQLTables.FEEDBACKS_TABLE)) {
 			Feedback feedback = (Feedback) object;
 			pstmt = feedback.getSQLString(connection, sql);
+		}else if (tableName.equals(SQLTables.ORDERS_TABLE)) {
+			Order order = (Order) object;
+			pstmt = order.getSQLString(connection, sql);
 		}
 
 		System.out.println("Executing Command: " + pstmt.toString());
@@ -392,5 +396,24 @@ public class DataBaseImpl implements DataBase {
 		}
 		return affectedRows <= 0 ? false : true;
 
+	}
+
+	@Override
+	public List<Order> getAllOrders() {
+		List<Order> orders = new ArrayList<>();
+		String sql = String.format("SELECT * FROM %s;", SQLTables.ORDERS_TABLE);
+		System.out.println("Executing Query: " + sql);
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			ResultSet rs = pstmt.executeQuery();
+
+			orders = DataBaseConverters.convertOrderItemList(rs);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return orders;
+		
 	}
 }

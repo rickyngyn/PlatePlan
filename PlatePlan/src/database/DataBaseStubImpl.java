@@ -12,6 +12,7 @@ import dto.Business;
 import dto.Customer;
 import dto.Feedback;
 import dto.MenuItem;
+import dto.Order;
 import dto.Reservation;
 import dto.Server;
 import dto.Table;
@@ -233,6 +234,12 @@ public class DataBaseStubImpl implements DataBase {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public List<Order> getAllOrders() {
+		return null;
+		
 	}
 
 }

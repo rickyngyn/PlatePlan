@@ -113,5 +113,10 @@ public class ReservationServiceImpl implements ReservationService {
 		return db.deleteDataBaseEntry(SQLTables.RESERVATION_TABLE, reservationId);
 	}
 
+	@Override
+	public List<Reservation> getAllReservations() {
+		return db.getAllReservations();
+	}
+
 	// Other service methods would go here
 }

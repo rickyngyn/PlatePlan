@@ -322,6 +322,10 @@ public class DataBaseImpl implements DataBase {
 				preparedStatement = reservation.generateUpdateCommand(connection,
 						getColumnNamesList(SQLTables.RESERVATION_TABLE), SQLTables.RESERVATION_TABLE);
 			}
+			else if (SQLTables.ORDERS_TABLE.equals(table)) {
+				Order order = (Order) object;
+				preparedStatement = order.upsertRecord(connection, getColumnNamesList(SQLTables.ORDERS_TABLE));
+			}
 
 			System.out.println("Executing Update Command: " + preparedStatement.toString());
 			return preparedStatement.executeUpdate() > 0;

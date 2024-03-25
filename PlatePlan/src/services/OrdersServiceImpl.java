@@ -80,12 +80,9 @@ public class OrdersServiceImpl implements OrdersService {
 
 		List<MenuItem> menuItems = menuService.getAllMenuItems(SQLTables.CUSTOMER_MENU_TABLE);
 		for (Order order : orders) {
-			for (MenuItem menuItem : menuItems) {
-				if (order.getItem().equalsIgnoreCase(menuItem.getName())) {
-					menuItems.remove(menuItem);
-				}
-			}
+		    menuItems.removeIf(menuItem -> order.getItem().equalsIgnoreCase(menuItem.getName()));
 		}
+
 		
 		for (MenuItem menuItem : menuItems) {
 			Order tempOrder = new Order();
@@ -107,6 +104,12 @@ public class OrdersServiceImpl implements OrdersService {
 	@Override
 	public List<Order> getAllOrdersForDate(LocalDate date) {
 		return db.getAllOrders().stream().filter(obj -> obj.getDate().equals(date)).collect(Collectors.toList());
+	}
+
+	@Override
+	public boolean updateOrder(Order order) {
+		return db.updateDataBaseEntry(order, SQLTables.ORDERS_TABLE);
+		
 	}
 
 }

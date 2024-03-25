@@ -22,4 +22,6 @@ public interface OrdersService {
 	void initializeDependency(AccountService accountService, TablesService tablesService, ServerService serviceUtils,
 			ReservationService reservationService, MenuService menuService);
 
+	public boolean updateOrder(Order order);
+
 }

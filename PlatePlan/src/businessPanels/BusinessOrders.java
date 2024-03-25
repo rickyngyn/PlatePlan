@@ -15,6 +15,7 @@ import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -102,15 +103,22 @@ public class BusinessOrders extends JPanel {
 		table = new JTable();
 		scrollPane_1.setViewportView(table);
 
-		tableModel = new DefaultTableModel(new String[] { "Menu Item", "Price", "Quantity" }, 0);
+		tableModel = new DefaultTableModel(new String[] { "Menu Item", "Price", "Quantity" }, 0) {
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		        // Make the first and second column uneditable
+		        return column > 1; // Only the third column (Quantity) is editable
+		    }
+		};
 		table.setModel(tableModel);
 		table.getColumnModel().getColumn(0).setPreferredWidth(15);
 		table.setRowHeight(30);
 
+
 		JButton btnNewButton_1_1 = new JButton("Save Changes");
 		btnNewButton_1_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				saveOrders();
 			}
 		});
 		btnNewButton_1_1.setBounds(475, 611, 150, 40);
@@ -233,7 +241,52 @@ public class BusinessOrders extends JPanel {
 				tableModel.addRow(new Object[] { r.getItem(), r.getPrice(), r.getQuantity() });
 			}
 		}
+	}
+	
+	public void saveOrders() {
+		
+		Reservation currReservation = null;
+		for (Reservation reservation : reservationList) {
+			if (reservationMap.get(reservation.getId()).equals(currentReservationView.getText())) {
+				currReservation = reservation;
+			}
+		}
+		
+		
+		if (currReservation != null)
+		{
+			List<Order> orders = ordersService.getAllOrdersForReservation(currReservation);
+			
+			try {
+				for (int i = 0; i < tableModel.getRowCount(); i++) {
+					
+					for (Order order: orders)
+					{
+						if (order.getItem().equalsIgnoreCase((String)tableModel.getValueAt(i, 0)))
+						{
+							order.setQuantity(Integer.valueOf(tableModel.getValueAt(i, 2).toString()));
+							if (order.getQuantity()> 0)
+							{
+								if (!ordersService.updateOrder(order))
+								{
+									throw new Exception("Could not update");
+								}
+							}
+						}
+					}
+				    
+				}
+			}catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Unable to submit order", "Submission Error", JOptionPane.ERROR_MESSAGE);
+			}
+
+					
+
+		}
+		loadOrders();
 		
 
+		
 	}
+		
 }

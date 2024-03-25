@@ -216,17 +216,18 @@ public class Order {
 			String updates = String.join(", ",
 					columns.stream().map(column -> column + " = EXCLUDED." + column).toArray(String[]::new));
 
-			String sql = "INSERT INTO " + SQLTables.ORDERS_TABLE + " (id, " + columnNames + ") " + "VALUES (?, " + placeholders
+			String sql = "INSERT INTO " + SQLTables.ORDERS_TABLE + " (" + columnNames + ") " + "VALUES (" + placeholders
 					+ ") " + "ON CONFLICT (id) " + "DO UPDATE SET " + updates + ";";
 
 			PreparedStatement stmt = conn.prepareStatement(sql);
 
-			// Bind values for INSERT, assuming 'id' is the first placeholder
-			stmt.setString(1, this.id);
 
-			int index = 2;
+			int index = 1;
 			for (String column : columns) {
 				switch (column) {
+				case "id":
+					stmt.setString(index++, this.id);
+					break;
 				case "item":
 					stmt.setString(index++, this.item);
 					break;

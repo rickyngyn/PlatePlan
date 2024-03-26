@@ -117,6 +117,16 @@ public class OrdersServiceImpl implements OrdersService {
 	
 	@Override
 	public Receipt getReceiptForReservation(Reservation reservation) {
+		List<Receipt> receipts = db.getAllReceipts();
+		
+		for (Receipt receipt: receipts)
+		{
+			if (receipt.getReservation().equals(reservation.getId()))
+			{
+				return receipt;
+			}
+		}
+		
 	    List<Order> orders = getAllOrdersForReservation(reservation);
 	    
 	    BigDecimal subTotal = BigDecimal.ZERO;
@@ -139,6 +149,7 @@ public class OrdersServiceImpl implements OrdersService {
 	    receipt.setTax(tax.doubleValue()); 
 	    receipt.setTime(LocalTime.now());
 	    receipt.setTip_percent(0);
+	    receipt.setPaid(false);
 	    
 	    receipt.calculateTotal();
 	    
@@ -147,6 +158,7 @@ public class OrdersServiceImpl implements OrdersService {
 	
 	@Override
 	public boolean saveReceipt(Receipt receipt) {
+		receipt.setPaid(true);
 		return db.insertRecord(SQLTables.RECEIPT_TABLE, receipt);
 	}
 	

@@ -358,11 +358,11 @@ public class BusinessOrders extends JPanel {
 					    // If saveReceipt returns false, display an error message
 					    JOptionPane.showMessageDialog(null, "Failed to save the receipt.", "Error", JOptionPane.ERROR_MESSAGE);
 					}
-					
+					PlatePlanMain.refreshPage();
 				}
 			});
 			btnNewButton.setBounds(81, 329, 128, 37);
-			add(btnNewButton);
+
 			
 			lblSubTotal_Val = new JLabel("$0");
 			lblSubTotal_Val.setHorizontalAlignment(SwingConstants.TRAILING);
@@ -383,7 +383,6 @@ public class BusinessOrders extends JPanel {
 			tipSpinner.setBounds(219, 165, 62, 20);
 			tipSpinner.addChangeListener(new ChangeListener() {
 				public void stateChanged(ChangeEvent e) {
-					System.out.println("HERe");
 					receipt.setTip_percent(tipSpinner.getValue() != null ? ((Number) tipSpinner.getValue()).intValue() : 0);
 					receipt.calculateTotal();
 					lblSubTotal_Val.setText("$"+receipt.getSubtotal());
@@ -412,6 +411,12 @@ public class BusinessOrders extends JPanel {
 				tipSpinner.setValue(receipt.getTip_percent());
 				PlatePlanMain.refreshPage();
 				
+			}
+			
+			System.out.println(receipt.toString());
+			if (receipt != null && !receipt.isPaid())
+			{
+				 add(btnNewButton);
 			}
 
 

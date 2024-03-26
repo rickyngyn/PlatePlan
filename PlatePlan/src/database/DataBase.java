@@ -10,6 +10,7 @@ import dto.Customer;
 import dto.Feedback;
 import dto.MenuItem;
 import dto.Order;
+import dto.Receipt;
 import dto.Reservation;
 import dto.Server;
 import dto.Table;
@@ -45,5 +46,7 @@ public interface DataBase {
 	boolean updateDataBaseEntry(Object object, String table);
 
 	public List<Order> getAllOrders();
+
+	List<Receipt> getAllReceipts();
 
 }

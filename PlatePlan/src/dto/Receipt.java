@@ -14,18 +14,8 @@ import database.SQLTables;
 
 public class Receipt {
 
-	private String id;
-	private String reservation;
-	private String customer;
-	private LocalDate date;
-	private LocalTime time;
-	private double subtotal;
-	private double tax;
-	private int tip_percent;
-	private double total;
-
 	public Receipt(String id, String reservation, String customer, LocalDate date, LocalTime time, double subtotal,
-			double tax, int tip_percent, double tip_amount, double total) {
+			double tax, int tip_percent, double total, boolean paid) {
 		super();
 		this.id = id;
 		this.reservation = reservation;
@@ -36,7 +26,21 @@ public class Receipt {
 		this.tax = tax;
 		this.tip_percent = tip_percent;
 		this.total = total;
+		this.paid = paid;
 	}
+
+	private String id;
+	private String reservation;
+	private String customer;
+	private LocalDate date;
+	private LocalTime time;
+	private double subtotal;
+	private double tax;
+	private int tip_percent;
+	private double total;
+	private boolean paid;
+
+
 
 	public Receipt() {
 	}
@@ -175,12 +179,12 @@ public class Receipt {
 	public String toString() {
 		return "Receipt [id=" + id + ", reservation=" + reservation + ", customer=" + customer + ", date=" + date
 				+ ", time=" + time + ", subtotal=" + subtotal + ", tax=" + tax + ", tip_percent=" + tip_percent
-				+ ", total=" + total + "]";
+				+ ", total=" + total + ", paid=" + paid + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(customer, date, id, reservation, subtotal, tax, time, tip_percent, total);
+		return Objects.hash(customer, date, id, paid, reservation, subtotal, tax, time, tip_percent, total);
 	}
 
 	@Override
@@ -193,7 +197,7 @@ public class Receipt {
 			return false;
 		Receipt other = (Receipt) obj;
 		return Objects.equals(customer, other.customer) && Objects.equals(date, other.date)
-				&& Objects.equals(id, other.id) && Objects.equals(reservation, other.reservation)
+				&& Objects.equals(id, other.id) && paid == other.paid && Objects.equals(reservation, other.reservation)
 				&& Double.doubleToLongBits(subtotal) == Double.doubleToLongBits(other.subtotal)
 				&& Double.doubleToLongBits(tax) == Double.doubleToLongBits(other.tax)
 				&& Objects.equals(time, other.time) && tip_percent == other.tip_percent
@@ -240,6 +244,9 @@ public class Receipt {
 					break;
 				case "total":
 					stmt.setDouble(index++, this.total);
+					break;
+				case "paid":
+					stmt.setBoolean(index++, this.paid);
 					break;
 				// Add more cases as per your class fields
 				}
@@ -291,6 +298,9 @@ public class Receipt {
 				case "total":
 					stmt.setDouble(index++, this.total);
 					break;
+				case "paid":
+					stmt.setBoolean(index++, this.paid);
+					break;
 				// Add more cases as per your class fields
 				}
 			}
@@ -311,6 +321,20 @@ public class Receipt {
 		return this.total;
 
 
+	}
+
+	/**
+	 * @return the paid
+	 */
+	public boolean isPaid() {
+		return paid;
+	}
+
+	/**
+	 * @param paid the paid to set
+	 */
+	public void setPaid(boolean paid) {
+		this.paid = paid;
 	}
 
 }

@@ -13,6 +13,7 @@ import dto.Customer;
 import dto.Feedback;
 import dto.MenuItem;
 import dto.Order;
+import dto.Receipt;
 import dto.Reservation;
 import dto.Server;
 import dto.Table;
@@ -240,6 +241,12 @@ public class DataBaseStubImpl implements DataBase {
 	public List<Order> getAllOrders() {
 		return null;
 		
+	}
+
+	@Override
+	public List<Receipt> getAllReceipts() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

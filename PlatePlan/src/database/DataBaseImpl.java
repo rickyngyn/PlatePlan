@@ -375,6 +375,24 @@ public class DataBaseImpl implements DataBase {
 
 		return feedbacks;
 	}
+	
+	@Override
+	public List<Receipt> getAllReceipts() {
+		List<Receipt> receipts = new ArrayList<>();
+		String sql = String.format("SELECT * FROM %s;", SQLTables.RECEIPT_TABLE);
+		System.out.println("Executing Query: " + sql);
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			ResultSet rs = pstmt.executeQuery();
+
+			receipts = DataBaseConverters.convertReceiptItemList(rs);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return receipts;
+	}
 
 	@Override
 	public boolean deleteDataBaseEntry(String table, String id) {

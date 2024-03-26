@@ -5,6 +5,7 @@ import java.util.List;
 
 import dto.MenuItem;
 import dto.Order;
+import dto.Receipt;
 import dto.Reservation;
 
 public interface OrdersService {
@@ -23,5 +24,9 @@ public interface OrdersService {
 			ReservationService reservationService, MenuService menuService);
 
 	public boolean updateOrder(Order order);
+
+	Receipt getReceiptForReservation(Reservation reservation);
+
+	boolean saveReceipt(Receipt receipt);
 
 }

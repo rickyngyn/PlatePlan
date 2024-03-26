@@ -10,4 +10,6 @@ public class SQLTables {
 	public static final String CUSTOMER_MENU_TABLE = "customer_menu";
 	public static final String FEEDBACKS_TABLE = "feedbacks";
 	public static final String ORDERS_TABLE = "orders";
+	public static final String RECEIPT_TABLE = "receipts";
+
 }

@@ -112,6 +112,25 @@ CREATE TABLE public.orders (
 ALTER TABLE public.orders OWNER TO postgres;
 
 --
+-- Name: receipts; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.receipts (
+    id character varying(200) NOT NULL,
+    reservation character varying(200),
+    customer character varying(200),
+    date date,
+    "time" time without time zone,
+    subtotal double precision,
+    tax double precision,
+    tip bigint,
+    total double precision
+);
+
+
+ALTER TABLE public.receipts OWNER TO postgres;
+
+--
 -- Name: reservations; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -259,6 +278,16 @@ INSERT INTO public.menu VALUES ('9', 'Chicken Parmesan', 13.5, 'Breaded chicken 
 -- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO public.orders VALUES ('d02bd481-3f49-4c50-b299-9744b62718a2', 'Grilled Salmon', 'max@email.com', 15.199999809265137, '2024-03-25', '4e744049-dcce-4186-bb77-c60c051647f6', 9);
+INSERT INTO public.orders VALUES ('86abc12c-f19b-442d-91d0-0c17c4e02079', 'Beef Burger', 'max@email.com', 10.989999771118164, '2024-03-25', '4e744049-dcce-4186-bb77-c60c051647f6', 4);
+INSERT INTO public.orders VALUES ('17522474-6c8e-4763-90cb-f6392cac58a8', 'Mushroom Risotto', 'max@email.com', 9.75, '2024-03-25', '4e744049-dcce-4186-bb77-c60c051647f6', 11);
+
+
+--
+-- Data for Name: receipts; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.receipts VALUES ('76560357-3234-4ef1-a8fa-c373ed0ffb85', '4e744049-dcce-4186-bb77-c60c051647f6', 'max@email.com', '2024-03-25', '23:00:44', 288.01, 37.44, 18, 384.03);
 
 
 --
@@ -347,6 +376,14 @@ ALTER TABLE ONLY public.menu
 
 ALTER TABLE ONLY public.orders
     ADD CONSTRAINT orders_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: receipts receipts_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.receipts
+    ADD CONSTRAINT receipts_pkey PRIMARY KEY (id);
 
 
 --

@@ -20,6 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 
 import customerPanels.Constants;
@@ -28,6 +30,7 @@ import database.DataBaseFactory;
 import database.SQLTables;
 import dto.Business;
 import dto.Order;
+import dto.Receipt;
 import dto.Reservation;
 import dto.TimeSlot;
 import main.PlatePlanMain;
@@ -38,6 +41,7 @@ import services.MenuServiceImpl;
 import services.OrdersServiceImpl;
 import services.ReservationServiceImpl;
 import javax.swing.JToolBar;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 
@@ -53,12 +57,13 @@ public class BusinessOrders extends JPanel {
 
 	private Map<String, String> reservationMap;
 	private List<Reservation> reservationList;
-
+	private Reservation currentReservation;
 	private JTextField currentReservationView;
 	private JLabel lblCustomer;
 	private JLabel lblDate;
 	private JLabel lblTime;
 	private JLabel lblTable;
+	private BusinessReceiptComponent receiptComponent;
 
 	public BusinessOrders(Business business) {
 		// ========================Setting Default Dimensions========================
@@ -76,8 +81,6 @@ public class BusinessOrders extends JPanel {
 		this.ordersService = OrdersServiceImpl.getInstance();
 		this.business = business;
 		loadReservations();
-		System.out.println(reservationList);
-		System.out.println(reservationMap);
 
 		btnNewButton = new JButton("Back");
 		btnNewButton.setFont(new Font("Calibri", Font.PLAIN, 16));
@@ -98,22 +101,21 @@ public class BusinessOrders extends JPanel {
 		JScrollPane scrollPane = new JScrollPane();
 
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(59, 202, 982, 398);
+		scrollPane_1.setBounds(436, 187, 627, 398);
 		add(scrollPane_1);
 		table = new JTable();
 		scrollPane_1.setViewportView(table);
 
 		tableModel = new DefaultTableModel(new String[] { "Menu Item", "Price", "Quantity" }, 0) {
-		    @Override
-		    public boolean isCellEditable(int row, int column) {
-		        // Make the first and second column uneditable
-		        return column > 1; // Only the third column (Quantity) is editable
-		    }
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				// Make the first and second column uneditable
+				return column > 1; // Only the third column (Quantity) is editable
+			}
 		};
 		table.setModel(tableModel);
 		table.getColumnModel().getColumn(0).setPreferredWidth(15);
 		table.setRowHeight(30);
-
 
 		JButton btnNewButton_1_1 = new JButton("Save Changes");
 		btnNewButton_1_1.addActionListener(new ActionListener() {
@@ -121,7 +123,7 @@ public class BusinessOrders extends JPanel {
 				saveOrders();
 			}
 		});
-		btnNewButton_1_1.setBounds(475, 611, 150, 40);
+		btnNewButton_1_1.setBounds(692, 596, 150, 40);
 		add(btnNewButton_1_1);
 
 		JButton btnNewButton_1_2 = new JButton("<");
@@ -182,26 +184,24 @@ public class BusinessOrders extends JPanel {
 		add(btnNewButton_1_2_1);
 
 		lblCustomer = new JLabel("");
-		lblCustomer.setBounds(65, 149, 193, 34);
+		lblCustomer.setBounds(64, 127, 193, 34);
 		add(lblCustomer);
 
 		lblDate = new JLabel("");
-		lblDate.setBounds(323, 149, 193, 34);
+		lblDate.setBounds(322, 127, 193, 34);
 		add(lblDate);
 
 		lblTime = new JLabel("");
-		lblTime.setBounds(581, 149, 193, 34);
+		lblTime.setBounds(580, 127, 193, 34);
 		add(lblTime);
 
 		lblTable = new JLabel("");
-		lblTable.setBounds(839, 149, 193, 34);
+		lblTable.setBounds(838, 127, 193, 34);
 		add(lblTable);
 
 		if (!reservationList.isEmpty()) {
 			loadOrders();
 		}
-
-//		PlatePlanMain.refreshPage();
 
 	}
 
@@ -221,6 +221,17 @@ public class BusinessOrders extends JPanel {
 
 	}
 
+	public void loadReceiptComponent() {
+		if (receiptComponent != null) {
+			remove(receiptComponent);
+		}
+		receiptComponent = new BusinessReceiptComponent(currentReservation);
+		receiptComponent.setLocation(64, 187);
+		receiptComponent.setSize(300, 400);
+		add(receiptComponent);
+		PlatePlanMain.refreshPage();
+	}
+
 	public void loadOrders() {
 		Reservation currReservation = null;
 		tableModel.setRowCount(0);
@@ -230,63 +241,183 @@ public class BusinessOrders extends JPanel {
 			}
 		}
 
-		if (currReservation != null)
-		{
+		if (currReservation != null) {
 			lblCustomer.setText("Customer: " + currReservation.getCustomerId());
 			lblDate.setText("Date: " + currReservation.getDate());
 			lblTime.setText("Time: " + currReservation.getTime().getFrom() + " - " + currReservation.getTime().getTo());
 			lblTable.setText("Table: " + currReservation.getTableId());
-			
+			currentReservation = currReservation;
+			loadReceiptComponent();
 			for (Order r : ordersService.getAllOrdersForReservation(currReservation)) {
 				tableModel.addRow(new Object[] { r.getItem(), r.getPrice(), r.getQuantity() });
 			}
 		}
 	}
-	
+
 	public void saveOrders() {
-		
+
 		Reservation currReservation = null;
 		for (Reservation reservation : reservationList) {
 			if (reservationMap.get(reservation.getId()).equals(currentReservationView.getText())) {
 				currReservation = reservation;
 			}
 		}
-		
-		
-		if (currReservation != null)
-		{
+
+		if (currReservation != null) {
 			List<Order> orders = ordersService.getAllOrdersForReservation(currReservation);
-			
+
 			try {
 				for (int i = 0; i < tableModel.getRowCount(); i++) {
-					
-					for (Order order: orders)
-					{
-						if (order.getItem().equalsIgnoreCase((String)tableModel.getValueAt(i, 0)))
-						{
+
+					for (Order order : orders) {
+						if (order.getItem().equalsIgnoreCase((String) tableModel.getValueAt(i, 0))) {
 							order.setQuantity(Integer.valueOf(tableModel.getValueAt(i, 2).toString()));
-							if (order.getQuantity()> 0)
-							{
-								if (!ordersService.updateOrder(order))
-								{
+							if (order.getQuantity() > 0) {
+								if (!ordersService.updateOrder(order)) {
 									throw new Exception("Could not update");
 								}
+							} else if (order.getQuantity() <= 0) {
+								ordersService.deleteOrder(order);
 							}
 						}
 					}
-				    
-				}
-			}catch (Exception e) {
-				JOptionPane.showMessageDialog(null, "Unable to submit order", "Submission Error", JOptionPane.ERROR_MESSAGE);
-			}
 
-					
+				}
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "Unable to submit order", "Submission Error",
+						JOptionPane.ERROR_MESSAGE);
+			}
 
 		}
 		loadOrders();
-		
 
-		
 	}
-		
+	
+	public class BusinessReceiptComponent extends JPanel {
+
+		private static final long serialVersionUID = 1L;
+		private JLabel lblSubTotal_Key;
+		private JLabel lblTaxVal;
+		private JLabel lblSubTotal_Val;
+		private JSpinner tipSpinner;
+		private JLabel lblTotalVal;
+		private JButton btnNewButton;
+		private OrdersService ordersService;
+		private Receipt receipt;
+		/**
+		 * Create the panel.
+		 */
+		public BusinessReceiptComponent(Reservation reservation) {
+			this.setPreferredSize(new Dimension(291, 400));
+			this.setMinimumSize(new Dimension(291, 400));
+			this.setMaximumSize(new Dimension(291, 400));
+			setBackground(new Color(255, 245, 238));
+			setLayout(null);
+			
+			ordersService = OrdersServiceImpl.getInstance();
+			
+			JLabel lblNewLabel = new JLabel("Receipt");
+			lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+			lblNewLabel.setFont(new Font("Arial", Font.BOLD, 24));
+			lblNewLabel.setBounds(48, 11, 194, 37);
+			add(lblNewLabel);
+			
+			lblSubTotal_Key = new JLabel("Subtotal:");
+			lblSubTotal_Key.setFont(new Font("Arial", Font.PLAIN, 16));
+			lblSubTotal_Key.setBounds(10, 91, 101, 24);
+			add(lblSubTotal_Key);
+			
+			JLabel lblTaxKey = new JLabel("Tax (13%): ");
+			lblTaxKey.setFont(new Font("Arial", Font.PLAIN, 16));
+			lblTaxKey.setBounds(10, 126, 101, 24);
+			add(lblTaxKey);
+			
+			JLabel lblTipKey = new JLabel("Tip (%): ");
+			lblTipKey.setFont(new Font("Arial", Font.PLAIN, 16));
+			lblTipKey.setBounds(10, 161, 101, 24);
+			add(lblTipKey);
+			
+			JLabel lblNewLabel_1_1_2 = new JLabel("______________________________");
+			lblNewLabel_1_1_2.setFont(new Font("Arial", Font.PLAIN, 16));
+			lblNewLabel_1_1_2.setBounds(10, 185, 271, 24);
+			add(lblNewLabel_1_1_2);
+			
+			JLabel lblTotalKey = new JLabel("Total: ");
+			lblTotalKey.setFont(new Font("Arial", Font.PLAIN, 16));
+			lblTotalKey.setBounds(10, 220, 101, 24);
+			add(lblTotalKey);
+			
+			btnNewButton = new JButton("Submit Payment");
+			btnNewButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					boolean result = ordersService.saveReceipt(receipt);
+					if(result) {
+					    // If saveReceipt returns true, display a success message
+					    JOptionPane.showMessageDialog(null, "Receipt saved successfully.", "Success", JOptionPane.INFORMATION_MESSAGE);
+					} else {
+					    // If saveReceipt returns false, display an error message
+					    JOptionPane.showMessageDialog(null, "Failed to save the receipt.", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+					
+				}
+			});
+			btnNewButton.setBounds(81, 329, 128, 37);
+			add(btnNewButton);
+			
+			lblSubTotal_Val = new JLabel("$0");
+			lblSubTotal_Val.setHorizontalAlignment(SwingConstants.TRAILING);
+			lblSubTotal_Val.setFont(new Font("Arial", Font.PLAIN, 16));
+			lblSubTotal_Val.setBounds(180, 91, 101, 24);
+			add(lblSubTotal_Val);
+			
+			lblTaxVal = new JLabel("$0");
+			lblTaxVal.setHorizontalAlignment(SwingConstants.TRAILING);
+			lblTaxVal.setFont(new Font("Arial", Font.PLAIN, 16));
+			lblTaxVal.setBounds(180, 126, 101, 24);
+			add(lblTaxVal);
+			
+			tipSpinner = new JSpinner();
+
+			tipSpinner.setModel(new SpinnerNumberModel(0, 0, 100, 1));
+			tipSpinner.setFont(new Font("Arial", Font.PLAIN, 14));
+			tipSpinner.setBounds(219, 165, 62, 20);
+			tipSpinner.addChangeListener(new ChangeListener() {
+				public void stateChanged(ChangeEvent e) {
+					System.out.println("HERe");
+					receipt.setTip_percent(tipSpinner.getValue() != null ? ((Number) tipSpinner.getValue()).intValue() : 0);
+					receipt.calculateTotal();
+					lblSubTotal_Val.setText("$"+receipt.getSubtotal());
+					lblTaxVal.setText("$"+receipt.getTax());
+					lblTotalVal.setText("$"+receipt.getTotal());
+					PlatePlanMain.refreshPage();
+				}
+			});
+
+
+			add(tipSpinner);
+			
+			lblTotalVal = new JLabel("$0");
+			lblTotalVal.setHorizontalAlignment(SwingConstants.TRAILING);
+			lblTotalVal.setFont(new Font("Arial", Font.PLAIN, 16));
+			lblTotalVal.setBounds(180, 220, 101, 24);
+			add(lblTotalVal);
+			
+			if (reservation != null)
+			{
+				receipt = ordersService.getReceiptForReservation(reservation);
+				
+				lblSubTotal_Val.setText("$"+receipt.getSubtotal());
+				lblTaxVal.setText("$"+receipt.getTax());
+				lblTotalVal.setText("$"+receipt.getTotal());
+				tipSpinner.setValue(receipt.getTip_percent());
+				PlatePlanMain.refreshPage();
+				
+			}
+
+
+
+		}
+	}
+
+
 }

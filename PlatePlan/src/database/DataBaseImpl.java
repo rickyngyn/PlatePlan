@@ -18,6 +18,7 @@ import dto.Customer;
 import dto.Feedback;
 import dto.MenuItem;
 import dto.Order;
+import dto.Receipt;
 import dto.Reservation;
 import dto.Server;
 import dto.Table;
@@ -109,9 +110,12 @@ public class DataBaseImpl implements DataBase {
 		} else if (tableName.equals(SQLTables.FEEDBACKS_TABLE)) {
 			Feedback feedback = (Feedback) object;
 			pstmt = feedback.getSQLString(connection, sql);
-		}else if (tableName.equals(SQLTables.ORDERS_TABLE)) {
+		} else if (tableName.equals(SQLTables.ORDERS_TABLE)) {
 			Order order = (Order) object;
 			pstmt = order.getSQLString(connection, sql);
+		} else if (tableName.equals(SQLTables.RECEIPT_TABLE)) {
+			Receipt receipt = (Receipt) object;
+			pstmt = receipt.genSQLInsertStatement(connection, getColumnNamesList(tableName));
 		}
 
 		System.out.println("Executing Command: " + pstmt.toString());
@@ -269,9 +273,8 @@ public class DataBaseImpl implements DataBase {
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			ResultSet rs = pstmt.executeQuery();
-			
-			if (rs.next())
-			{
+
+			if (rs.next()) {
 				reservation = DataBaseConverters.convertReservation(rs, getBusinessAccount());
 			}
 
@@ -321,8 +324,7 @@ public class DataBaseImpl implements DataBase {
 				Reservation reservation = (Reservation) object;
 				preparedStatement = reservation.generateUpdateCommand(connection,
 						getColumnNamesList(SQLTables.RESERVATION_TABLE), SQLTables.RESERVATION_TABLE);
-			}
-			else if (SQLTables.ORDERS_TABLE.equals(table)) {
+			} else if (SQLTables.ORDERS_TABLE.equals(table)) {
 				Order order = (Order) object;
 				preparedStatement = order.upsertRecord(connection, getColumnNamesList(SQLTables.ORDERS_TABLE));
 			}
@@ -380,8 +382,7 @@ public class DataBaseImpl implements DataBase {
 		String sql = "DELETE FROM " + table + " WHERE id = ?;";
 
 		// SQL command to delete rows with the specific ID
-		if (table.equals(SQLTables.ACCOUNTS_TABLE))
-		{
+		if (table.equals(SQLTables.ACCOUNTS_TABLE)) {
 			sql = "DELETE FROM " + table + " WHERE email = ?;";
 
 		}
@@ -418,6 +419,6 @@ public class DataBaseImpl implements DataBase {
 		}
 
 		return orders;
-		
+
 	}
 }

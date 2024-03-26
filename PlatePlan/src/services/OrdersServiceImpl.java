@@ -1,6 +1,9 @@
 package services;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -12,6 +15,7 @@ import database.DataBaseFactory;
 import database.SQLTables;
 import dto.MenuItem;
 import dto.Order;
+import dto.Receipt;
 import dto.Reservation;
 import service_interfaces.AccountService;
 import service_interfaces.MenuService;
@@ -69,8 +73,8 @@ public class OrdersServiceImpl implements OrdersService {
 
 	@Override
 	public boolean deleteOrder(Order order) {
-		// TODO Auto-generated method stub
-		return false;
+		
+		return db.deleteDataBaseEntry(SQLTables.ORDERS_TABLE, order.getId());
 	}
 
 	@Override
@@ -109,7 +113,42 @@ public class OrdersServiceImpl implements OrdersService {
 	@Override
 	public boolean updateOrder(Order order) {
 		return db.updateDataBaseEntry(order, SQLTables.ORDERS_TABLE);
-		
 	}
+	
+	@Override
+	public Receipt getReceiptForReservation(Reservation reservation) {
+	    List<Order> orders = getAllOrdersForReservation(reservation);
+	    
+	    BigDecimal subTotal = BigDecimal.ZERO;
+	    
+	    for (Order order : orders) {
+	        BigDecimal orderPrice = BigDecimal.valueOf(order.getPrice());
+	        subTotal = subTotal.add(orderPrice.multiply(BigDecimal.valueOf(order.getQuantity())));
+	    }
+	    
+	    subTotal = subTotal.setScale(2, RoundingMode.HALF_UP);
+	    
+	    BigDecimal tax = subTotal.multiply(BigDecimal.valueOf(0.13)).setScale(2, RoundingMode.HALF_UP);
+	    
+	    Receipt receipt = new Receipt();
+	    receipt.setCustomer(reservation.getCustomerId());
+	    receipt.setDate(reservation.getDate());
+	    receipt.setId(UUID.randomUUID().toString());
+	    receipt.setReservation(reservation.getId());
+	    receipt.setSubtotal(subTotal.doubleValue()); 
+	    receipt.setTax(tax.doubleValue()); 
+	    receipt.setTime(LocalTime.now());
+	    receipt.setTip_percent(0);
+	    
+	    receipt.calculateTotal();
+	    
+	    return receipt;
+	}
+	
+	@Override
+	public boolean saveReceipt(Receipt receipt) {
+		return db.insertRecord(SQLTables.RECEIPT_TABLE, receipt);
+	}
+	
 
 }

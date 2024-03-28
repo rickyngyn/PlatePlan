@@ -336,5 +336,9 @@ public class Receipt {
 	public void setPaid(boolean paid) {
 		this.paid = paid;
 	}
+	
+	public double getTipAmount() {
+		return (this.subtotal*(tip_percent/100.0));
+	}
 
 }

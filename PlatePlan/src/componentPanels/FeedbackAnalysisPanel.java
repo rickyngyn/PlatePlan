@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
@@ -31,19 +32,33 @@ public class FeedbackAnalysisPanel extends JPanel {
 	}
 
 	private void initializePanel() {
-		// Splitting the initialization into two parts
-		JFreeChart reviewsChart = createChart(true); // For reviews count
-		ChartPanel reviewsChartPanel = new ChartPanel(reviewsChart);
-		reviewsChartPanel.setPreferredSize(new Dimension(800, 300));
+	    // Set the layout of the container panel to BoxLayout, aligning components along the Y-axis
+	    this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-		JFreeChart averageRatingChart = createChart(false); // For average rating
-		ChartPanel averageRatingChartPanel = new ChartPanel(averageRatingChart);
-		averageRatingChartPanel.setPreferredSize(new Dimension(800, 300));
+	    // Create the first chart for reviews count
+	    JFreeChart reviewsChart = createChart(true);
+	    ChartPanel reviewsChartPanel = new ChartPanel(reviewsChart);
+	    reviewsChartPanel.setPreferredSize(new Dimension(800, 300));
+	    reviewsChartPanel.setMinimumSize(new Dimension(800, 300));
+	    reviewsChartPanel.setMaximumSize(new Dimension(800, 300));
+	    // Create the second chart for average rating
+	    JFreeChart averageRatingChart = createChart(false);
+	    ChartPanel averageRatingChartPanel = new ChartPanel(averageRatingChart);
+	    averageRatingChartPanel.setPreferredSize(new Dimension(800, 300));
+	    averageRatingChartPanel.setMinimumSize(new Dimension(800, 300));
+	    averageRatingChartPanel.setMaximumSize(new Dimension(800, 300));
+//	    averageRatingChartPanel.setAlignmentX(LEFT_ALIGNMENT); // Align the panel to the left
 
-		// Adding both charts to the panel
-		add(reviewsChartPanel);
-		add(averageRatingChartPanel);
+	    // Adding the first chart panel to the container
+	    this.add(reviewsChartPanel);
+
+	    // Adding a 20px vertical space between the two charts
+	    this.add(Box.createRigidArea(new Dimension(0, 20)));
+
+	    // Adding the second chart panel to the container
+	    this.add(averageRatingChartPanel);
 	}
+
 
 	private JFreeChart createChart(boolean isReviewsCount) {
 		TimeSeriesCollection dataset = new TimeSeriesCollection();

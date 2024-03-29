@@ -286,14 +286,14 @@ public class BusinessTableManageView extends JPanel {
 		if (tablesService.isTableValid(tableId)) {
 			JOptionPane.showMessageDialog(null, "The table ID entered already exists!", "Error",
 					JOptionPane.ERROR_MESSAGE);
-
+			return;
 		}
 
 		int cap = Integer.valueOf(textCapacity.getText());
 
 		if (cap <= 0 || cap >= 50) {
 			JOptionPane.showMessageDialog(null, "The capacity entered is invalid", "Error", JOptionPane.ERROR_MESSAGE);
-
+			return;
 		}
 		String serverId = (String) serverBox.getSelectedItem();
 

@@ -30,17 +30,7 @@ public class Reservation {
 		this.partySize = partySize;
 	}
 
-	public Reservation(String id, String customerId, LocalDate date, TimeSlot time, String specialNotes, String tableId,
-			int partySize) {
-		super();
-		this.id = id;
-		this.customerId = customerId;
-		this.date = date;
-		this.time = time;
-		this.specialNotes = specialNotes;
-		this.tableId = tableId;
-		this.partySize = partySize;
-	}
+	
 
 	private String id;
 

@@ -78,7 +78,7 @@ class ReservationServiceTest {
 		// setting up a fake reservation
 		String customerEmail = "max@email.com";
 		Reservation fakeReservation = new Reservation("fakeReservationId", customerEmail, LocalDate.now(),
-				new TimeSlot(LocalTime.of(18, 0), LocalTime.of(20, 0)), "Test reservation", "table1", 4);
+				new TimeSlot(LocalTime.of(18, 0), LocalTime.of(20, 0)), "Test reservation","Peter Parker", "table1", 4);
 		stubDb.reservations.add(fakeReservation);
 
 		List<Reservation> results = reservationService.getCustomerReservation(customerEmail);
@@ -111,7 +111,7 @@ class ReservationServiceTest {
 
 		// adding an existing reservation for the customer
 		Reservation existingReservation = new Reservation("resId1", customerEmail, reservationDate, existingSlot,
-				"Existing reservation", "table1", 4);
+				"Existing reservation", "Peter Parker","table1", 4);
 		stubDb.reservations.add(existingReservation); // Add to the fake database
 
 		// attempt to create a new reservation for the same day but different time slot

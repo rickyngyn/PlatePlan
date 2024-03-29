@@ -126,9 +126,21 @@ class DataBaseIntegrationTests {
 	@Test
 	void testGetResForCustomer () throws AccountNotFoundException
 	{
-		List<Reservation> reservations = db.getCustomerReservations("john");
-		assertNotNull(reservations);
-		assertTrue(reservations.size()>0);
+		Reservation reservation = new Reservation();
+        reservation.setId("temp");
+        reservation.setDate(LocalDate.now());
+        reservation.setPartySize(0);
+        reservation.setServerId("");
+        reservation.setTableId("");
+        reservation.setTime(new TimeSlot(LocalTime.now(), LocalTime.now()));
+        reservation.setCustomerId("john");
+        reservation.setSpecialNotes("");
+        assertTrue(db.insertRecord(SQLTables.RESERVATION_TABLE, reservation));
+        
+        List<Reservation> reservations = db.getCustomerReservations("john");
+        assertNotNull(reservations);
+        assertTrue(reservations.size() > 0);
+        assertTrue(db.deleteDataBaseEntry(SQLTables.RESERVATION_TABLE, "temp"));
 	}
 	
 	@Test

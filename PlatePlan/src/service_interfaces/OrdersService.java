@@ -29,4 +29,6 @@ public interface OrdersService {
 
 	boolean saveReceipt(Receipt receipt);
 
+	List<MenuItem> getMostPopularItems(int number);
+
 }

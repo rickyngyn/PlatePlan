@@ -101,8 +101,15 @@ public class BusinessMenuComponent extends JPanel {
 			public void keyTyped(KeyEvent e) {
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-						BusinessMenuComponent.this.menuItem.setPrice(Float.valueOf(txtPriceField.getText()));
-						updateMenuItem();
+						try {
+							float newPrice = Float.parseFloat(txtPriceField.getText());
+							BusinessMenuComponent.this.menuItem.setPrice(newPrice);
+							updateMenuItem();
+						}catch (Exception e) {
+							JOptionPane.showMessageDialog(null, "Price provided is not a number", "ERROR",
+									JOptionPane.ERROR_MESSAGE);
+						}
+						
 					}
 				});
 			}

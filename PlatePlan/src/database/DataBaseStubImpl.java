@@ -151,9 +151,10 @@ public class DataBaseStubImpl implements DataBase {
 	}
 
 	@Override
-	public void publishCustomerMenu() {
+	public boolean publishCustomerMenu() {
 		db.customer_menu.clear();
 		db.customer_menu.addAll(db.menus);
+		return true;
 
 	}
 

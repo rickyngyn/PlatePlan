@@ -102,10 +102,16 @@ public class BusinessMenuMangement extends JPanel {
 		JButton btnPublishMenu = new JButton("Publish Menu");
 		btnPublishMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DataBase db = DataBaseFactory.getDatabase();
-				db.publishCustomerMenu();
-				JOptionPane.showMessageDialog(BusinessMenuMangement.this, "Menu successfully published", "Success",
-						JOptionPane.INFORMATION_MESSAGE);
+				boolean result = menuService.publishCustomerMenu();
+				if (result)
+				{
+					JOptionPane.showMessageDialog(BusinessMenuMangement.this, "Menu successfully published", "Success",
+							JOptionPane.INFORMATION_MESSAGE);
+				}else {
+					JOptionPane.showMessageDialog(BusinessMenuMangement.this, "Menu could be published", "ERROR",
+							JOptionPane.ERROR_MESSAGE);
+				}
+
 			}
 		});
 		btnPublishMenu.setActionCommand("");

@@ -16,5 +16,6 @@ public interface MenuService {
 			ServerService serviceUtils, AccountService accountService);
 
 	boolean deleteMenuItem(MenuItem item);
-
+	
+	boolean publishCustomerMenu ();
 }

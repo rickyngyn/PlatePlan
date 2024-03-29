@@ -37,7 +37,7 @@ public interface DataBase {
 
 	public List<MenuItem> getAllMenuItems(String table);
 
-	void publishCustomerMenu();
+	boolean publishCustomerMenu();
 
 	public List<Feedback> getAllFeedbacks();
 

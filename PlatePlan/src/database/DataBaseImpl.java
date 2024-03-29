@@ -338,7 +338,7 @@ public class DataBaseImpl implements DataBase {
 	}
 
 	@Override
-	public void publishCustomerMenu() {
+	public boolean publishCustomerMenu() {
 		String deleteSQL = String.format("DELETE FROM %s", SQLTables.CUSTOMER_MENU_TABLE);
 
 		String copySQL = String.format("INSERT INTO %s SELECT * FROM %s", SQLTables.CUSTOMER_MENU_TABLE,
@@ -352,10 +352,13 @@ public class DataBaseImpl implements DataBase {
 			statement.executeUpdate(copySQL);
 
 			System.out.println("Successfully updated customer_menu from menu.");
+			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Error updating customer_menu: " + e.getMessage());
+			return false;
 		}
+		
 	}
 
 	@Override

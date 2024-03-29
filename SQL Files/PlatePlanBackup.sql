@@ -289,16 +289,26 @@ INSERT INTO public.orders VALUES ('91d4d9a0-b4e9-4bf8-bbb7-c0a608e0b382', 'Beef 
 -- Data for Name: receipts; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.receipts VALUES ('76560357-3234-4ef1-a8fa-c373ed0ffb85', '4e744049-dcce-4186-bb77-c60c051647f6', 'max@email.com', '2024-03-25', '23:00:44', 288.01, 37.44, 18, 384.03, true);
 INSERT INTO public.receipts VALUES ('b0cf994e-6c5b-4ffc-b7ca-986a1bccb9e6', '55d9aecc-b7c9-407c-9819-b7db4ca7da9f', 'janedoe@email.com', '2024-03-26', '18:01:39', 21.98, 2.86, 35, 33.53, true);
-INSERT INTO public.receipts VALUES ('810f48b4', '13300fe3', 'ff987ade', '2024-02-23', '17:28:00', 203.61, 14.25, 44, 261.86, false);
-INSERT INTO public.receipts VALUES ('ede1029b', 'c1bcc336', '669dbc21', '2024-03-18', '12:17:00', 461.04, 32.27, 24, 517.31, false);
-INSERT INTO public.receipts VALUES ('4f945aff', 'c3ee7d2c', 'fd03452c', '2024-02-27', '09:04:00', 353.8, 24.77, 17, 395.57, true);
-INSERT INTO public.receipts VALUES ('eaba3680', '528e758c', '0da54103', '2024-03-10', '00:20:00', 464.09, 32.49, 67, 563.58, false);
 INSERT INTO public.receipts VALUES ('46613ec8', 'cb35627a', '255cedbe', '2024-02-23', '11:20:00', 36.52, 2.56, 96, 135.08, true);
-INSERT INTO public.receipts VALUES ('3e2e244f', '792a0b56', 'd2249ba1', '2024-03-17', '13:02:00', 378.46, 26.49, 88, 492.95, true);
-INSERT INTO public.receipts VALUES ('f406054c', '89507d95', '6da8a75b', '2024-03-16', '22:21:00', 472.55, 33.08, 72, 577.63, true);
-INSERT INTO public.receipts VALUES ('5823cd52', '679336f8', '7f7880ff', '2024-02-21', '09:02:00', 187.35, 13.11, 6, 206.46, false);
+INSERT INTO public.receipts VALUES ('4c24d74c-70b2-472d-9e43-f7c521ee4671', 'a27d226e-70d4-4146-8a6e-fa04a44fd017', '79a66b23', '2024-02-05', '14:34:56', 55, 3.85, 8, 50.85, false);
+INSERT INTO public.receipts VALUES ('6aa17f0b-4f9d-43d7-97b0-c66ce6cf3709', '1242f1b7-90f2-4235-8853-69bb056f8ba0', '58ef13f5', '2024-02-09', '20:27:53', 60, 4.2, 15, 49.2, true);
+INSERT INTO public.receipts VALUES ('04096550-60cc-4482-a7ad-aa979fa65ff8', 'f382919f-072d-4b73-b518-02c72004e720', '701363c6', '2024-02-11', '06:30:28', 65, 4.55, 70, -0.45, false);
+INSERT INTO public.receipts VALUES ('8fe52676-3720-4c89-b1a6-4e89c4474ee8', 'f95e5250-4d4d-4a75-abdf-12d85a0f4ff3', '3351e190', '2024-02-13', '01:06:44', 70, 4.9, 34, 40.9, false);
+INSERT INTO public.receipts VALUES ('52651b35-9fa7-459e-9cfb-12795974b426', '3105e508-e7d5-468d-a3a6-e34e44ff5976', '6e275a10', '2024-02-17', '12:26:56', 75, 5.25, 64, 16.25, true);
+INSERT INTO public.receipts VALUES ('d4ac7413-19ca-4812-868b-b2a8a3bd89e4', 'f63123a7-eb29-4b3c-b918-139e0063be69', '0c56fc85', '2024-02-18', '12:03:54', 80, 5.6, 14, 71.6, true);
+INSERT INTO public.receipts VALUES ('0d672d2d-1e00-4ec7-8bdd-ca409d8f337c', '2be4a007-c388-4813-bb92-2376d85e0c77', '689d3eba', '2024-02-19', '00:19:08', 85, 5.95, 48, 42.95, false);
+INSERT INTO public.receipts VALUES ('ad58ba95-f783-4b60-abf4-55632be4217f', 'b9c9745a-f600-449c-8750-077f81b46887', 'a8bfaed5', '2024-02-21', '14:46:49', 90, 6.3, 21, 75.3, false);
+INSERT INTO public.receipts VALUES ('5498cd23-3841-46e5-8104-1febc1b7ccd4', '8d588550-db5f-4ce8-9bd9-6dbcfc76b8f5', '83c62de2', '2024-02-28', '04:08:35', 95, 6.65, 36, 65.65, true);
+INSERT INTO public.receipts VALUES ('bda68558-f82e-456f-8e85-14aa60f41ab6', '737da2e2-2b83-449f-a5f2-7a1291dc20f0', 'c480a716', '2024-02-29', '08:53:01', 100, 7, 45, 62, false);
+INSERT INTO public.receipts VALUES ('3e2e244f', '792a0b56', 'd2249ba1', '2024-03-17', '13:02:00', 120, 26.49, 88, 492.95, true);
+INSERT INTO public.receipts VALUES ('4f945aff', 'c3ee7d2c', 'fd03452c', '2024-02-27', '09:04:00', 96, 24.77, 17, 395.57, true);
+INSERT INTO public.receipts VALUES ('5823cd52', '679336f8', '7f7880ff', '2024-02-21', '09:02:00', 134, 13.11, 6, 206.46, false);
+INSERT INTO public.receipts VALUES ('76560357-3234-4ef1-a8fa-c373ed0ffb85', '4e744049-dcce-4186-bb77-c60c051647f6', 'max@email.com', '2024-03-25', '23:00:44', 186, 37.44, 18, 384.03, true);
+INSERT INTO public.receipts VALUES ('810f48b4', '13300fe3', 'ff987ade', '2024-02-23', '17:28:00', 89, 14.25, 44, 261.86, false);
+INSERT INTO public.receipts VALUES ('eaba3680', '528e758c', '0da54103', '2024-03-10', '00:20:00', 200, 32.49, 67, 563.58, false);
+INSERT INTO public.receipts VALUES ('ede1029b', 'c1bcc336', '669dbc21', '2024-03-18', '12:17:00', 167, 32.27, 24, 517.31, false);
+INSERT INTO public.receipts VALUES ('f406054c', '89507d95', '6da8a75b', '2024-03-16', '22:21:00', 156, 33.08, 72, 577.63, true);
 
 
 --
@@ -313,10 +323,10 @@ INSERT INTO public.reservations VALUES ('28153cb5-c68f-4334-9876-9609d22ad347', 
 INSERT INTO public.reservations VALUES ('b84b7797-4b1e-4049-9c0c-fc54c6dd6936', 'johndoe@example.com', '2024-03-02', '12:00:00', 'Near Window', 'table4', 8, 'James Smith');
 INSERT INTO public.reservations VALUES ('7bba1e4f-09b6-4259-8540-382318b9f9ca', 'john', '2024-03-27', '19:00:00', 'This is my Anniversary', 'table99', 6, 'Peter Parker');
 INSERT INTO public.reservations VALUES ('95c06bb9-fcb2-4679-bed4-29247836d6ea', 'john', '2024-02-25', '12:00:00', '', 'table1', 5, 'Peter Parker');
-INSERT INTO public.reservations VALUES ('3173184f-b81a-418e-a4b8-492296ac0c5d', 'johndoe@example.com', '2024-03-26', '12:00:00', 'Near Window', 'table4', 8, 'James Smith');
 INSERT INTO public.reservations VALUES ('92c29c80-e3a0-4ad1-984d-845b45cff4ad', 'idonotexist', '2024-03-11', '12:00:00', '', 'table1', 0, 'Peter Parker');
-INSERT INTO public.reservations VALUES ('4e744049-dcce-4186-bb77-c60c051647f6', 'max@email.com', '2024-03-26', '13:30:00', 'This is gonna be my friends birthday', 'table10', 6, 'Peter Parker');
-INSERT INTO public.reservations VALUES ('55d9aecc-b7c9-407c-9819-b7db4ca7da9f', 'janedoe@email.com', '2024-03-26', '13:30:00', 'Trying 2', 'table1', 1, 'Peter Parker');
+INSERT INTO public.reservations VALUES ('3173184f-b81a-418e-a4b8-492296ac0c5d', 'johndoe@example.com', '2024-03-28', '12:00:00', 'Near Window', 'table4', 8, 'James Smith');
+INSERT INTO public.reservations VALUES ('4e744049-dcce-4186-bb77-c60c051647f6', 'max@email.com', '2024-03-28', '13:30:00', 'This is gonna be my friends birthday', 'table10', 6, 'Peter Parker');
+INSERT INTO public.reservations VALUES ('55d9aecc-b7c9-407c-9819-b7db4ca7da9f', 'janedoe@email.com', '2024-03-28', '13:30:00', 'Trying 2', 'table1', 1, 'Peter Parker');
 INSERT INTO public.reservations VALUES ('8d476932-9fa9-4a2b-a433-6364e4ba49f2', 'john', '2024-03-19', '13:30:00', '', 'table10', 4, 'Peter Parker');
 
 

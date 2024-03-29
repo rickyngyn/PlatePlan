@@ -69,7 +69,9 @@ public class ReservationServiceImpl implements ReservationService {
 			String specialNotes) {
 
 		List<Table> tablesAvailable = tablesService.getTablesMatchingResReq(cap);
-
+		if (date.isAfter(LocalDate.now().plusDays(60L))) {
+			return null;
+		}
 		if (tablesAvailable.isEmpty()) {
 			return null;
 		}

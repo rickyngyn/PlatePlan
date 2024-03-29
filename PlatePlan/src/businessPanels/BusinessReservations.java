@@ -11,6 +11,7 @@ import java.time.LocalTime;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -121,7 +122,14 @@ public class BusinessReservations extends JPanel {
 
 					Reservation reservation = new Reservation(id, customerId, date, timeSlot, specialNotes, server,
 							tableId, partySize);
-					reservationService.updateReservation(reservation);
+					boolean result = reservationService.updateReservation(reservation);
+
+					if (!result) {
+						JOptionPane.showMessageDialog(null,
+								"Error occured while updating reservation #" + reservation.getId()
+										+ ". Please check the tableId and other fields and try again",
+								"ERROR", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 
 			}

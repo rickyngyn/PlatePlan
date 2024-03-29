@@ -105,7 +105,11 @@ public class ReservationServiceImpl implements ReservationService {
 	@Override
 	public boolean updateReservation (Reservation reservation)
 	{
-		return db.updateDataBaseEntry(reservation, SQLTables.RESERVATION_TABLE);
+		if (tablesService.isTableValid(reservation.getTableId()))
+		{
+			return db.updateDataBaseEntry(reservation, SQLTables.RESERVATION_TABLE);
+		}
+		return false;
 	}
 
 	@Override

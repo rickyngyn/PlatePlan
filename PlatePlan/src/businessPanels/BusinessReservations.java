@@ -104,7 +104,7 @@ public class BusinessReservations extends JPanel {
 					String id = tableModel.getValueAt(i, 0).toString();
 
 					// Cast the Date and Time objects to their respective types
-					LocalDate date = (LocalDate) tableModel.getValueAt(i, 1);
+					LocalDate date = LocalDate.parse((tableModel.getValueAt(i, 1).toString()));
 					String time = tableModel.getValueAt(i, 2).toString();
 					String[] parts = time.split(" - ");
 					TimeSlot timeSlot = new TimeSlot(LocalTime.parse(parts[0]), LocalTime.parse(parts[1]));

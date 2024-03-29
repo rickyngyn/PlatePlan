@@ -77,7 +77,15 @@ public class ReservationServiceImpl implements ReservationService {
 		Reservation reservation = new Reservation(UUID.randomUUID().toString(), customer.getEmail(), date, slot,
 				specialNotes, serviceUtils.getAllServersMap().get(tablesAvailable.get(0).getServer()),
 				tablesAvailable.get(0).getId(), cap);
-
+		try {
+            List<Reservation> customerReservations = db.getCustomerReservations(customer.getEmail());
+            if (customerReservations.size() >= 5)
+            {
+                return null;
+            }
+        } catch (AccountNotFoundException e1) {
+            e1.printStackTrace();
+        }
 		if (customer.getReservations() != null) {
 			try {
 				for (Reservation cusReservation : db.getCustomerReservations(customer.getEmail())) {

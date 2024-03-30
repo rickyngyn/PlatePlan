@@ -52,40 +52,54 @@ class OrdersServiceTest {
 		stubDb = StubDataBaseRecords.getInstance();
 		stubDb.reset();
 	}
-	
+
 	@Test
-	public void getAllOrdersForReservationTest ()
-	{
+	public void getAllOrdersForReservationTest() {
 		Reservation reservation = stubDb.reservations.get(0);
 		List<Order> orders = ordersService.getAllOrdersForReservation(reservation);
-		
+
 		assertNotNull(orders);
 		assertFalse(orders.isEmpty());
-		
+
 		Order order = orders.get(0);
 		order.setQuantity(5);
-		
+
 		assertTrue(db.insertRecord(SQLTables.ORDERS_TABLE, order));
 		orders = ordersService.getAllOrdersForReservation(reservation);
 		assertTrue(orders.contains(order));
 
 	}
-	
+
 	@Test
-	public void getAllOrdersForDateTest ()
-	{
+	public void getAllOrdersForDateTest() {
 		Reservation reservation = stubDb.reservations.get(0);
 		List<Order> orders = ordersService.getAllOrdersForReservation(reservation);
-		
+
 		assertNotNull(orders);
 		assertFalse(orders.isEmpty());
-		
+
 		Order order = orders.get(0);
 		order.setQuantity(5);
 		assertTrue(db.insertRecord(SQLTables.ORDERS_TABLE, order));
 		assertEquals(ordersService.getAllOrdersForDate(LocalDate.now()).size(), 1);
 	}
 
-	
+	@Test
+	public void updateOrdersTest() {
+		Reservation reservation = stubDb.reservations.get(0);
+		List<Order> orders = ordersService.getAllOrdersForReservation(reservation);
+
+		assertNotNull(orders);
+		assertFalse(orders.isEmpty());
+
+		Order order = orders.get(0);
+		order.setQuantity(5);
+		assertTrue(db.insertRecord(SQLTables.ORDERS_TABLE, order));
+
+		order.setQuantity(10);
+		assertTrue(ordersService.updateOrder(order));
+
+		assertTrue(stubDb.orders.contains(order));
+	}
 
 }

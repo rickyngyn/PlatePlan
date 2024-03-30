@@ -234,6 +234,15 @@ public class DataBaseStubImpl implements DataBase {
 				}
 			}
 		} 
+		else if (table.equals(SQLTables.ORDERS_TABLE)) {
+			for (Order tempObj : db.orders) {
+				if (((Order) object).getId().equals(tempObj.getId())) {
+					db.orders.remove(tempObj);
+					db.orders.add(((Order) object));
+					return true;
+				}
+			}
+		} 
 		else if (table.equals(SQLTables.BUSINESS_TABLE)) {
 			db.business = (Business)object;
 			return true;

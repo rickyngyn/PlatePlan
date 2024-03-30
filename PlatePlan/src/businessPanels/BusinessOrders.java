@@ -109,8 +109,7 @@ public class BusinessOrders extends JPanel {
 		tableModel = new DefaultTableModel(new String[] { "Menu Item", "Price", "Quantity" }, 0) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
-				// Make the first and second column uneditable
-				return column > 1; // Only the third column (Quantity) is editable
+				return  column > 1;
 			}
 		};
 		table.setModel(tableModel);
@@ -120,7 +119,12 @@ public class BusinessOrders extends JPanel {
 		JButton btnNewButton_1_1 = new JButton("Save Changes");
 		btnNewButton_1_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				saveOrders();
+				if (receiptComponent.isPaid())
+				{
+					JOptionPane.showMessageDialog(null, "Payment already made.", "Error", JOptionPane.ERROR_MESSAGE);
+				}else {
+					saveOrders();
+				}
 			}
 		});
 		btnNewButton_1_1.setBounds(692, 596, 150, 40);
@@ -136,14 +140,19 @@ public class BusinessOrders extends JPanel {
 					}
 				}
 				System.out.println(i);
-				i = (i - 1) % reservationList.size();
+				if (i >= 0) { // Ensure i was set
+				    i = (i - 1 + reservationList.size()) % reservationList.size();
+				} else {
+				    // i was not set; handle this case, perhaps by setting i to a default value
+				    i = 0; // Example fallback
+				}
 				System.out.println(i);
 				currentReservationView.setText(reservationMap.get(reservationList.get(i).getId()));
 				loadOrders();
 //				PlatePlanMain.refreshPage();
 			}
 		});
-		btnNewButton_1_2.setFont(new Font("Segoe UI Black", Font.BOLD, 10));
+		btnNewButton_1_2.setFont(new Font("Arial", Font.BOLD, 10));
 		btnNewButton_1_2.setBounds(350, 76, 40, 40);
 		add(btnNewButton_1_2);
 
@@ -156,10 +165,10 @@ public class BusinessOrders extends JPanel {
 		currentReservationView.setColumns(10);
 		currentReservationView.setText("");
 
-//		if (!reservationMap.isEmpty()) {
-//
-//			currentReservationView.setText(reservationMap.get(reservationList.get(0).getId()));
-//		}
+		if (!reservationMap.isEmpty() && currentReservationView.getText().length() <= 1) {
+
+			currentReservationView.setText(reservationMap.get(reservationList.get(0).getId()));
+		}
 
 		JButton btnNewButton_1_2_1 = new JButton(">");
 		btnNewButton_1_2_1.addActionListener(new ActionListener() {
@@ -175,16 +184,15 @@ public class BusinessOrders extends JPanel {
 				System.out.println(i);
 				currentReservationView.setText(reservationMap.get(reservationList.get(i).getId()));
 				loadOrders();
-//				PlatePlanMain.refreshPage();
 
 			}
 		});
-		btnNewButton_1_2_1.setFont(new Font("Segoe UI Black", Font.BOLD, 10));
+		btnNewButton_1_2_1.setFont(new Font("Arial", Font.BOLD, 10));
 		btnNewButton_1_2_1.setBounds(710, 76, 40, 40);
 		add(btnNewButton_1_2_1);
 
 		lblCustomer = new JLabel("");
-		lblCustomer.setBounds(64, 127, 193, 34);
+		lblCustomer.setBounds(64, 127, 235, 34);
 		add(lblCustomer);
 
 		lblDate = new JLabel("");
@@ -413,14 +421,24 @@ public class BusinessOrders extends JPanel {
 				
 			}
 			
-			System.out.println(receipt.toString());
 			if (receipt != null && !receipt.isPaid())
 			{
 				 add(btnNewButton);
 			}
 
+			tipSpinner.setEnabled(!isPaid());
 
 
+
+		}
+		
+		public boolean isPaid ()
+		{
+			if (receipt != null)
+			{
+				return receipt.isPaid();
+			}
+			return false;
 		}
 	}
 

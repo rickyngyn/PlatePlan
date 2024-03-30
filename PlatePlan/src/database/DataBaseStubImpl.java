@@ -242,6 +242,8 @@ public class DataBaseStubImpl implements DataBase {
 					return true;
 				}
 			}
+			db.orders.add((Order) object);
+			return true;
 		} 
 		else if (table.equals(SQLTables.BUSINESS_TABLE)) {
 			db.business = (Business)object;
@@ -258,8 +260,7 @@ public class DataBaseStubImpl implements DataBase {
 
 	@Override
 	public List<Receipt> getAllReceipts() {
-		// TODO Auto-generated method stub
-		return null;
+		return db.receipts;
 	}
 
 }

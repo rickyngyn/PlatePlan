@@ -16,6 +16,7 @@ import dto.Customer;
 import dto.Feedback;
 import dto.MenuItem;
 import dto.Order;
+import dto.Receipt;
 import dto.Reservation;
 import dto.Server;
 import dto.Table;
@@ -32,6 +33,7 @@ public class StubDataBaseRecords {
 	public List<MenuItem> menus;
 	public List<MenuItem> customer_menu;
 	public List<Order> orders;
+	public List<Receipt> receipts;
 
 	private static StubDataBaseRecords instance;
 
@@ -76,6 +78,7 @@ public class StubDataBaseRecords {
 				new TimeSlot(LocalTime.parse("14:00"), LocalTime.parse("15:30")), "", "Peter Parker", "1", 4)));
 
 		orders = new ArrayList<>();
+		receipts = new ArrayList<>();
 	}
 
 }

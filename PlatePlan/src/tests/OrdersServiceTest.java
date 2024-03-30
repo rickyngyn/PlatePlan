@@ -24,6 +24,7 @@ import database.SQLTables;
 import database.StubDataBaseRecords;
 import dto.Customer;
 import dto.Order;
+import dto.Receipt;
 import dto.Reservation;
 import dto.Server;
 import dto.Table;
@@ -100,6 +101,29 @@ class OrdersServiceTest {
 		assertTrue(ordersService.updateOrder(order));
 
 		assertTrue(stubDb.orders.contains(order));
+	}
+
+	@Test
+	public void getReceiptForReservationTest() {
+		Reservation reservation = stubDb.reservations.get(0);
+		List<Order> orders = ordersService.getAllOrdersForReservation(reservation);
+
+		assertNotNull(orders);
+		assertFalse(orders.isEmpty());
+
+		Order order = orders.get(0);
+		
+		order.setQuantity(5);
+		
+		double total = (order.getPrice() * order.getQuantity()) * 1.13;
+		assertTrue(ordersService.updateOrder(order));
+
+		
+		Receipt receipt = ordersService.getReceiptForReservation(reservation);
+		assertFalse(receipt.isPaid());
+		assertEquals(Math.floor(total), Math.floor(receipt.getTotal()));
+		
+		
 	}
 
 }

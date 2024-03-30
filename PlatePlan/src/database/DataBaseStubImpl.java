@@ -59,6 +59,9 @@ public class DataBaseStubImpl implements DataBase {
 			}else if (tableName.equals(SQLTables.MENU_TABLE)) {
 				MenuItem menuItem = (MenuItem) object;
 				db.menus.add(menuItem);
+			}else if (tableName.equals(SQLTables.ORDERS_TABLE)) {
+				Order order = (Order) object;
+				db.orders.add(order);
 			}
 
 
@@ -240,7 +243,7 @@ public class DataBaseStubImpl implements DataBase {
 
 	@Override
 	public List<Order> getAllOrders() {
-		return null;
+		return db.orders;
 		
 	}
 

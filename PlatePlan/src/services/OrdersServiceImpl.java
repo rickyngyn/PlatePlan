@@ -83,7 +83,7 @@ public class OrdersServiceImpl implements OrdersService {
 
 	@Override
 	public List<Order> getAllOrdersForReservation(Reservation reservation) {
-		List<Order> orders = db.getAllOrders().stream().filter(obj -> obj.getReservation().equals(reservation.getId()))
+		List<Order> orders = getAllOrders().stream().filter(obj -> obj.getReservation().equals(reservation.getId()))
 				.collect(Collectors.toList());
 
 		List<MenuItem> menuItems = menuService.getAllMenuItems(SQLTables.CUSTOMER_MENU_TABLE);

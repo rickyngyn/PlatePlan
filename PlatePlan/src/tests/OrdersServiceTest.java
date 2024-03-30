@@ -112,18 +112,62 @@ class OrdersServiceTest {
 		assertFalse(orders.isEmpty());
 
 		Order order = orders.get(0);
-		
+
 		order.setQuantity(5);
-		
+
 		double total = (order.getPrice() * order.getQuantity()) * 1.13;
 		assertTrue(ordersService.updateOrder(order));
 
-		
 		Receipt receipt = ordersService.getReceiptForReservation(reservation);
 		assertFalse(receipt.isPaid());
 		assertEquals(Math.floor(total), Math.floor(receipt.getTotal()));
-		
-		
+
 	}
+
+	@Test
+	public void getExistingReceiptTest() {
+		Reservation reservation = stubDb.reservations.get(0);
+		List<Order> orders = ordersService.getAllOrdersForReservation(reservation);
+
+		assertNotNull(orders);
+		assertFalse(orders.isEmpty());
+
+		Order order = orders.get(0);
+
+		order.setQuantity(5);
+
+		double total = (order.getPrice() * order.getQuantity()) * 1.13;
+		assertTrue(ordersService.updateOrder(order));
+
+		Receipt receipt = ordersService.getReceiptForReservation(reservation);
+		assertFalse(receipt.isPaid());
+		assertEquals(Math.floor(total), Math.floor(receipt.getTotal()));
+		assertTrue(ordersService.saveReceipt(receipt));
+
+		assertEquals(receipt, ordersService.getReceiptForReservation(reservation));
+
+	}
+
+	@Test
+	public void getPopularItemsTest() {
+		Reservation reservation = stubDb.reservations.get(0);
+		List<Order> orders = ordersService.getAllOrdersForReservation(reservation);
+
+		assertNotNull(orders);
+		assertFalse(orders.isEmpty());
+
+		orders.get(0).setQuantity(9);
+		orders.get(1).setQuantity(12);
+		orders.get(2).setQuantity(6);
+
+		assertTrue(ordersService.updateOrder(orders.get(0)));
+		assertTrue(ordersService.updateOrder(orders.get(1)));
+		assertTrue(ordersService.updateOrder(orders.get(2)));
+
+		assertEquals(orders.get(0).getItem(), ordersService.getMostPopularItems(3).get(0).getName());
+		assertEquals(orders.get(1).getItem(), ordersService.getMostPopularItems(3).get(1).getName());
+		assertEquals(orders.get(2).getItem(), ordersService.getMostPopularItems(3).get(2).getName());
+	}
+
 
 }

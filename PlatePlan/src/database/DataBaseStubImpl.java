@@ -63,6 +63,10 @@ public class DataBaseStubImpl implements DataBase {
 				Order order = (Order) object;
 				db.orders.add(order);
 			}
+			else if (tableName.equals(SQLTables.RECEIPT_TABLE)) {
+				Receipt receipt = (Receipt) object;
+				db.receipts.add(receipt);
+			}
 
 
 			System.out.println("Inserting record into " + tableName + ": " + object.toString());

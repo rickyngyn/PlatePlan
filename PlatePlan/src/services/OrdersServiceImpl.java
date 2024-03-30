@@ -77,7 +77,6 @@ public class OrdersServiceImpl implements OrdersService {
 
 	@Override
 	public boolean deleteOrder(Order order) {
-
 		return db.deleteDataBaseEntry(SQLTables.ORDERS_TABLE, order.getId());
 	}
 

@@ -24,19 +24,25 @@ import dto.Business;
 import dto.Customer;
 import dto.Feedback;
 import dto.MenuItem;
+import dto.Order;
+import dto.Receipt;
 import dto.Reservation;
 import dto.Server;
 import dto.Table;
 import dto.TimeSlot;
 import main.ServiceFactory;
 import service_interfaces.AccountService;
+import service_interfaces.OrdersService;
 import service_interfaces.ReservationService;
 import services.AccountsServiceImpl;
+import services.OrdersServiceImpl;
 import services.ReservationServiceImpl;
 
 class DataBaseIntegrationTests {
 	AccountService accountService;
 	ReservationService reservationService;
+	OrdersService ordersService;
+
 	DataBase db;
 	@BeforeEach
 	void setUp() throws Exception {
@@ -44,6 +50,7 @@ class DataBaseIntegrationTests {
 		ServiceFactory.setUpServices();
 		accountService = AccountsServiceImpl.getInstance();
 		reservationService = ReservationServiceImpl.getInstance();
+		ordersService = OrdersServiceImpl.getInstance();
 		db = DataBaseFactory.getDatabase();
 		
 	}
@@ -184,6 +191,53 @@ class DataBaseIntegrationTests {
 		List<Feedback> feedbacks = db.getAllFeedbacks();
 		assertNotNull(feedbacks);
 		assertTrue(feedbacks.size()>0);
+	}
+	
+	@Test
+	void testGetAllReceipts()
+	{		
+
+		Reservation reservation = new Reservation();
+        reservation.setId("temp");
+        reservation.setDate(LocalDate.now());
+        reservation.setPartySize(0);
+        reservation.setServerId("");
+        reservation.setTableId("");
+        reservation.setTime(new TimeSlot(LocalTime.now(), LocalTime.now()));
+        reservation.setCustomerId("john");
+        reservation.setSpecialNotes("");
+        assertTrue(db.insertRecord(SQLTables.RESERVATION_TABLE, reservation));
+        
+		reservation = db.getReservationWithId("temp");
+		
+		List<Order> orders = ordersService.getAllOrdersForReservation(reservation);
+		
+		orders.get(0).setQuantity(9);
+		assertTrue(ordersService.updateOrder(orders.get(0)));
+		
+		Receipt receipt = ordersService.getReceiptForReservation(reservation);
+		
+		assertTrue(ordersService.saveReceipt(receipt));
+		
+
+		
+		for (Receipt receipt2: db.getAllReceipts())
+		{
+			if (receipt2.getReservation().equals(receipt.getReservation()))
+			{
+				assertEquals(receipt.getId(), receipt2.getId());
+				assertEquals(receipt.getDate(), receipt2.getDate());
+				assertEquals(receipt.getTotal(), receipt2.getTotal());
+
+
+			}
+		}
+		
+		
+		assertTrue(db.deleteDataBaseEntry(SQLTables.RESERVATION_TABLE, "temp"));
+		assertTrue(db.deleteDataBaseEntry(SQLTables.ORDERS_TABLE, orders.get(0).getId()));
+		assertTrue(db.deleteDataBaseEntry(SQLTables.RECEIPT_TABLE, receipt.getId()));
+
 	}
 
 	

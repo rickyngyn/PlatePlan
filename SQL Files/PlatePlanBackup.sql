@@ -204,6 +204,7 @@ INSERT INTO public.customers VALUES ('janedoe@email.com', 'jane', 'doe', 'passwo
 INSERT INTO public.customers VALUES ('max@email.com', 'max', 'payne', 'password');
 INSERT INTO public.customers VALUES ('pouya@email.com', 'pouya', 'sameni', 'password');
 INSERT INTO public.customers VALUES ('newCus@email.com', 'john', 'doe', 'password');
+INSERT INTO public.customers VALUES ('nathan@email.com', 'Nathan', 'Fillion', 'password');
 
 
 --
@@ -259,15 +260,14 @@ INSERT INTO public.feedbacks VALUES ('9234', 'Lucas Anderson', 5, '2024-03-01 18
 INSERT INTO public.feedbacks VALUES ('10234', 'Maria Thomas', 4, '2024-03-08 11:00:00', 'Lovely place for a quick snack.');
 INSERT INTO public.feedbacks VALUES ('6c9c4721-772f-4eaa-9679-11f9260bd64f', 'john doe', 5, '2024-03-11 16:29:03', 'This place has the best cake for any celebration');
 INSERT INTO public.feedbacks VALUES ('7e16b5fc-0f4a-45e3-b2ca-c57f10b07eb4', 'john doe', 3, '2024-03-11 17:26:48', 'This was great');
-INSERT INTO public.feedbacks VALUES ('5f4d8ec7-437b-4811-b55d-2d0f70193ff5', 'Anonymous', 1, '2024-03-11 17:26:58', 'This was terrible');
 
 
 --
 -- Data for Name: menu; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO public.menu VALUES ('ee4ab2e5-2521-4a2b-8405-349f6506169d', 'Big Mac', 5.679999828338623, 'Delicious burger made with pickels, onions and lettuce and special sauce');
 INSERT INTO public.menu VALUES ('4', 'Mushroom Risotto', 9.75, 'Creamy Arborio rice with wild mushrooms and a hint of truffle oil.');
+INSERT INTO public.menu VALUES ('ee4ab2e5-2521-4a2b-8405-349f6506169d', 'Big Mac', 5.679999828338623, 'Delicious burger made with pickels, onions and lettuce and special sauce');
 INSERT INTO public.menu VALUES ('5', 'Beef Burger', 10.99, 'Grilled beef patty with lettuce, tomato, and our secret sauce, served with fries.');
 INSERT INTO public.menu VALUES ('6', 'Grilled Salmon', 15.2, 'Freshly grilled salmon with a lemon butter sauce, served with vegetables.');
 INSERT INTO public.menu VALUES ('7', 'Tomato Bruchett', 7.5, 'Grilled bread with tomato, garlic, basil, and olive oil topping.');
@@ -283,6 +283,9 @@ INSERT INTO public.orders VALUES ('d02bd481-3f49-4c50-b299-9744b62718a2', 'Grill
 INSERT INTO public.orders VALUES ('86abc12c-f19b-442d-91d0-0c17c4e02079', 'Beef Burger', 'max@email.com', 10.989999771118164, '2024-03-25', '4e744049-dcce-4186-bb77-c60c051647f6', 4);
 INSERT INTO public.orders VALUES ('17522474-6c8e-4763-90cb-f6392cac58a8', 'Mushroom Risotto', 'max@email.com', 9.75, '2024-03-25', '4e744049-dcce-4186-bb77-c60c051647f6', 11);
 INSERT INTO public.orders VALUES ('91d4d9a0-b4e9-4bf8-bbb7-c0a608e0b382', 'Beef Burger', 'janedoe@email.com', 10.989999771118164, '2024-03-26', '55d9aecc-b7c9-407c-9819-b7db4ca7da9f', 2);
+INSERT INTO public.orders VALUES ('85ef088b-aabf-4e09-b2e4-03c08b6ce354', 'Beef Burger', 'johndoe@example.com', 10.989999771118164, '2024-03-30', '3173184f-b81a-418e-a4b8-492296ac0c5d', 5);
+INSERT INTO public.orders VALUES ('b0124639-53f5-463d-b22a-bd168dfd7343', 'Tomato Bruchett', 'johndoe@example.com', 7.5, '2024-03-30', '3173184f-b81a-418e-a4b8-492296ac0c5d', 10);
+INSERT INTO public.orders VALUES ('4b522014-e30e-4f4f-9502-32a1fc892516', 'Chicken Parmesan', 'johndoe@example.com', 13.5, '2024-03-30', '3173184f-b81a-418e-a4b8-492296ac0c5d', 2);
 
 
 --
@@ -309,6 +312,7 @@ INSERT INTO public.receipts VALUES ('810f48b4', '13300fe3', 'ff987ade', '2024-02
 INSERT INTO public.receipts VALUES ('eaba3680', '528e758c', '0da54103', '2024-03-10', '00:20:00', 200, 32.49, 67, 563.58, false);
 INSERT INTO public.receipts VALUES ('ede1029b', 'c1bcc336', '669dbc21', '2024-03-18', '12:17:00', 167, 32.27, 24, 517.31, false);
 INSERT INTO public.receipts VALUES ('f406054c', '89507d95', '6da8a75b', '2024-03-16', '22:21:00', 156, 33.08, 72, 577.63, true);
+INSERT INTO public.receipts VALUES ('577ec079-5d0e-4c7e-b3f2-9546077390ed', '3173184f-b81a-418e-a4b8-492296ac0c5d', 'johndoe@example.com', '2024-03-30', '16:15:08', 156.95, 20.4, 10, 195.08, true);
 
 
 --
@@ -324,9 +328,9 @@ INSERT INTO public.reservations VALUES ('b84b7797-4b1e-4049-9c0c-fc54c6dd6936', 
 INSERT INTO public.reservations VALUES ('7bba1e4f-09b6-4259-8540-382318b9f9ca', 'john', '2024-03-27', '19:00:00', 'This is my Anniversary', 'table99', 6, 'Peter Parker');
 INSERT INTO public.reservations VALUES ('95c06bb9-fcb2-4679-bed4-29247836d6ea', 'john', '2024-02-25', '12:00:00', '', 'table1', 5, 'Peter Parker');
 INSERT INTO public.reservations VALUES ('92c29c80-e3a0-4ad1-984d-845b45cff4ad', 'idonotexist', '2024-03-11', '12:00:00', '', 'table1', 0, 'Peter Parker');
-INSERT INTO public.reservations VALUES ('3173184f-b81a-418e-a4b8-492296ac0c5d', 'johndoe@example.com', '2024-03-28', '12:00:00', 'Near Window', 'table4', 8, 'James Smith');
-INSERT INTO public.reservations VALUES ('4e744049-dcce-4186-bb77-c60c051647f6', 'max@email.com', '2024-03-28', '13:30:00', 'This is gonna be my friends birthday', 'table10', 6, 'Peter Parker');
-INSERT INTO public.reservations VALUES ('55d9aecc-b7c9-407c-9819-b7db4ca7da9f', 'janedoe@email.com', '2024-03-28', '13:30:00', 'Trying 2', 'table1', 1, 'Peter Parker');
+INSERT INTO public.reservations VALUES ('3173184f-b81a-418e-a4b8-492296ac0c5d', 'johndoe@example.com', '2024-03-31', '12:00:00', 'Near Window + Candles', 'table3', 8, 'James Smith');
+INSERT INTO public.reservations VALUES ('4e744049-dcce-4186-bb77-c60c051647f6', 'max@email.com', '2024-03-31', '13:30:00', 'This is gonna be my friends birthday', 'table10', 6, 'Peter Parker');
+INSERT INTO public.reservations VALUES ('55d9aecc-b7c9-407c-9819-b7db4ca7da9f', 'janedoe@email.com', '2024-03-31', '13:30:00', 'Trying 2', 'table1', 1, 'Peter Parker');
 INSERT INTO public.reservations VALUES ('8d476932-9fa9-4a2b-a433-6364e4ba49f2', 'john', '2024-03-19', '13:30:00', '', 'table10', 4, 'Peter Parker');
 
 
@@ -335,9 +339,10 @@ INSERT INTO public.reservations VALUES ('8d476932-9fa9-4a2b-a433-6364e4ba49f2', 
 --
 
 INSERT INTO public.restaurant_tables VALUES ('table1', 2, '1');
+INSERT INTO public.restaurant_tables VALUES ('table2', 4, '2');
 INSERT INTO public.restaurant_tables VALUES ('table3', 6, '3');
-INSERT INTO public.restaurant_tables VALUES ('table10', 18, '1');
-INSERT INTO public.restaurant_tables VALUES ('table2', 14, '1');
+INSERT INTO public.restaurant_tables VALUES ('table4', 6, '4');
+INSERT INTO public.restaurant_tables VALUES ('table5', 10, '5');
 
 
 --

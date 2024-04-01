@@ -9,6 +9,9 @@ import dto.Business;
 import dto.Customer;
 import dto.Feedback;
 import dto.MenuItem;
+import dto.Order;
+import dto.QueryGenerator;
+import dto.Receipt;
 import dto.Reservation;
 import dto.Server;
 import dto.Table;
@@ -17,7 +20,7 @@ public interface DataBase {
 
 	public Business getBusinessAccount();
 
-	public boolean insertRecord(String tableName, Object object);
+	public boolean insertRecord(String tableName, QueryGenerator object);
 
 	public Customer getCustomerAccount(String email) throws AccountNotFoundException;
 
@@ -35,12 +38,16 @@ public interface DataBase {
 
 	public List<MenuItem> getAllMenuItems(String table);
 
-	void publishCustomerMenu();
+	boolean publishCustomerMenu();
 
 	public List<Feedback> getAllFeedbacks();
 
 	public boolean deleteDataBaseEntry(String table, String id);
 
-	boolean updateDataBaseEntry(Object object, String table);
+	boolean updateDataBaseEntry(QueryGenerator object, String table);
+
+	public List<Order> getAllOrders();
+
+	List<Receipt> getAllReceipts();
 
 }

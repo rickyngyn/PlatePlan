@@ -19,6 +19,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -281,7 +282,19 @@ public class BusinessTableManageView extends JPanel {
 
 	private void addTable() {
 		String tableId = textID.getText();
+
+		if (tablesService.isTableValid(tableId)) {
+			JOptionPane.showMessageDialog(null, "The table ID entered already exists!", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+
 		int cap = Integer.valueOf(textCapacity.getText());
+
+		if (cap <= 0 || cap >= 50) {
+			JOptionPane.showMessageDialog(null, "The capacity entered is invalid", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		String serverId = (String) serverBox.getSelectedItem();
 
 		for (String id : serverMap.keySet()) {

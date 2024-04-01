@@ -92,10 +92,6 @@ public class BusinessFeedbackManagement extends JPanel {
 		lblNumberOfReviews.setBounds(661, 100, 400, 30); // x, y, width, height
 		add(lblNumberOfReviews);
 
-		FeedbackAnalysisPanel feedbackAnalysisPanel = new FeedbackAnalysisPanel(feedbacks);
-		feedbackAnalysisPanel.setSize(450, 450);
-		feedbackAnalysisPanel.setLocation(620, 160);
-
-		add(feedbackAnalysisPanel);
+		
 	}
 }

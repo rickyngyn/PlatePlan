@@ -9,6 +9,8 @@ import dto.Business;
 import dto.Customer;
 import dto.Feedback;
 import dto.MenuItem;
+import dto.Order;
+import dto.Receipt;
 import dto.Reservation;
 import dto.Server;
 import dto.Table;
@@ -191,6 +193,81 @@ public class DataBaseConverters {
 			e.printStackTrace();
 		}
 		return feedbacks;
+	}
+
+	public static Order convertOrderItem(ResultSet rs) {
+		try {
+			Order order = new Order();
+			order.setId(rs.getString("id"));
+			order.setCustomer(rs.getString("customer"));
+			order.setItem(rs.getString("item"));
+			order.setPrice(rs.getDouble("price"));
+			order.setQuantity(rs.getInt("quantity"));
+			order.setDate(rs.getDate("date").toLocalDate());
+			order.setReservation(rs.getString("reservation"));
+
+			return order;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static List<Order> convertOrderItemList(ResultSet rs) {
+		List<Order> orders = new ArrayList<>();
+		try {
+			while (rs.next()) {
+				Order order = convertOrderItem(rs);
+				if (order != null) {
+					orders.add(order);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return orders;
+	}
+
+	public static Receipt convertReceiptItem(ResultSet rs) {
+		try {
+			Receipt receipt = new Receipt();
+
+			receipt.setId(rs.getString("id"));
+			receipt.setCustomer(rs.getString("customer"));
+			receipt.setReservation(rs.getString("reservation"));
+			receipt.setDate(rs.getDate("date").toLocalDate());
+			receipt.setTime(rs.getTime("time").toLocalTime());
+			receipt.setSubtotal(rs.getDouble("subtotal"));
+			receipt.setTax(rs.getDouble("tax"));
+			receipt.setSubtotal(rs.getDouble("subtotal"));
+			receipt.setTip_percent(rs.getInt("tip"));
+			receipt.setTotal(rs.getDouble("total"));
+			receipt.setPaid(rs.getBoolean("paid"));
+
+			return receipt;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static List<Receipt> convertReceiptItemList(ResultSet rs) {
+		List<Receipt> receipts = new ArrayList<>();
+		try {
+			while (rs.next()) {
+				Receipt receipt = convertReceiptItem(rs);
+				if (receipt != null) {
+					receipts.add(receipt);
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return receipts;
 	}
 
 }

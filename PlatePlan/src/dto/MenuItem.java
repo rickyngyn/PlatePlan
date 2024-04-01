@@ -6,7 +6,9 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
-public class MenuItem {
+import database.SQLTables;
+
+public class MenuItem implements QueryGenerator {
 
 	private String id;
 	private String name;
@@ -104,10 +106,10 @@ public class MenuItem {
 		return "MenuItem [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price + "]";
 	}
 
-	public PreparedStatement generateUpdateCommand(Connection conn, List<String> columns, String tableName) {
+	public PreparedStatement generateUpdateStatement(Connection conn, List<String> columns) {
 		try {
 			columns.remove(0);
-			String sql = "UPDATE " + tableName + " SET "
+			String sql = "UPDATE " + SQLTables.MENU_TABLE + " SET "
 					+ String.join(", ", columns.stream().map(column -> column + " = ?").toArray(String[]::new))
 					+ " WHERE id = ?;";
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -124,10 +126,13 @@ public class MenuItem {
 		return null;
 	}
 
-	public PreparedStatement getSQLString(Connection connection, String sql) {
+	@Override
+	public PreparedStatement generateInsertStatement(Connection conn, List<String> columns) {
 		try {
+			String sql = "INSERT INTO %s %s VALUES ";
+			sql = String.format(sql, SQLTables.MENU_TABLE, "(" + String.join(",", columns) + ")");
 			sql = sql + "(?,?,?,?);";
-			PreparedStatement pstmt = connection.prepareStatement(sql);
+			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, this.getId());
 			pstmt.setString(2, this.getName());
 			pstmt.setFloat(3, this.getPrice());

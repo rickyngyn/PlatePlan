@@ -13,6 +13,8 @@ public interface TablesService {
 	boolean updateTable(String id, int cap, String server);
 
 	boolean deleteTable(String id);
+	
+	boolean isTableValid(String id);
 
 	List<Table> getTablesMatchingResReq(int capRequested);
 

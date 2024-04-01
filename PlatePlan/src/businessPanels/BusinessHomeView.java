@@ -32,6 +32,7 @@ public class BusinessHomeView extends JPanel {
 	private JButton btnManageMenu;
 	private JButton btnManageFeedback;
 	private JButton btnManageStore;
+	private JButton btnOrders;
 
 	/**
 	 * Create the panel.
@@ -221,6 +222,55 @@ public class BusinessHomeView extends JPanel {
 			}
 		});
 		add(btnManageStore);
+		
+		btnOrders = new JButton("Orders");
+		btnOrders.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PlatePlanMain.switchPanels(new BusinessOrders(bussiness));
+			}
+		});
+		btnOrders.setBackground(new Color(250, 240, 230));
+		btnOrders.setBounds(240, 428, 200, 50);
+		btnOrders.addMouseListener(new MouseAdapter() {
+			Icon hoverIcon = new ImageIcon(new ImageIcon(BusinessHomeView.class.getResource("/ordersIcon.png"))
+					.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnOrders.setIcon(hoverIcon);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnOrders.setIcon(null); // Remove the icon when the mouse exits the button
+			}
+		});
+		add(btnManageStore);
+		add(btnOrders);
+		
+		JButton btnAnalytics = new JButton("Analytics");
+		btnAnalytics.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PlatePlanMain.switchPanels(new BusinessAnalytics(bussiness));
+			}
+		});
+		btnAnalytics.setBackground(new Color(250, 240, 230));
+		btnAnalytics.setBounds(450, 428, 200, 50);
+		btnAnalytics.addMouseListener(new MouseAdapter() {
+			Icon hoverIcon = new ImageIcon(new ImageIcon(BusinessHomeView.class.getResource("/analyticsIcon.png"))
+					.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnAnalytics.setIcon(hoverIcon);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnAnalytics.setIcon(null); // Remove the icon when the mouse exits the button
+			}
+		});
+		add(btnAnalytics);
 
 	}
 }

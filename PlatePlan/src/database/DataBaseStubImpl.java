@@ -12,6 +12,9 @@ import dto.Business;
 import dto.Customer;
 import dto.Feedback;
 import dto.MenuItem;
+import dto.Order;
+import dto.QueryGenerator;
+import dto.Receipt;
 import dto.Reservation;
 import dto.Server;
 import dto.Table;
@@ -33,7 +36,7 @@ public class DataBaseStubImpl implements DataBase {
 	}
 
 	@Override
-	public boolean insertRecord(String tableName, Object object) {
+	public boolean insertRecord(String tableName, QueryGenerator object) {
 		// Simulate inserting a record into the database
 		// (in a real database, you would execute SQL insert statements)
 		try {
@@ -54,11 +57,16 @@ public class DataBaseStubImpl implements DataBase {
 					db.customers.add(customer);
 
 				}
-			}else if (tableName.equals(SQLTables.MENU_TABLE)) {
+			} else if (tableName.equals(SQLTables.MENU_TABLE)) {
 				MenuItem menuItem = (MenuItem) object;
 				db.menus.add(menuItem);
+			} else if (tableName.equals(SQLTables.ORDERS_TABLE)) {
+				Order order = (Order) object;
+				db.orders.add(order);
+			} else if (tableName.equals(SQLTables.RECEIPT_TABLE)) {
+				Receipt receipt = (Receipt) object;
+				db.receipts.add(receipt);
 			}
-
 
 			System.out.println("Inserting record into " + tableName + ": " + object.toString());
 
@@ -149,9 +157,10 @@ public class DataBaseStubImpl implements DataBase {
 	}
 
 	@Override
-	public void publishCustomerMenu() {
+	public boolean publishCustomerMenu() {
 		db.customer_menu.clear();
 		db.customer_menu.addAll(db.menus);
+		return true;
 
 	}
 
@@ -202,7 +211,7 @@ public class DataBaseStubImpl implements DataBase {
 	}
 
 	@Override
-	public boolean updateDataBaseEntry(Object object, String table) {
+	public boolean updateDataBaseEntry(QueryGenerator object, String table) {
 		if (table.equals(SQLTables.RESERVATION_TABLE)) {
 			for (Reservation tempObj : db.reservations) {
 				if (((Reservation) object).getId().equals(tempObj.getId())) {
@@ -227,12 +236,32 @@ public class DataBaseStubImpl implements DataBase {
 					return true;
 				}
 			}
-		} 
-		else if (table.equals(SQLTables.BUSINESS_TABLE)) {
-			db.business = (Business)object;
+		} else if (table.equals(SQLTables.ORDERS_TABLE)) {
+			for (Order tempObj : db.orders) {
+				if (((Order) object).getId().equals(tempObj.getId())) {
+					db.orders.remove(tempObj);
+					db.orders.add(((Order) object));
+					return true;
+				}
+			}
+			db.orders.add((Order) object);
+			return true;
+		} else if (table.equals(SQLTables.BUSINESS_TABLE)) {
+			db.business = (Business) object;
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public List<Order> getAllOrders() {
+		return db.orders;
+
+	}
+
+	@Override
+	public List<Receipt> getAllReceipts() {
+		return db.receipts;
 	}
 
 }

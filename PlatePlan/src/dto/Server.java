@@ -3,9 +3,12 @@ package dto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Objects;
 
-public class Server {
+import database.SQLTables;
+
+public class Server implements QueryGenerator {
 
 	public Server() {
 	}
@@ -88,10 +91,14 @@ public class Server {
 		return "Server [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + "]";
 	}
 
-	public PreparedStatement getSQLString(Connection connection, String sql) {
+	@Override
+	public PreparedStatement generateInsertStatement(Connection conn, List<String> columns) {
 		try {
+			String sql = "INSERT INTO %s %s VALUES ";
+
+			sql = String.format(sql, SQLTables.SERVERS_TABLE, "(" + String.join(",", columns) + ")");
 			sql = sql + "(?,?,?);";
-			PreparedStatement pstmt = connection.prepareStatement(sql);
+			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, this.getId());
 			pstmt.setString(2, this.getFirstName());
 			pstmt.setString(3, this.getLastName());
@@ -101,6 +108,11 @@ public class Server {
 			e.printStackTrace();
 		}
 
+		return null;
+	}
+
+	@Override
+	public PreparedStatement generateUpdateStatement(Connection conn, List<String> columns) {
 		return null;
 	}
 

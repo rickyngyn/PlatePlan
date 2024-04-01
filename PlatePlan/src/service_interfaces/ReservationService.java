@@ -12,6 +12,8 @@ public interface ReservationService {
 	public Reservation createCustomerReservation(Customer customer, LocalDate date, TimeSlot slot, int cap,
 			String specialNotes);
 
+	public List<Reservation> getAllReservations ();
+	
 	public List<Reservation> getCustomerReservation(String email);
 
 	public boolean cancelReservation(String reservationId);

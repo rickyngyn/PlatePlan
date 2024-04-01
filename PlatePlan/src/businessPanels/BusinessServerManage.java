@@ -117,6 +117,7 @@ public class BusinessServerManage extends JPanel {
 		if (txtFirstName.getText().isEmpty() || txtLastName.getText().isEmpty()) {
 			JOptionPane.showMessageDialog(null, "first name or last name is empty for new server", "Error",
 					JOptionPane.ERROR_MESSAGE);
+			return ;
 		}
 
 		Server server = serviceUtils.registerServer(txtFirstName.getText(), txtLastName.getText());

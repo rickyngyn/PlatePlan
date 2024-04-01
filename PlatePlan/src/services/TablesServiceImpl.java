@@ -155,4 +155,19 @@ public class TablesServiceImpl implements TablesService {
 		return max;
 	}
 
+	@Override
+	public boolean isTableValid(String id) {
+		List<Table> allTables = db.getAllTables();
+		
+		for (Table table: allTables)
+		{
+			if (table.getId().equalsIgnoreCase(id))
+			{
+				System.out.println(table.toString());
+				return true;
+			}
+		}
+		return false;
+	}
+
 }

@@ -71,4 +71,9 @@ public class MenuServiceImpl implements MenuService {
 		return db.deleteDataBaseEntry(SQLTables.MENU_TABLE, item.getId());
 	}
 
+	@Override
+	public boolean publishCustomerMenu() {
+		return db.publishCustomerMenu();
+	}
+
 }

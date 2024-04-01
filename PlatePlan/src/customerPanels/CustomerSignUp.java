@@ -125,9 +125,12 @@ public class CustomerSignUp extends JPanel {
 	}
 
 	private boolean signUpCustomer() {
+		String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+
 		if (txtEmail.getText().isEmpty() || txtFirstName.getText().isEmpty() || txtLastName.getText().isEmpty()
-				|| txtPass.getText().isEmpty()) {
-			JOptionPane.showMessageDialog(null, "Empty fields detected", // Message to display
+				|| txtPass.getText().isEmpty() || !txtFirstName.getText().matches("^[a-zA-Z ]+$")
+				|| !txtLastName.getText().matches("^[a-zA-Z ]+$") || !txtEmail.getText().matches(emailRegex)) {
+			JOptionPane.showMessageDialog(null, "Invalid Field Entry, Please Try again", // Message to display
 					"Error", // Title of the dialog
 					JOptionPane.ERROR_MESSAGE);
 			return false;

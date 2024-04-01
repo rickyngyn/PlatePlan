@@ -69,7 +69,9 @@ public class ReservationServiceImpl implements ReservationService {
 			String specialNotes) {
 
 		List<Table> tablesAvailable = tablesService.getTablesMatchingResReq(cap);
-
+		if (date.isAfter(LocalDate.now().plusDays(60L))) {
+			return null;
+		}
 		if (tablesAvailable.isEmpty()) {
 			return null;
 		}
@@ -77,7 +79,15 @@ public class ReservationServiceImpl implements ReservationService {
 		Reservation reservation = new Reservation(UUID.randomUUID().toString(), customer.getEmail(), date, slot,
 				specialNotes, serviceUtils.getAllServersMap().get(tablesAvailable.get(0).getServer()),
 				tablesAvailable.get(0).getId(), cap);
-
+		try {
+            List<Reservation> customerReservations = db.getCustomerReservations(customer.getEmail());
+            if (customerReservations.size() >= 5)
+            {
+                return null;
+            }
+        } catch (AccountNotFoundException e1) {
+            e1.printStackTrace();
+        }
 		if (customer.getReservations() != null) {
 			try {
 				for (Reservation cusReservation : db.getCustomerReservations(customer.getEmail())) {
@@ -105,12 +115,21 @@ public class ReservationServiceImpl implements ReservationService {
 	@Override
 	public boolean updateReservation (Reservation reservation)
 	{
-		return db.updateDataBaseEntry(reservation, SQLTables.RESERVATION_TABLE);
+		if (tablesService.isTableValid(reservation.getTableId()))
+		{
+			return db.updateDataBaseEntry(reservation, SQLTables.RESERVATION_TABLE);
+		}
+		return false;
 	}
 
 	@Override
 	public boolean cancelReservation(String reservationId) {
 		return db.deleteDataBaseEntry(SQLTables.RESERVATION_TABLE, reservationId);
+	}
+
+	@Override
+	public List<Reservation> getAllReservations() {
+		return db.getAllReservations();
 	}
 
 	// Other service methods would go here

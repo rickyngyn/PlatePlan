@@ -17,6 +17,9 @@ import dto.Business;
 import dto.Customer;
 import dto.Feedback;
 import dto.MenuItem;
+import dto.Order;
+import dto.QueryGenerator;
+import dto.Receipt;
 import dto.Reservation;
 import dto.Server;
 import dto.Table;
@@ -84,31 +87,9 @@ public class DataBaseImpl implements DataBase {
 	}
 
 	@Override
-	public boolean insertRecord(String tableName, Object object) {
-		String sql = "INSERT INTO %s %s VALUES ";
-		sql = String.format(sql, tableName, getColumnNamesString(tableName));
+	public boolean insertRecord(String tableName, QueryGenerator object) {
 
-		PreparedStatement pstmt = null;
-
-		if (tableName.equals(SQLTables.RESERVATION_TABLE)) {
-			Reservation reservation = (Reservation) object;
-			pstmt = reservation.getSQLString(connection, sql);
-		} else if (tableName.equals(SQLTables.TABLES_TABLE)) {
-			Table table = (Table) object;
-			pstmt = table.getSQLString(connection, sql);
-		} else if (tableName.equals(SQLTables.ACCOUNTS_TABLE)) {
-			Customer customer = (Customer) object;
-			pstmt = customer.getSQLString(connection, sql);
-		} else if (tableName.equals(SQLTables.SERVERS_TABLE)) {
-			Server server = (Server) object;
-			pstmt = server.getSQLString(connection, sql);
-		} else if (tableName.equals(SQLTables.MENU_TABLE)) {
-			MenuItem menuItem = (MenuItem) object;
-			pstmt = menuItem.getSQLString(connection, sql);
-		} else if (tableName.equals(SQLTables.FEEDBACKS_TABLE)) {
-			Feedback feedback = (Feedback) object;
-			pstmt = feedback.getSQLString(connection, sql);
-		}
+		PreparedStatement pstmt = object.generateInsertStatement(connection, getColumnNamesList(tableName));
 
 		System.out.println("Executing Command: " + pstmt.toString());
 		try {
@@ -265,9 +246,8 @@ public class DataBaseImpl implements DataBase {
 
 		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
 			ResultSet rs = pstmt.executeQuery();
-			
-			if (rs.next())
-			{
+
+			if (rs.next()) {
 				reservation = DataBaseConverters.convertReservation(rs, getBusinessAccount());
 			}
 
@@ -297,27 +277,10 @@ public class DataBaseImpl implements DataBase {
 	}
 
 	@Override
-	public boolean updateDataBaseEntry(Object object, String table) {
+	public boolean updateDataBaseEntry(QueryGenerator object, String table) {
 
 		try {
-			PreparedStatement preparedStatement = null;
-			if (SQLTables.MENU_TABLE.equals(table)) {
-				MenuItem menuItem = (MenuItem) object;
-				preparedStatement = menuItem.generateUpdateCommand(connection, getColumnNamesList(SQLTables.MENU_TABLE),
-						SQLTables.MENU_TABLE);
-			} else if (SQLTables.TABLES_TABLE.equals(table)) {
-				Table tableObj = (Table) object;
-				preparedStatement = tableObj.generateUpdateCommand(connection,
-						getColumnNamesList(SQLTables.TABLES_TABLE), SQLTables.TABLES_TABLE);
-			} else if (SQLTables.BUSINESS_TABLE.equals(table)) {
-				Business business = (Business) object;
-				preparedStatement = business.generateUpdateCommand(connection,
-						getColumnNamesList(SQLTables.BUSINESS_TABLE), SQLTables.BUSINESS_TABLE);
-			} else if (SQLTables.RESERVATION_TABLE.equals(table)) {
-				Reservation reservation = (Reservation) object;
-				preparedStatement = reservation.generateUpdateCommand(connection,
-						getColumnNamesList(SQLTables.RESERVATION_TABLE), SQLTables.RESERVATION_TABLE);
-			}
+			PreparedStatement preparedStatement = object.generateUpdateStatement(connection, getColumnNamesList(table));
 
 			System.out.println("Executing Update Command: " + preparedStatement.toString());
 			return preparedStatement.executeUpdate() > 0;
@@ -328,7 +291,7 @@ public class DataBaseImpl implements DataBase {
 	}
 
 	@Override
-	public void publishCustomerMenu() {
+	public boolean publishCustomerMenu() {
 		String deleteSQL = String.format("DELETE FROM %s", SQLTables.CUSTOMER_MENU_TABLE);
 
 		String copySQL = String.format("INSERT INTO %s SELECT * FROM %s", SQLTables.CUSTOMER_MENU_TABLE,
@@ -342,10 +305,13 @@ public class DataBaseImpl implements DataBase {
 			statement.executeUpdate(copySQL);
 
 			System.out.println("Successfully updated customer_menu from menu.");
+			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.out.println("Error updating customer_menu: " + e.getMessage());
+			return false;
 		}
+
 	}
 
 	@Override
@@ -367,13 +333,30 @@ public class DataBaseImpl implements DataBase {
 	}
 
 	@Override
+	public List<Receipt> getAllReceipts() {
+		List<Receipt> receipts = new ArrayList<>();
+		String sql = String.format("SELECT * FROM %s;", SQLTables.RECEIPT_TABLE);
+		System.out.println("Executing Query: " + sql);
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			ResultSet rs = pstmt.executeQuery();
+
+			receipts = DataBaseConverters.convertReceiptItemList(rs);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return receipts;
+	}
+
+	@Override
 	public boolean deleteDataBaseEntry(String table, String id) {
 		int affectedRows = 0;
 		String sql = "DELETE FROM " + table + " WHERE id = ?;";
 
 		// SQL command to delete rows with the specific ID
-		if (table.equals(SQLTables.ACCOUNTS_TABLE))
-		{
+		if (table.equals(SQLTables.ACCOUNTS_TABLE)) {
 			sql = "DELETE FROM " + table + " WHERE email = ?;";
 
 		}
@@ -391,6 +374,25 @@ public class DataBaseImpl implements DataBase {
 			System.out.println("Error occurred during delete operation: " + e.getMessage());
 		}
 		return affectedRows <= 0 ? false : true;
+
+	}
+
+	@Override
+	public List<Order> getAllOrders() {
+		List<Order> orders = new ArrayList<>();
+		String sql = String.format("SELECT * FROM %s;", SQLTables.ORDERS_TABLE);
+		System.out.println("Executing Query: " + sql);
+
+		try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+			ResultSet rs = pstmt.executeQuery();
+
+			orders = DataBaseConverters.convertOrderItemList(rs);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return orders;
 
 	}
 }

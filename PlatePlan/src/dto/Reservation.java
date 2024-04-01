@@ -11,7 +11,9 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.util.List;
 
-public class Reservation {
+import database.SQLTables;
+
+public class Reservation implements QueryGenerator {
 
 	public Reservation() {
 
@@ -27,18 +29,6 @@ public class Reservation {
 		this.specialNotes = specialNotes;
 		this.tableId = tableId;
 		this.serverId = server;
-		this.partySize = partySize;
-	}
-
-	public Reservation(String id, String customerId, LocalDate date, TimeSlot time, String specialNotes, String tableId,
-			int partySize) {
-		super();
-		this.id = id;
-		this.customerId = customerId;
-		this.date = date;
-		this.time = time;
-		this.specialNotes = specialNotes;
-		this.tableId = tableId;
 		this.partySize = partySize;
 	}
 
@@ -170,15 +160,18 @@ public class Reservation {
 		this.serverId = serverId;
 	}
 
-	public PreparedStatement getSQLString(Connection connection, String sql) {
+	@Override
+	public PreparedStatement generateInsertStatement(Connection conn, List<String> columns) {
 		try {
+			String sql = "INSERT INTO %s %s VALUES ";
+
+			sql = String.format(sql, SQLTables.RESERVATION_TABLE, "(" + String.join(",", columns) + ")");
 			sql = sql + "(?,?,?,?,?,?,?,?);";
-			PreparedStatement pstmt = connection.prepareStatement(sql);
+			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, this.getId());
 			pstmt.setString(2, this.getCustomerId());
 			pstmt.setDate(3, Date.valueOf(this.date.toString()));
-			pstmt.setTime(4, Time.valueOf(this.getTime().getFrom())); // Assuming TimeSlot can be converted to String
-																		// directly or has a toString method
+			pstmt.setTime(4, Time.valueOf(this.getTime().getFrom()));
 			pstmt.setString(5, this.getSpecialNotes());
 			pstmt.setString(6, this.getTableId());
 			pstmt.setInt(7, this.getPartySize());
@@ -192,10 +185,11 @@ public class Reservation {
 		return null;
 	}
 
-	public PreparedStatement generateUpdateCommand(Connection conn, List<String> columns, String tableName) {
+	@Override
+	public PreparedStatement generateUpdateStatement(Connection conn, List<String> columns) {
 		try {
 			columns.remove(0);
-			String sql = "UPDATE " + tableName + " SET "
+			String sql = "UPDATE " + SQLTables.RESERVATION_TABLE + " SET "
 					+ String.join(", ", columns.stream().map(column -> column + " = ?").toArray(String[]::new))
 					+ " WHERE id = ?;";
 			PreparedStatement stmt = conn.prepareStatement(sql);

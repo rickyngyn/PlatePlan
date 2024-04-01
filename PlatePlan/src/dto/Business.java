@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Business {
+import database.SQLTables;
+
+public class Business implements QueryGenerator {
 
 	public Business(String email, String password, LocalTime openFrom, LocalTime openUntil, long reservationSlots,
 			String phoneNumber, String address) {
@@ -194,10 +196,10 @@ public class Business {
 				&& Objects.equals(phoneNumber, other.phoneNumber) && reservationSlots == other.reservationSlots;
 	}
 
-	public PreparedStatement generateUpdateCommand(Connection conn, List<String> columns, String tableName) {
+	public PreparedStatement generateUpdateStatement(Connection conn, List<String> columns) {
 		try {
 			columns.remove(0);
-			String sql = "UPDATE " + tableName + " SET "
+			String sql = "UPDATE " + SQLTables.BUSINESS_TABLE + " SET "
 					+ String.join(", ", columns.stream().map(column -> column + " = ?").toArray(String[]::new))
 					+ " WHERE email = ?;";
 
@@ -219,6 +221,11 @@ public class Business {
 			e.printStackTrace();
 		}
 
+		return null;
+	}
+
+	@Override
+	public PreparedStatement generateInsertStatement(Connection conn, List<String> columns) {
 		return null;
 	}
 }

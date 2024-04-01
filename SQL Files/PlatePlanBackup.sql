@@ -38,26 +38,15 @@ CREATE TABLE public.business (
 ALTER TABLE public.business OWNER TO postgres;
 
 --
--- Name: menu; Type: TABLE; Schema: public; Owner: postgres
+-- Name: customer_menu; Type: TABLE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.menu (
+CREATE TABLE public.customer_menu (
     id character varying(200) NOT NULL,
     title character varying(200),
     price double precision,
     description character varying(500)
 );
-
-
-ALTER TABLE public.menu OWNER TO postgres;
-
---
--- Name: customer_menu; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.customer_menu (
-)
-INHERITS (public.menu);
 
 
 ALTER TABLE public.customer_menu OWNER TO postgres;
@@ -90,6 +79,57 @@ CREATE TABLE public.feedbacks (
 
 
 ALTER TABLE public.feedbacks OWNER TO postgres;
+
+--
+-- Name: menu; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.menu (
+    id character varying(200) NOT NULL,
+    title character varying(200),
+    price double precision,
+    description character varying(500)
+);
+
+
+ALTER TABLE public.menu OWNER TO postgres;
+
+--
+-- Name: orders; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.orders (
+    id character varying(200) NOT NULL,
+    item character varying(200),
+    customer character varying(200),
+    price double precision,
+    date date,
+    reservation character varying(200),
+    quantity bigint
+);
+
+
+ALTER TABLE public.orders OWNER TO postgres;
+
+--
+-- Name: receipts; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.receipts (
+    id character varying(200) NOT NULL,
+    reservation character varying(200),
+    customer character varying(200),
+    date date,
+    "time" time without time zone,
+    subtotal double precision,
+    tax double precision,
+    tip bigint,
+    total double precision,
+    paid boolean
+);
+
+
+ALTER TABLE public.receipts OWNER TO postgres;
 
 --
 -- Name: reservations; Type: TABLE; Schema: public; Owner: postgres
@@ -146,13 +186,12 @@ INSERT INTO public.business VALUES ('alfredo', 'password', '12:00:00', '23:59:00
 -- Data for Name: customer_menu; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
+INSERT INTO public.customer_menu VALUES ('ee4ab2e5-2521-4a2b-8405-349f6506169d', 'Big Mac', 5.679999828338623, 'Delicious burger made with pickels, onions and lettuce and special sauce');
 INSERT INTO public.customer_menu VALUES ('4', 'Mushroom Risotto', 9.75, 'Creamy Arborio rice with wild mushrooms and a hint of truffle oil.');
 INSERT INTO public.customer_menu VALUES ('5', 'Beef Burger', 10.99, 'Grilled beef patty with lettuce, tomato, and our secret sauce, served with fries.');
 INSERT INTO public.customer_menu VALUES ('6', 'Grilled Salmon', 15.2, 'Freshly grilled salmon with a lemon butter sauce, served with vegetables.');
-INSERT INTO public.customer_menu VALUES ('10', 'Vegetable Curry', 9, 'Mixed vegetables in a rich and creamy curry sauce, served with rice.');
 INSERT INTO public.customer_menu VALUES ('7', 'Tomato Bruchett', 7.5, 'Grilled bread with tomato, garlic, basil, and olive oil topping.');
 INSERT INTO public.customer_menu VALUES ('9dfc9014-d8f7-4f3e-a1d2-a1ef67a46093', 'Pecan Pie', 5.989999771118164, 'Pecan pie is a classic American dessert featuring a sweet, custard-like filling loaded with pecans, all encased in a flaky pastry crust.');
-INSERT INTO public.customer_menu VALUES ('1', 'Margherita Pizza', 12.989999771118164, 'Classic pizza with fresh tomatoes, mozzarella cheese, and basil.');
 INSERT INTO public.customer_menu VALUES ('9', 'Chicken Parmesan', 13.5, 'Breaded chicken breast topped with marinara sauce and melted cheese, served with pasta.');
 
 
@@ -165,6 +204,7 @@ INSERT INTO public.customers VALUES ('janedoe@email.com', 'jane', 'doe', 'passwo
 INSERT INTO public.customers VALUES ('max@email.com', 'max', 'payne', 'password');
 INSERT INTO public.customers VALUES ('pouya@email.com', 'pouya', 'sameni', 'password');
 INSERT INTO public.customers VALUES ('newCus@email.com', 'john', 'doe', 'password');
+INSERT INTO public.customers VALUES ('nathan@email.com', 'Nathan', 'Fillion', 'password');
 
 
 --
@@ -203,7 +243,6 @@ INSERT INTO public.feedbacks VALUES ('594b7f3f-930e-496c-a53f-4d99cf39ec34', 'An
 INSERT INTO public.feedbacks VALUES ('1', 'John Doe', 4, '2023-03-10 08:00:00', 'Great service!');
 INSERT INTO public.feedbacks VALUES ('2', 'Jane Smith', 5, '2023-03-10 12:00:00', 'Loved the ambiance.');
 INSERT INTO public.feedbacks VALUES ('3', 'Emily Johnson', 3, '2023-03-10 16:00:00', 'Good, but too noisy.');
-INSERT INTO public.feedbacks VALUES ('4', 'Michael Brown', 2, '2023-03-11 09:00:00', 'Service was slow.');
 INSERT INTO public.feedbacks VALUES ('5', 'Linda Davis', 4, '2023-03-11 13:00:00', 'Very friendly staff.');
 INSERT INTO public.feedbacks VALUES ('6', 'Robert Wilson', 5, '2023-03-11 17:00:00', 'Best coffee in town.');
 INSERT INTO public.feedbacks VALUES ('7', 'Patricia Miller', 4, '2023-03-12 10:00:00', 'Delicious breakfast options.');
@@ -212,7 +251,6 @@ INSERT INTO public.feedbacks VALUES ('9', 'Lucas Anderson', 5, '2023-03-12 18:00
 INSERT INTO public.feedbacks VALUES ('10', 'Maria Thomas', 4, '2023-03-13 11:00:00', 'Lovely place for a quick snack.');
 INSERT INTO public.feedbacks VALUES ('14234', 'John Doe', 4, '2024-03-09 08:00:00', 'Great service!');
 INSERT INTO public.feedbacks VALUES ('223423', 'Jane Smith', 5, '2024-03-09 12:00:00', 'Loved the ambiance.');
-INSERT INTO public.feedbacks VALUES ('353452', 'Emily Johnson', 3, '2024-03-09 16:00:00', 'Good, but too noisy.');
 INSERT INTO public.feedbacks VALUES ('44123', 'Michael Brown', 2, '2024-03-05 09:00:00', 'Service was slow.');
 INSERT INTO public.feedbacks VALUES ('52342', 'Linda Davis', 4, '2024-03-05 13:00:00', 'Very friendly staff.');
 INSERT INTO public.feedbacks VALUES ('62134', 'Robert Wilson', 5, '2024-03-05 17:00:00', 'Best coffee in town.');
@@ -221,6 +259,7 @@ INSERT INTO public.feedbacks VALUES ('64568', 'David Moore', 3, '2024-03-01 14:0
 INSERT INTO public.feedbacks VALUES ('9234', 'Lucas Anderson', 5, '2024-03-01 18:00:00', 'I will definitely come back!');
 INSERT INTO public.feedbacks VALUES ('10234', 'Maria Thomas', 4, '2024-03-08 11:00:00', 'Lovely place for a quick snack.');
 INSERT INTO public.feedbacks VALUES ('6c9c4721-772f-4eaa-9679-11f9260bd64f', 'john doe', 5, '2024-03-11 16:29:03', 'This place has the best cake for any celebration');
+INSERT INTO public.feedbacks VALUES ('7e16b5fc-0f4a-45e3-b2ca-c57f10b07eb4', 'john doe', 3, '2024-03-11 17:26:48', 'This was great');
 
 
 --
@@ -228,13 +267,52 @@ INSERT INTO public.feedbacks VALUES ('6c9c4721-772f-4eaa-9679-11f9260bd64f', 'jo
 --
 
 INSERT INTO public.menu VALUES ('4', 'Mushroom Risotto', 9.75, 'Creamy Arborio rice with wild mushrooms and a hint of truffle oil.');
+INSERT INTO public.menu VALUES ('ee4ab2e5-2521-4a2b-8405-349f6506169d', 'Big Mac', 5.679999828338623, 'Delicious burger made with pickels, onions and lettuce and special sauce');
 INSERT INTO public.menu VALUES ('5', 'Beef Burger', 10.99, 'Grilled beef patty with lettuce, tomato, and our secret sauce, served with fries.');
 INSERT INTO public.menu VALUES ('6', 'Grilled Salmon', 15.2, 'Freshly grilled salmon with a lemon butter sauce, served with vegetables.');
-INSERT INTO public.menu VALUES ('10', 'Vegetable Curry', 9, 'Mixed vegetables in a rich and creamy curry sauce, served with rice.');
 INSERT INTO public.menu VALUES ('7', 'Tomato Bruchett', 7.5, 'Grilled bread with tomato, garlic, basil, and olive oil topping.');
 INSERT INTO public.menu VALUES ('9dfc9014-d8f7-4f3e-a1d2-a1ef67a46093', 'Pecan Pie', 5.989999771118164, 'Pecan pie is a classic American dessert featuring a sweet, custard-like filling loaded with pecans, all encased in a flaky pastry crust.');
-INSERT INTO public.menu VALUES ('1', 'Margherita Pizza', 12.989999771118164, 'Classic pizza with fresh tomatoes, mozzarella cheese, and basil.');
 INSERT INTO public.menu VALUES ('9', 'Chicken Parmesan', 13.5, 'Breaded chicken breast topped with marinara sauce and melted cheese, served with pasta.');
+
+
+--
+-- Data for Name: orders; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.orders VALUES ('d02bd481-3f49-4c50-b299-9744b62718a2', 'Grilled Salmon', 'max@email.com', 15.199999809265137, '2024-03-25', '4e744049-dcce-4186-bb77-c60c051647f6', 9);
+INSERT INTO public.orders VALUES ('86abc12c-f19b-442d-91d0-0c17c4e02079', 'Beef Burger', 'max@email.com', 10.989999771118164, '2024-03-25', '4e744049-dcce-4186-bb77-c60c051647f6', 4);
+INSERT INTO public.orders VALUES ('17522474-6c8e-4763-90cb-f6392cac58a8', 'Mushroom Risotto', 'max@email.com', 9.75, '2024-03-25', '4e744049-dcce-4186-bb77-c60c051647f6', 11);
+INSERT INTO public.orders VALUES ('91d4d9a0-b4e9-4bf8-bbb7-c0a608e0b382', 'Beef Burger', 'janedoe@email.com', 10.989999771118164, '2024-03-26', '55d9aecc-b7c9-407c-9819-b7db4ca7da9f', 2);
+INSERT INTO public.orders VALUES ('85ef088b-aabf-4e09-b2e4-03c08b6ce354', 'Beef Burger', 'johndoe@example.com', 10.989999771118164, '2024-03-30', '3173184f-b81a-418e-a4b8-492296ac0c5d', 5);
+INSERT INTO public.orders VALUES ('b0124639-53f5-463d-b22a-bd168dfd7343', 'Tomato Bruchett', 'johndoe@example.com', 7.5, '2024-03-30', '3173184f-b81a-418e-a4b8-492296ac0c5d', 10);
+INSERT INTO public.orders VALUES ('4b522014-e30e-4f4f-9502-32a1fc892516', 'Chicken Parmesan', 'johndoe@example.com', 13.5, '2024-03-30', '3173184f-b81a-418e-a4b8-492296ac0c5d', 2);
+
+
+--
+-- Data for Name: receipts; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.receipts VALUES ('b0cf994e-6c5b-4ffc-b7ca-986a1bccb9e6', '55d9aecc-b7c9-407c-9819-b7db4ca7da9f', 'janedoe@email.com', '2024-03-26', '18:01:39', 21.98, 2.86, 35, 33.53, true);
+INSERT INTO public.receipts VALUES ('46613ec8', 'cb35627a', '255cedbe', '2024-02-23', '11:20:00', 36.52, 2.56, 96, 135.08, true);
+INSERT INTO public.receipts VALUES ('4c24d74c-70b2-472d-9e43-f7c521ee4671', 'a27d226e-70d4-4146-8a6e-fa04a44fd017', '79a66b23', '2024-02-05', '14:34:56', 55, 3.85, 8, 50.85, false);
+INSERT INTO public.receipts VALUES ('6aa17f0b-4f9d-43d7-97b0-c66ce6cf3709', '1242f1b7-90f2-4235-8853-69bb056f8ba0', '58ef13f5', '2024-02-09', '20:27:53', 60, 4.2, 15, 49.2, true);
+INSERT INTO public.receipts VALUES ('04096550-60cc-4482-a7ad-aa979fa65ff8', 'f382919f-072d-4b73-b518-02c72004e720', '701363c6', '2024-02-11', '06:30:28', 65, 4.55, 70, -0.45, false);
+INSERT INTO public.receipts VALUES ('8fe52676-3720-4c89-b1a6-4e89c4474ee8', 'f95e5250-4d4d-4a75-abdf-12d85a0f4ff3', '3351e190', '2024-02-13', '01:06:44', 70, 4.9, 34, 40.9, false);
+INSERT INTO public.receipts VALUES ('52651b35-9fa7-459e-9cfb-12795974b426', '3105e508-e7d5-468d-a3a6-e34e44ff5976', '6e275a10', '2024-02-17', '12:26:56', 75, 5.25, 64, 16.25, true);
+INSERT INTO public.receipts VALUES ('d4ac7413-19ca-4812-868b-b2a8a3bd89e4', 'f63123a7-eb29-4b3c-b918-139e0063be69', '0c56fc85', '2024-02-18', '12:03:54', 80, 5.6, 14, 71.6, true);
+INSERT INTO public.receipts VALUES ('0d672d2d-1e00-4ec7-8bdd-ca409d8f337c', '2be4a007-c388-4813-bb92-2376d85e0c77', '689d3eba', '2024-02-19', '00:19:08', 85, 5.95, 48, 42.95, false);
+INSERT INTO public.receipts VALUES ('ad58ba95-f783-4b60-abf4-55632be4217f', 'b9c9745a-f600-449c-8750-077f81b46887', 'a8bfaed5', '2024-02-21', '14:46:49', 90, 6.3, 21, 75.3, false);
+INSERT INTO public.receipts VALUES ('5498cd23-3841-46e5-8104-1febc1b7ccd4', '8d588550-db5f-4ce8-9bd9-6dbcfc76b8f5', '83c62de2', '2024-02-28', '04:08:35', 95, 6.65, 36, 65.65, true);
+INSERT INTO public.receipts VALUES ('bda68558-f82e-456f-8e85-14aa60f41ab6', '737da2e2-2b83-449f-a5f2-7a1291dc20f0', 'c480a716', '2024-02-29', '08:53:01', 100, 7, 45, 62, false);
+INSERT INTO public.receipts VALUES ('3e2e244f', '792a0b56', 'd2249ba1', '2024-03-17', '13:02:00', 120, 26.49, 88, 492.95, true);
+INSERT INTO public.receipts VALUES ('4f945aff', 'c3ee7d2c', 'fd03452c', '2024-02-27', '09:04:00', 96, 24.77, 17, 395.57, true);
+INSERT INTO public.receipts VALUES ('5823cd52', '679336f8', '7f7880ff', '2024-02-21', '09:02:00', 134, 13.11, 6, 206.46, false);
+INSERT INTO public.receipts VALUES ('76560357-3234-4ef1-a8fa-c373ed0ffb85', '4e744049-dcce-4186-bb77-c60c051647f6', 'max@email.com', '2024-03-25', '23:00:44', 186, 37.44, 18, 384.03, true);
+INSERT INTO public.receipts VALUES ('810f48b4', '13300fe3', 'ff987ade', '2024-02-23', '17:28:00', 89, 14.25, 44, 261.86, false);
+INSERT INTO public.receipts VALUES ('eaba3680', '528e758c', '0da54103', '2024-03-10', '00:20:00', 200, 32.49, 67, 563.58, false);
+INSERT INTO public.receipts VALUES ('ede1029b', 'c1bcc336', '669dbc21', '2024-03-18', '12:17:00', 167, 32.27, 24, 517.31, false);
+INSERT INTO public.receipts VALUES ('f406054c', '89507d95', '6da8a75b', '2024-03-16', '22:21:00', 156, 33.08, 72, 577.63, true);
+INSERT INTO public.receipts VALUES ('577ec079-5d0e-4c7e-b3f2-9546077390ed', '3173184f-b81a-418e-a4b8-492296ac0c5d', 'johndoe@example.com', '2024-03-30', '16:15:08', 156.95, 20.4, 10, 195.08, true);
 
 
 --
@@ -242,18 +320,18 @@ INSERT INTO public.menu VALUES ('9', 'Chicken Parmesan', 13.5, 'Breaded chicken 
 --
 
 INSERT INTO public.reservations VALUES ('85072301-79b0-4705-8be2-3175c1a1292d', 'john', '2024-02-19', '15:00:00', '', 'table1', 1, 'Peter Parker');
-INSERT INTO public.reservations VALUES ('95c06bb9-fcb2-4679-bed4-29247836d6ea', 'john', '2024-02-27', '12:00:00', '', 'table1', 1, 'Peter Parker');
 INSERT INTO public.reservations VALUES ('c8ebfc03-9c6c-4553-a10d-3e3516a0d984', 'idonotexist', '2024-02-27', '12:00:00', '', 'table1', 0, 'Peter Parker');
 INSERT INTO public.reservations VALUES ('be02dcdd-0f5b-4460-bb4c-778dc8828d18', 'johndoe@example.com', '2024-03-02', '12:00:00', 'Near Window', 'table4', 8, 'James Smith');
 INSERT INTO public.reservations VALUES ('9dcd2721-8e71-438c-814d-cafc81aa98d5', 'johndoe@example.com', '2024-03-02', '12:00:00', 'Near Window', 'table4', 8, 'James Smith');
 INSERT INTO public.reservations VALUES ('28153cb5-c68f-4334-9876-9609d22ad347', 'johndoe@example.com', '2024-03-02', '12:00:00', 'Near Window', 'table4', 8, 'James Smith');
 INSERT INTO public.reservations VALUES ('b84b7797-4b1e-4049-9c0c-fc54c6dd6936', 'johndoe@example.com', '2024-03-02', '12:00:00', 'Near Window', 'table4', 8, 'James Smith');
-INSERT INTO public.reservations VALUES ('3173184f-b81a-418e-a4b8-492296ac0c5d', 'johndoe@example.com', '2024-03-02', '12:00:00', 'Near Window', 'table4', 8, 'James Smith');
-INSERT INTO public.reservations VALUES ('c324a5de-9fd2-42d5-bcaf-f678cf98d0a9', 'john', '2024-03-30', '16:30:00', '', 'table10', 5, 'Peter Parker');
-INSERT INTO public.reservations VALUES ('e5baaad8-75c4-48ab-86cd-afb2c7e689b3', 'john', '2024-03-24', '18:00:00', '', 'table10', 7, 'Peter Parker');
-INSERT INTO public.reservations VALUES ('f3db2942-d57f-42a9-86a5-ffbffeaf9c8d', 'john', '2024-03-30', '21:00:00', '', 'table10', 6, 'Peter Parker');
-INSERT INTO public.reservations VALUES ('0dcbfd15-251b-43a2-826c-92cf13599468', 'johndoe@example.com', '2024-03-11', '12:00:00', 'Near Window', 'table10', 8, 'Peter Parker');
-INSERT INTO public.reservations VALUES ('0bdaabcf-5703-4ae2-890a-eb96dd35bf12', 'johndoe@example.com', '2024-03-11', '12:00:00', 'Near Window', 'table10', 8, 'Peter Parker');
+INSERT INTO public.reservations VALUES ('7bba1e4f-09b6-4259-8540-382318b9f9ca', 'john', '2024-03-27', '19:00:00', 'This is my Anniversary', 'table99', 6, 'Peter Parker');
+INSERT INTO public.reservations VALUES ('95c06bb9-fcb2-4679-bed4-29247836d6ea', 'john', '2024-02-25', '12:00:00', '', 'table1', 5, 'Peter Parker');
+INSERT INTO public.reservations VALUES ('92c29c80-e3a0-4ad1-984d-845b45cff4ad', 'idonotexist', '2024-03-11', '12:00:00', '', 'table1', 0, 'Peter Parker');
+INSERT INTO public.reservations VALUES ('3173184f-b81a-418e-a4b8-492296ac0c5d', 'johndoe@example.com', '2024-03-31', '12:00:00', 'Near Window + Candles', 'table3', 8, 'James Smith');
+INSERT INTO public.reservations VALUES ('4e744049-dcce-4186-bb77-c60c051647f6', 'max@email.com', '2024-03-31', '13:30:00', 'This is gonna be my friends birthday', 'table10', 6, 'Peter Parker');
+INSERT INTO public.reservations VALUES ('55d9aecc-b7c9-407c-9819-b7db4ca7da9f', 'janedoe@email.com', '2024-03-31', '13:30:00', 'Trying 2', 'table1', 1, 'Peter Parker');
+INSERT INTO public.reservations VALUES ('8d476932-9fa9-4a2b-a433-6364e4ba49f2', 'john', '2024-03-19', '13:30:00', '', 'table10', 4, 'Peter Parker');
 
 
 --
@@ -261,13 +339,10 @@ INSERT INTO public.reservations VALUES ('0bdaabcf-5703-4ae2-890a-eb96dd35bf12', 
 --
 
 INSERT INTO public.restaurant_tables VALUES ('table1', 2, '1');
+INSERT INTO public.restaurant_tables VALUES ('table2', 4, '2');
 INSERT INTO public.restaurant_tables VALUES ('table3', 6, '3');
-INSERT INTO public.restaurant_tables VALUES ('table8', 6, '3');
-INSERT INTO public.restaurant_tables VALUES ('table9', 8, '4');
-INSERT INTO public.restaurant_tables VALUES ('table4', 10, '4');
-INSERT INTO public.restaurant_tables VALUES ('table2', 4, '1');
-INSERT INTO public.restaurant_tables VALUES ('table10', 10, '1');
-INSERT INTO public.restaurant_tables VALUES ('table7', 4, '2');
+INSERT INTO public.restaurant_tables VALUES ('table4', 6, '4');
+INSERT INTO public.restaurant_tables VALUES ('table5', 10, '5');
 
 
 --
@@ -319,6 +394,22 @@ ALTER TABLE ONLY public.feedbacks
 
 ALTER TABLE ONLY public.menu
     ADD CONSTRAINT menu_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: orders orders_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders
+    ADD CONSTRAINT orders_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: receipts receipts_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.receipts
+    ADD CONSTRAINT receipts_pkey PRIMARY KEY (id);
 
 
 --

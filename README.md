@@ -7,7 +7,7 @@ Welcome to our project repository, where we compile all submissions related to o
 - **Main Branch:** The main branch serves as the most stable version of our project, encompassing fully integrated and functional iterations. It currently includes Iterations 0, 1, 2. While the main branch offers a working version of the project, please be aware that it may not contain comprehensive documentation. For detailed documentation, it's advisable to explore the specific iteration branches.
 
 - **Deliverable1 Branch:** The Deliverable 1 branch is meant to track files up to the deliverable one deadline so that TAs can easily track progress. Where main branch is for the current most fully completed Iteration, the deliverable 1 branch includes ITR 0, 1, and the DB integration for ITR2. New Deliverable 2 will be available for final deliverable
-  
+
 - **Iteration Branches:** We have segregated our work into iteration-specific branches, namely `ITR 0`, `ITR 1`, and `ITR 2`. These branches allow for a focused view of the project's development at each stage.
 
 ### Branch Details
@@ -21,6 +21,9 @@ Welcome to our project repository, where we compile all submissions related to o
 - **ITR 3 (Iteration 3):** The focus of Iteration 3 is on the ongoing development of features promised for this phase. It's important to note that some features in this branch may be incomplete. For evaluation purposes, the main branch should be referenced for a complete and functional iteration.
 
 # Postgres Database Integration Setup
+
+For a complete setup video please visit this link: https://drive.google.com/file/d/1x_Y91i6HcK9v5DVqTv1eFf7a6BzEIl8x/view?usp=drive_link
+
 
 Follow these steps to set up the Postgres database integration for your project.
 
